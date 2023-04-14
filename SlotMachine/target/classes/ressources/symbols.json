@@ -1,0 +1,56 @@
+{
+  "symbols": [
+    {
+      "name": "Super",
+      "emoji": "👑",
+      "id": 1
+    },{
+      "name": "Free",
+      "emoji": "🆓",
+      "id": 2
+    },{
+      "name": "Bonus",
+      "emoji": "⭐",
+      "id": 3
+    },{
+      "name": "Cherry",
+      "emoji": "🍒",
+      "id": 4
+    },
+    {
+      "name": "Lemon",
+      "emoji": "🍋",
+      "id": 5
+    },
+    {
+      "name": "Orange",
+      "emoji": "🍊",
+      "id": 6
+    },
+    {
+      "name": "Grapes",
+      "emoji": "🍇",
+      "id": 7
+    },
+    {
+      "name": "Watermelon",
+      "emoji": "🍉",
+      "id": 8
+    },
+    {
+      "name": "Apple",
+      "emoji": "🍎",
+      "id": 9
+    },
+    {
+      "name": "Kiwi",
+      "emoji": "🥝",
+      "id": 10
+    },
+    {
+      "name": "Pineapple",
+      "emoji": "🍍",
+      "id": 11
+    }
+  ]
+}

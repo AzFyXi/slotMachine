@@ -16,7 +16,6 @@ public class Config {
         assert parsedSymbols != null;
 
         Collection<Symbol> symbols = createSymbolsCollection(parsedSymbols);
-
         System.out.println(symbols);
     }
 
@@ -41,6 +40,7 @@ public class Config {
         Collection<Symbol> symbols = new ArrayList<>();
         for (Object symbol : (Collection<Object>) parsedSymbols.get("symbols")) {
             System.out.println(symbol);
+
         }
 
         return symbols;
