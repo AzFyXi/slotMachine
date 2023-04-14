@@ -6,12 +6,12 @@ import java.util.Collection;
 
 import SlotMachine.Column;
 import SlotMachine.Symbol;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
+//import org.json.simple.JSONObject;
+//import org.json.simple.parser.JSONParser;
 
 public class Config {
 
-    public static void init() {
+/*    public static void init() {
         JSONObject parsedSymbols = parseSymbols();
         assert parsedSymbols != null;
 
@@ -45,5 +45,5 @@ public class Config {
 
         return symbols;
 
-    }
+    }*/
 }

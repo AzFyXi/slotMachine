@@ -1,66 +1,110 @@
 package SlotMachine;
 import SlotMachine.Symbol;
-import org.json.JSONObject;
-
+//import org.json.JSONObject;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.Collection;
+import java.util.List;
+import java.util.ArrayList;
 
 public class Column {
     private Collection<Symbol> symbols;
-    private boolean masterColumn;
-    private boolean generated;
+    private int numberColumn;
     private int linesNumber;
+    private boolean generated;
+    private int printNumberLine;
 
-    public Column(Collection<Symbol> symbols, boolean masterColumn, boolean generated, int linesNumber) {
+    //Constructor
+    public Column(Collection<Symbol> symbols, int numberColumn, int linesNumber, boolean generated, int printNumberLine) {
         this.symbols = symbols;
-        this.masterColumn = masterColumn;
-        this.generated = generated;
+        this.numberColumn = numberColumn;
         this.linesNumber = linesNumber;
-    }
-
-
-//Getters and Setters
-
-    public void setMasterColumn(boolean masterColumn) {
-        this.masterColumn = masterColumn;
-    }
-
-    public void setGenerated(boolean generated) {
         this.generated = generated;
+        this.printNumberLine = printNumberLine;
+    }
+    //Getters and Setters
+
+    public Collection<Symbol> getAllSymbols() {
+        return symbols;
+    }
+
+    public Symbol getOneSymbols(int position) {
+        List<Symbol> symbolsList = new ArrayList<>(symbols);
+
+        if (position >= 0 && position < symbolsList.size()) {
+            return symbolsList.get(position);
+        } else {
+            return null;
+        }
+    }
+
+    public int getNumberColumn() {
+        return numberColumn;
     }
 
     public int getLinesNumber() {
         return linesNumber;
     }
 
-    public void setLinesNumber(int linesNumber) {
-        this.linesNumber = linesNumber;
-    }
-
-//toString
-
-    //Methods
     public boolean isGenerated() {
         return generated;
     }
 
-    public boolean isMasterColumn() {
-        return masterColumn;
+    public int getPrintNumberLine() {
+        return printNumberLine;
     }
+
+    public void setSymbols(Collection<Symbol> symbols) {
+        this.symbols = symbols;
+    }
+
+    public void setNumberColumn(int numberColumn) {
+        this.numberColumn = numberColumn;
+    }
+
+    public void setLinesNumber(int linesNumber) {
+        this.linesNumber = linesNumber;
+    }
+
+    public void setGenerated(boolean generated) {
+        this.generated = generated;
+    }
+
+    public void setPrintNumberLine(int printNumberLine) {
+        this.printNumberLine = printNumberLine;
+    }
+
+    //toString
 
     @Override
     public String toString() {
         return "Column{" +
                 "symbols=" + symbols +
-                ", masterColumn=" + masterColumn +
-                ", generated=" + generated +
+                ", numberColumn=" + numberColumn +
                 ", linesNumber=" + linesNumber +
+                ", generated=" + generated +
+                ", printNumberLine=" + printNumberLine +
                 '}';
     }
 
-    public String getSymbols(){
-        return symbols.toString();
+
+    //Methods
+
+    public boolean isMasterColumn() {
+            return numberColumn ==1 ;
+    }
+    public Symbol[] getSymbolsArray() {
+        Symbol[] arraySymbols = new Symbol[symbols.size()];
+        symbols.toArray(arraySymbols);
+        return arraySymbols;
+    }
+
+    public void generateSymbols() {
+        if(isMasterColumn()) {
+            for(int i = 0; i < linesNumber; i++) {
+
+            }
+        }
     }
 }
