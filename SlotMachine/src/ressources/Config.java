@@ -4,14 +4,19 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import SlotMachine.Column;
+import java.io.File;
+import java.util.Map;
+
 import SlotMachine.Symbol;
-//import org.json.simple.JSONObject;
-//import org.json.simple.parser.JSONParser;
+import org.json.JSONArray;
+import org.json.JSONTokener;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 public class Config {
 
-/*    public static void init() {
+    public static void init() {
+
         JSONObject parsedSymbols = parseSymbols();
         assert parsedSymbols != null;
 
@@ -38,12 +43,21 @@ public class Config {
 
     public static Collection<Symbol> createSymbolsCollection(JSONObject parsedSymbols){
         Collection<Symbol> symbols = new ArrayList<>();
+
         for (Object symbol : (Collection<Object>) parsedSymbols.get("symbols")) {
-            System.out.println(symbol);
+            JSONObject jsonObj = new JSONObject((Map) symbol);
 
+            int id = ((Long) jsonObj.get("id")).intValue(); // Convertir Long en int
+            String emoji = (String) jsonObj.get("emoji");
+            String name = (String) jsonObj.get("name");
+            Symbol symbolObject = new Symbol(id, emoji);
+
+            symbolObject.setImage(emoji);
+            symbolObject.setAlreadyWinned(false);
+            symbolObject.setName(name);
+            symbols.add(symbolObject);
         }
-
         return symbols;
+    }
 
-    }*/
 }
