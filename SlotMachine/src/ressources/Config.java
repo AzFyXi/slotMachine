@@ -30,7 +30,7 @@ public class Config {
 
         try {
             // Read the JSON file
-            Object symbols = parser.parse(new FileReader("C:\\Users\\rmassiet\\Desktop\\cours\\ESGI2\\introductionJava\\SlotMachine\\SlotMachine\\src\\ressources\\symbols.json"));
+            Object symbols = parser.parse(new FileReader("src/ressources/symbols.json"));
 
             // Return the parsed JSON
             return (JSONObject) symbols;

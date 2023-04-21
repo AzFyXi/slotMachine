@@ -16,7 +16,7 @@ public class SlotMachineGUI {
     private static ImageIcon[] loadImages(int width, int height) {
         ImageIcon[] images = new ImageIcon[IMAGE_FILES.length];
         for (int i = 0; i < IMAGE_FILES.length; i++) {
-            ImageIcon originalImage = new ImageIcon("/home/lucie/Bureau/PROJECT/SlotMachine/SlotMachine/src/ressources/assets/images/" + IMAGE_FILES[i]);
+            ImageIcon originalImage = new ImageIcon("src/ressources/assets/images/" + IMAGE_FILES[i]);
             Image resizedImage = originalImage.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
             images[i] = new ImageIcon(resizedImage);
         }
