@@ -8,7 +8,7 @@ public class Symbol {
     private Boolean alreadyWinned;
 
     // Constructor
-    public Symbol(int id, String image) {
+    public Symbol(int id, String image, String name) {
         this.id = id;
         this.name = name;
         this.emoji = image;

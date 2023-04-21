@@ -47,17 +47,24 @@ public class Config {
         for (Object symbol : (Collection<Object>) parsedSymbols.get("symbols")) {
             JSONObject jsonObj = new JSONObject((Map) symbol);
 
-            int id = ((Long) jsonObj.get("id")).intValue(); // Convertir Long en int
-            String emoji = (String) jsonObj.get("emoji");
-            String name = (String) jsonObj.get("name");
-            Symbol symbolObject = new Symbol(id, emoji);
+            Symbol symbolObject = getSymbolObjectFromJSON(jsonObj);
 
-            symbolObject.setImage(emoji);
-            symbolObject.setAlreadyWinned(false);
-            symbolObject.setName(name);
             symbols.add(symbolObject);
         }
         return symbols;
+    }
+
+    public static Symbol getSymbolObjectFromJSON(JSONObject jsonObj){
+        int id = ((Long) jsonObj.get("id")).intValue(); // Convertir Long en int
+        String emoji = (String) jsonObj.get("emoji");
+        String name = (String) jsonObj.get("name");
+
+        Symbol symbolObject = new Symbol(id, emoji, name);
+        symbolObject.setImage(emoji);
+        symbolObject.setAlreadyWinned(false);
+        symbolObject.setName(name);
+
+        return symbolObject;
     }
 
 }
