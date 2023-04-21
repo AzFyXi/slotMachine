@@ -5,11 +5,11 @@ import ressources.Config;
 
 import java.util.*;
 
-public class FinalSlotMachine {
+public class SlotMachine {
     private Collection<Column> columns;
     private int numberColumns;
 
-    public FinalSlotMachine(Collection<Column> columns, int numberColumns) {
+    public SlotMachine(Collection<Column> columns, int numberColumns) {
         this.columns = columns;
         this.numberColumns = numberColumns;
     }
