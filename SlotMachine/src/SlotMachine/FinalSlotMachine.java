@@ -1,5 +1,7 @@
 package SlotMachine;
-import SlotMachine.Column;
+
+import org.json.simple.JSONObject;
+import ressources.Config;
 
 import java.util.*;
 
@@ -49,5 +51,14 @@ public class FinalSlotMachine {
 
     public void findWinningSymbol() {
 
+    }
+
+    public static Collection<Symbol> getSymbolsCollection(){
+        JSONObject parsedSymbols = Config.parseSymbols();
+        assert parsedSymbols != null;
+
+        Collection<Symbol> symbols = Config.createSymbolsCollection(parsedSymbols);
+        System.out.println(symbols);
+        return symbols;
     }
 }
