@@ -57,8 +57,6 @@ public class FinalSlotMachine {
         JSONObject parsedSymbols = Config.parseSymbols();
         assert parsedSymbols != null;
 
-        Collection<Symbol> symbols = Config.createSymbolsCollection(parsedSymbols);
-        System.out.println(symbols);
-        return symbols;
+        return Config.createSymbolsCollection(parsedSymbols);
     }
 }
