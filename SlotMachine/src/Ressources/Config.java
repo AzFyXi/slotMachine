@@ -1,15 +1,12 @@
-package ressources;
+package Ressources;
 
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import java.io.File;
 import java.util.Map;
 
 import SlotMachine.Symbol;
-import org.json.JSONArray;
-import org.json.JSONTokener;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -30,7 +27,7 @@ public class Config {
 
         try {
             // Read the JSON file
-            Object symbols = parser.parse(new FileReader("src/ressources/symbols.json"));
+            Object symbols = parser.parse(new FileReader("src/Ressources/symbols.json"));
 
             // Return the parsed JSON
             return (JSONObject) symbols;

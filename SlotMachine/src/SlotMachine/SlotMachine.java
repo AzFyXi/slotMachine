@@ -1,7 +1,7 @@
 package SlotMachine;
 
 import org.json.simple.JSONObject;
-import ressources.Config;
+import Ressources.Config;
 
 import java.util.*;
 
