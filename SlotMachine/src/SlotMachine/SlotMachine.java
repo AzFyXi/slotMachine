@@ -7,7 +7,7 @@ import java.util.*;
 
 public class SlotMachine {
     private Collection<Column> columns;
-    private int numberColumns;
+    private static int numberColumns;
 
     public SlotMachine(Collection<Column> columns, int numberColumns) {
         this.columns = columns;
@@ -58,5 +58,11 @@ public class SlotMachine {
         assert parsedSymbols != null;
 
         return Config.createSymbolsCollection(parsedSymbols);
+    }
+
+    public static Collection<Column> columnsGeneration(){
+        new Column(getSymbolsCollection(), numberColumns, 3, false, 3);
+
+        return null;
     }
 }

@@ -76,7 +76,6 @@ public class Column {
     }
 
     //toString
-
     @Override
     public String toString() {
         return "Column{" +
