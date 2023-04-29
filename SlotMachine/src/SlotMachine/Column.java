@@ -1,5 +1,5 @@
-package SlotMachine;
-import SlotMachine.Symbol;
+package slotmachine;
+import slotmachine.Symbol;
 //import org.json.JSONObject;
 
 import java.io.FileNotFoundException;
@@ -76,6 +76,7 @@ public class Column {
     }
 
     //toString
+
     @Override
     public String toString() {
         return "Column{" +

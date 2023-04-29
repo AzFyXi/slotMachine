@@ -1,19 +1,17 @@
-package Ressources;
+package ressources;
 
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import java.util.Map;
-
+import SlotMachine.Column;
 import SlotMachine.Symbol;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
+//import org.json.simple.JSONObject;
+//import org.json.simple.parser.JSONParser;
 
 public class Config {
 
-    public static void init() {
-
+/*    public static void init() {
         JSONObject parsedSymbols = parseSymbols();
         assert parsedSymbols != null;
 
@@ -27,7 +25,7 @@ public class Config {
 
         try {
             // Read the JSON file
-            Object symbols = parser.parse(new FileReader("src/Ressources/symbols.json"));
+            Object symbols = parser.parse(new FileReader("C:\\Users\\rmassiet\\Desktop\\cours\\ESGI2\\introductionJava\\SlotMachine\\SlotMachine\\src\\ressources\\symbols.json"));
 
             // Return the parsed JSON
             return (JSONObject) symbols;
@@ -40,28 +38,12 @@ public class Config {
 
     public static Collection<Symbol> createSymbolsCollection(JSONObject parsedSymbols){
         Collection<Symbol> symbols = new ArrayList<>();
-
         for (Object symbol : (Collection<Object>) parsedSymbols.get("symbols")) {
-            JSONObject jsonObj = new JSONObject((Map) symbol);
+            System.out.println(symbol);
 
-            Symbol symbolObject = getSymbolObjectFromJSON(jsonObj);
-
-            symbols.add(symbolObject);
         }
+
         return symbols;
-    }
 
-    public static Symbol getSymbolObjectFromJSON(JSONObject jsonObj){
-        int id = ((Long) jsonObj.get("id")).intValue(); // Convertir Long en int
-        String emoji = (String) jsonObj.get("emoji");
-        String name = (String) jsonObj.get("name");
-
-        Symbol symbolObject = new Symbol(id, emoji, name);
-        symbolObject.setImage(emoji);
-        symbolObject.setAlreadyWinned(false);
-        symbolObject.setName(name);
-
-        return symbolObject;
-    }
-
+    }*/
 }
