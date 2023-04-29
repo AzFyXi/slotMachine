@@ -2,54 +2,54 @@
   "symbols": [
     {
       "name": "Super",
-      "emoji": "👑",
+      "image_url": "/ressources/assets/images/seven.png",
       "id": 1
     },{
       "name": "Free",
-      "emoji": "🆓",
+      "image_url": "/ressources/assets/images/bell.png",
       "id": 2
     },{
       "name": "Bonus",
-      "emoji": "⭐",
+      "image_url": "/ressources/assets/images/bonus.png",
       "id": 3
     },{
-      "name": "Cherry",
-      "emoji": "🍒",
+      "name": "pear",
+      "image_url": "/ressources/assets/images/pear.png",
       "id": 4
     },
     {
-      "name": "Lemon",
-      "emoji": "🍋",
+      "name": "orange",
+      "image_url": "/ressources/assets/images/orange.png",
       "id": 5
     },
     {
-      "name": "Orange",
-      "emoji": "🍊",
+      "name": "lemon",
+      "image_url": "/ressources/assets/images/lemon.png",
       "id": 6
     },
     {
-      "name": "Grapes",
-      "emoji": "🍇",
+      "name": "diamond",
+      "image_url": "/ressources/assets/images/diamond.png",
       "id": 7
     },
     {
-      "name": "Watermelon",
-      "emoji": "🍉",
+      "name": "cherry",
+      "image_url": "/ressources/assets/images/cherry.png",
       "id": 8
     },
     {
-      "name": "Apple",
-      "emoji": "🍎",
+      "name": "blueberry",
+      "image_url": "/ressources/assets/images/blueberry.png",
       "id": 9
     },
     {
-      "name": "Kiwi",
-      "emoji": "🥝",
+      "name": "strawberry",
+      "image_url": "/ressources/assets/images/strawberry.png",
       "id": 10
     },
     {
-      "name": "Pineapple",
-      "emoji": "🍍",
+      "name": "banana",
+      "image_url": "/ressources/assets/images/banana.png",
       "id": 11
     }
   ]

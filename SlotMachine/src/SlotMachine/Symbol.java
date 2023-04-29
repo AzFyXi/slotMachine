@@ -1,4 +1,4 @@
-package SlotMachine;
+package slotmachine;
 
 public class Symbol {
     private int id;
@@ -8,7 +8,7 @@ public class Symbol {
     private Boolean alreadyWinned;
 
     // Constructor
-    public Symbol(int id, String image, String name) {
+    public Symbol(int id, String image) {
         this.id = id;
         this.name = name;
         this.emoji = image;
@@ -69,29 +69,4 @@ public class Symbol {
         }
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmoji() {
-        return emoji;
-    }
-
-    public void setEmoji(String emoji) {
-        this.emoji = emoji;
-    }
-
-    @Override
-    public String toString() {
-        return "Symbols{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", emoji='" + emoji + '\'' +
-                ", alreadyWinned=" + alreadyWinned +
-                '}';
-    }
 }
