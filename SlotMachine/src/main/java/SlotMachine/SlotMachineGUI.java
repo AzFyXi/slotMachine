@@ -14,18 +14,9 @@ import java.io.InputStreamReader;
 
 public class SlotMachineGUI {
 
-    private static JLabel userMoneyLabel;
+    public static JLabel userMoneyLabel;
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            createAndShowGUI();
-            // Créer un utilisateur
-            User user = new User("John Doe", 1000);
-            updateUserMoneyDisplay(user);
-        });
-    }
-
-    private static JSONArray readSymbolsJSON() {
+    public static JSONArray readSymbolsJSON() {
         StringBuilder content = new StringBuilder();
         try (BufferedReader br = new BufferedReader(new InputStreamReader(SlotMachineGUI.class.getResourceAsStream("/Ressources/symbols.json")))) {
             String line;
@@ -40,7 +31,7 @@ public class SlotMachineGUI {
         return jsonObject.getJSONArray("symbols");
     }
 
-    private static ImageIcon[] loadImages(int width, int height, JSONArray symbols) {
+    public static ImageIcon[] loadImages(int width, int height, JSONArray symbols) {
         ImageIcon[] images = new ImageIcon[symbols.length()];
     
         for (int i = 0; i < symbols.length(); i++) {
@@ -53,13 +44,13 @@ public class SlotMachineGUI {
         return images;
     }
 
-    private static void updateUserMoneyDisplay(User user) {
+    public static void updateUserMoneyDisplay(User user) {
         if (userMoneyLabel != null) {
             userMoneyLabel.setText("Money: " + user.getMoney());
         }
     }
 
-    private static void createAndShowGUI() {
+    public static void createAndShowGUI() {
         // Charger les symboles à partir du fichier symbols.json
         JSONArray symbols = readSymbolsJSON();
         ImageIcon[] images = loadImages(90, 90, symbols);
@@ -226,7 +217,7 @@ spinButton.addActionListener(e -> {
         frame.setVisible(true);
     }
 
-    private static JButton createButtonWithImage(String imagePath) {
+    public static JButton createButtonWithImage(String imagePath) {
         ImageIcon imageIcon = new ImageIcon(SlotMachineGUI.class.getResource(imagePath));
         JButton button = new JButton(imageIcon);
         button.setBorder(BorderFactory.createEmptyBorder());
