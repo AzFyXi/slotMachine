@@ -33,9 +33,7 @@ public class SlotMachine {
 
     public void startMachine(User mainUser, Collection<Column> columns) {
 
-        if(mainUser.haveFreeAttempts()) {
-
-        }
+        mainUser.haveFreeAttempts();
         Iterator<Column> iteratorColumns = columns.iterator();
         List<Column> columnList = new ArrayList<>(columns);
         Symbol finalSymbol = null;
