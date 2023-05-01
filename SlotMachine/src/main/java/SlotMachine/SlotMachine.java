@@ -1,8 +1,8 @@
 package SlotMachine;
 
 import Ressources.Config;
-import org.json.simple.JSONObject;
 import User.User;
+import org.json.simple.JSONObject;
 
 import java.util.*;
 
