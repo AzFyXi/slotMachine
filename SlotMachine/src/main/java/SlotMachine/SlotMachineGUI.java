@@ -1,4 +1,4 @@
-package slotmachine;
+package SlotMachine;
 
 import javax.swing.*;
 import User.User;
@@ -29,7 +29,7 @@ public class SlotMachineGUI {
 
     private static JSONArray readSymbolsJSON() {
         StringBuilder content = new StringBuilder();
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(SlotMachineGUI.class.getResourceAsStream("/ressources/symbols.json")))) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(SlotMachineGUI.class.getResourceAsStream("src/main/javasrc/main/java/Ressources/symbols.json")))) {
             String line;
             while ((line = br.readLine()) != null) {
                 content.append(line);
@@ -73,7 +73,7 @@ public class SlotMachineGUI {
 
         // Ajout du panneau principal avec un fond d'image
         JPanel mainPanel = new JPanel() {
-            ImageIcon imageIcon = new ImageIcon(SlotMachineGUI.class.getResource("/ressources/assets/images/slotMachine.png"));
+            ImageIcon imageIcon = new ImageIcon(SlotMachineGUI.class.getResource("src/main/java/Ressources/assets/images/slotMachine.png"));
             Image image = imageIcon.getImage();
 
             @Override
@@ -150,7 +150,7 @@ public class SlotMachineGUI {
         buttonPanel.setOpaque(false);
         
         // Bouton Spin
-        JButton spinButton = createButtonWithImage("/ressources/assets/images/spin.png");
+        JButton spinButton = createButtonWithImage("src/main/java/Ressources/assets/images/spin.png");
         buttonConstraints.gridx = 2;
         buttonConstraints.gridy = 2;
         buttonConstraints.weightx = 0.0;
@@ -159,7 +159,7 @@ public class SlotMachineGUI {
         buttonPanel.add(spinButton, buttonConstraints);
         
         // Bouton Auto Spin
-        /*JButton autoSpinButton = createButtonWithImage("/ressources/assets/images/autoSpin.png");
+        /*JButton autoSpinButton = createButtonWithImage("src/main/java/Ressources/assets/images/autoSpin.png");
         buttonConstraints.gridx = 2;
         buttonConstraints.gridy = 2;
         buttonConstraints.weightx = 0.0;
@@ -168,7 +168,7 @@ public class SlotMachineGUI {
         buttonPanel.add(autoSpinButton, buttonConstraints);
         
         // Bouton Max Bet
-        JButton maxBetButton = createButtonWithImage("/ressources/assets/images/maxBet.png");
+        JButton maxBetButton = createButtonWithImage("src/main/java/Ressources/assets/images/maxBet.png");
         buttonConstraints.gridx = 2;
         buttonConstraints.gridy = 2;
         buttonConstraints.weightx = 0.0;
