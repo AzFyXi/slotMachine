@@ -14,8 +14,6 @@ import java.io.InputStreamReader;
 
 public class SlotMachineGUI {
 
-    private static final int IMAGE_WIDTH = 64;
-    private static final int IMAGE_HEIGHT = 64;
     private static JLabel userMoneyLabel;
 
     public static void main(String[] args) {
@@ -29,7 +27,7 @@ public class SlotMachineGUI {
 
     private static JSONArray readSymbolsJSON() {
         StringBuilder content = new StringBuilder();
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(SlotMachineGUI.class.getResourceAsStream("src/main/javasrc/main/java/Ressources/symbols.json")))) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(SlotMachineGUI.class.getResourceAsStream("/Ressources/symbols.json")))) {
             String line;
             while ((line = br.readLine()) != null) {
                 content.append(line);
@@ -73,7 +71,7 @@ public class SlotMachineGUI {
 
         // Ajout du panneau principal avec un fond d'image
         JPanel mainPanel = new JPanel() {
-            ImageIcon imageIcon = new ImageIcon(SlotMachineGUI.class.getResource("src/main/java/Ressources/assets/images/slotMachine.png"));
+            ImageIcon imageIcon = new ImageIcon(SlotMachineGUI.class.getResource("/Ressources/assets/images/slotMachine.png"));
             Image image = imageIcon.getImage();
 
             @Override
@@ -150,7 +148,7 @@ public class SlotMachineGUI {
         buttonPanel.setOpaque(false);
         
         // Bouton Spin
-        JButton spinButton = createButtonWithImage("src/main/java/Ressources/assets/images/spin.png");
+        JButton spinButton = createButtonWithImage("/Ressources/assets/images/spin.png");
         buttonConstraints.gridx = 2;
         buttonConstraints.gridy = 2;
         buttonConstraints.weightx = 0.0;
