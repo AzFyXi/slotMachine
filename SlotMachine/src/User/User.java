@@ -7,6 +7,7 @@ import java.util.*;
 public class User {
     private String name;
     private int money;
+    private int moneyBet;
     Collection<FreeAttempt> freeAttempts;
 
     //Constructor
@@ -50,6 +51,14 @@ public class User {
         freeAttempts.add(newFreeAttempt);
     }
 
+    public int getMoneyBet() {
+        return moneyBet;
+    }
+
+    public void setMoneyBet(int moneyBet) {
+        this.moneyBet = moneyBet;
+    }
+
     //toString
     @Override
     public String toString() {
@@ -81,12 +90,12 @@ public class User {
         return freeAttempts!= null;
     }
 
-    public void useFreeAttempts() {
+    public boolean useFreeAttempts() {
         if (haveFreeAttempts()) {
             FreeAttempt currentFreeAttempt = null;
             for (FreeAttempt freeAttempt : freeAttempts) {
                 currentFreeAttempt = freeAttempt;
-                break; // Nous ne voulons que le premier élément
+                break; // We only want the first element
             }
 
             if (currentFreeAttempt != null) {
@@ -98,7 +107,11 @@ public class User {
                     freeAttempts = updatedFreeAttempts;
                 }
             }
+            return true;
+        } else {
+            this.money = this.money - this.moneyBet; //Remove the money bet
         }
+        return false;
     }
 
 
