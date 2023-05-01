@@ -1,6 +1,6 @@
-package SlotMachine.SpecialSymbols;
+package slotmachine.SpecialSymbols;
 
-import SlotMachine.Symbol;
+import slotmachine.Symbol;
 
 public class SymbolBonus extends Symbol {
 }

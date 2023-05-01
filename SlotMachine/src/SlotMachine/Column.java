@@ -23,13 +23,20 @@ public class Column {
         this.generated = generated;
         this.printNumberLine = printNumberLine;
     }
+    public Column(int numberColumn, int linesNumber, boolean generated, int printNumberLine) {
+        this.symbols = null;
+        this.numberColumn = numberColumn;
+        this.linesNumber = linesNumber;
+        this.generated = generated;
+        this.printNumberLine = printNumberLine;
+    }
     //Getters and Setters
 
-    public Collection<Symbol> getAllSymbols() {
+    public Collection<Symbol> getSymbols() {
         return symbols;
     }
 
-    public Symbol getOneSymbols(int position) {
+    public Symbol getSymbols(int position) {
         List<Symbol> symbolsList = new ArrayList<>(symbols);
 
         if (position >= 0 && position < symbolsList.size()) {

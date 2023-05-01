@@ -2,7 +2,7 @@ package User;
 
 import slotmachine.FreeAttempt;
 
-import java.util.Collection;
+import java.util.*;
 
 public class User {
     private String name;
@@ -45,6 +45,11 @@ public class User {
         this.freeAttempts = freeAttempts;
     }
 
+    public void setFreeAttempts(int multiplier, int rowRemaining) {
+        FreeAttempt newFreeAttempt = new FreeAttempt(multiplier, rowRemaining);
+        freeAttempts.add(newFreeAttempt);
+    }
+
     //toString
     @Override
     public String toString() {
@@ -59,14 +64,43 @@ public class User {
     public void takeMoneyBet(int moneyBet) {
         this.money = this.money - moneyBet;
     }
-    public boolean haveMoney(int moneyBet) {
+    public void haveMoney(int moneyBet) {
         if(moneyBet>=this.money) {
             takeMoneyBet(moneyBet);
+        } else {
+            System.out.println("User doesn't have enough money");
         }
-        return moneyBet>=this.money;
+    }
+    public void betMoreMoney() {
+        this.money = this.money + 1000;
+    }
+    public void betLessMoney() {
+        this.money = this.money - 1000;
     }
     public boolean haveFreeAttempts() {
         return freeAttempts!= null;
     }
+
+    public void useFreeAttempts() {
+        if (haveFreeAttempts()) {
+            FreeAttempt currentFreeAttempt = null;
+            for (FreeAttempt freeAttempt : freeAttempts) {
+                currentFreeAttempt = freeAttempt;
+                break; // Nous ne voulons que le premier élément
+            }
+
+            if (currentFreeAttempt != null) {
+                currentFreeAttempt.useRow();
+
+                if (currentFreeAttempt.getRowRemaining() == 0) {
+                    Collection<FreeAttempt> updatedFreeAttempts = new ArrayList<>(freeAttempts);
+                    updatedFreeAttempts.remove(currentFreeAttempt);
+                    freeAttempts = updatedFreeAttempts;
+                }
+            }
+        }
+    }
+
+
 
 }
