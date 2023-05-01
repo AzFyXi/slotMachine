@@ -31,26 +31,11 @@ public class SlotMachine {
         this.numberColumns = numberColumns;
     }
 
-
-    public static Column[] getArrayColumsAndSymbol(Collection<Column> columns) {
-        Column[] arrayColumns = columns.toArray(new Column[columns.size()]);
-        for (Column col : arrayColumns) {
-            List<Symbol> symbolList = new ArrayList<>(col.getSymbols());
-            col.setSymbols(symbolList);
-        }
-        return arrayColumns;
-    }
-
-    public void printColumsConsole() {
-        Column[] arrayColumns = getArrayColumsAndSymbol(columns);
-        for(Column col : arrayColumns) {
-            for(int i = col.getLinesNumber(); i > col.getLinesNumber()-col.getPrintNumberLine() ; i-- ) {
-                System.out.print(col.getSymbols(i));
-            }
-        }
-    }
-
     public void startMachine(User mainUser, Collection<Column> columns) {
+
+        if(mainUser.haveFreeAttempts()) {
+
+        }
         Iterator<Column> iteratorColumns = columns.iterator();
         List<Column> columnList = new ArrayList<>(columns);
         Symbol finalSymbol = null;
@@ -74,12 +59,12 @@ public class SlotMachine {
                 }
 
                 //Search if it is a special symbol
-                if(finalSymbol.getId() <= 8) {
+                if(finalSymbol.getId() >= 4) {
                     calculatedMoney(mainUser, finalSymbol.getId(), numberWinningSymbol);
-                } else  if (finalSymbol.getId() == 10) {
+                } else  if (finalSymbol.getId() == 2) {
                     findFreeSymbol(mainUser);
-                } else if (finalSymbol.getId() == 11) {
-                    //Bonus symbole
+                } else if (finalSymbol.getId() == 3) {
+                    //Bonus symbol
                 }
 
                 //Replace winning Symbol
@@ -109,8 +94,8 @@ public class SlotMachine {
 
             for (int j = startPositionSecondColumn; j < column2.getLinesNumber(); j++) {
 
-                if (symbolToFirstColumn.equals(column2.getSymbols(j)) || column2.getSymbols(j).getId() == 9 || symbolToFirstColumn.getId() == 9) {
-                    foundSymbol = symbolToFirstColumn.getId() != 9 ? symbolToFirstColumn: column2.getSymbols(j); //For the symbol Super
+                if (symbolToFirstColumn.equals(column2.getSymbols(j)) || column2.getSymbols(j).getId() == 1 || symbolToFirstColumn.getId() ==1) {
+                    foundSymbol = symbolToFirstColumn.getId() != 1 ? symbolToFirstColumn: column2.getSymbols(j); //For the symbol Super
 
                     for (int k = startPositionThirdColumn; k < column3.getLinesNumber(); k++) {
                         if (foundSymbol.equals(column3.getSymbols(k))) {
@@ -156,7 +141,7 @@ public class SlotMachine {
         for (int i = 0; i < column.getLinesNumber(); i++) {
             Symbol currentSymbol = column.getSymbols(i);
 
-            if (currentSymbol.equals(targetSymbol) || currentSymbol.getId() == 9) {
+            if (currentSymbol.equals(targetSymbol) || currentSymbol.getId() == 1) {
                 symbolFound = true;
                 break;
             }

@@ -31,4 +31,8 @@ public class FreeAttempt {
     public boolean isRemainFreeAttempt(){
         return rowRemaining > 0;
     }
+
+    public void useRow() {
+        this.rowRemaining--;
+    }
 }
