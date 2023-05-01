@@ -1,6 +1,6 @@
-package slotmachine.SpecialSymbols;
+package SlotMachine.SpecialSymbols;
 
-import slotmachine.Symbol;
+import SlotMachine.Symbol;
 
 public class SymbolFree extends Symbol {
 }

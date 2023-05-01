@@ -1,4 +1,4 @@
-package slotmachine;
+package SlotMachine;
 
 public class Symbol {
     private int id;
@@ -8,7 +8,7 @@ public class Symbol {
     private Boolean alreadyWinned;
 
     // Constructor
-    public Symbol(int id, String image) {
+    public Symbol(int id, String image, String name) {
         this.id = id;
         this.name = name;
         this.emoji = image;
@@ -42,6 +42,21 @@ public class Symbol {
         this.emoji = image;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmoji() {
+        return emoji;
+    }
+
+    public void setEmoji(String emoji) {
+        this.emoji = emoji;
+    }
     //Methods
 
     // Check if the symbol has not already been won.

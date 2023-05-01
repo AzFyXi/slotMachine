@@ -1,17 +1,19 @@
-package ressources;
+package Ressources;
 
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import slotmachine.*;
+import java.util.Map;
 
-//import org.json.simple.JSONObject;
-//import org.json.simple.parser.JSONParser;
+import SlotMachine.Symbol;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 public class Config {
 
-/*    public static void init() {
+    public static void init() {
+
         JSONObject parsedSymbols = parseSymbols();
         assert parsedSymbols != null;
 
@@ -25,7 +27,7 @@ public class Config {
 
         try {
             // Read the JSON file
-            Object symbols = parser.parse(new FileReader("C:\\Users\\rmassiet\\Desktop\\cours\\ESGI2\\introductionJava\\SlotMachine\\SlotMachine\\src\\ressources\\symbols.json"));
+            Object symbols = parser.parse(new FileReader("src/Ressources/symbols.json"));
 
             // Return the parsed JSON
             return (JSONObject) symbols;
@@ -38,12 +40,28 @@ public class Config {
 
     public static Collection<Symbol> createSymbolsCollection(JSONObject parsedSymbols){
         Collection<Symbol> symbols = new ArrayList<>();
+
         for (Object symbol : (Collection<Object>) parsedSymbols.get("symbols")) {
-            System.out.println(symbol);
+            JSONObject jsonObj = new JSONObject((Map) symbol);
 
+            Symbol symbolObject = getSymbolObjectFromJSON(jsonObj);
+
+            symbols.add(symbolObject);
         }
-
         return symbols;
+    }
 
-    }*/
+    public static Symbol getSymbolObjectFromJSON(JSONObject jsonObj){
+        int id = ((Long) jsonObj.get("id")).intValue(); // Convertir Long en int
+        String image_url = (String) jsonObj.get("image_url");
+        String name = (String) jsonObj.get("name");
+
+        Symbol symbolObject = new Symbol(id, image_url, name);
+        symbolObject.setImage(image_url);
+        symbolObject.setAlreadyWinned(false);
+        symbolObject.setName(name);
+
+        return symbolObject;
+    }
+
 }

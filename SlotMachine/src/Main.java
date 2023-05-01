@@ -1,14 +1,15 @@
-import slotmachine.*;
+import SlotMachine.*;
 import User.User;
-import ressources.*;
 
 import java.util.Collection;
 
+import static SlotMachine.SlotMachine.*;
+
 public class Main {
     public static void main(String[] args) {
-        //Collection<Symbol> symbols = SlotMachine.getSymbolsCollection();
-        //System.out.println(symbols);
-        Collection<Column> columns = slotmachine.SlotMachine.createColumnsCollection(3);
+        Collection<Symbol> symbols = getSymbolsCollection();
+        System.out.println(symbols);
+        Collection<Column> columns = createColumnsCollection(3);
         User mainUser = new User("First User", 250000);
 
     }

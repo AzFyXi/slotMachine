@@ -1,7 +1,7 @@
-package slotmachine;
+package SlotMachine;
 
+import Ressources.Config;
 import org.json.simple.JSONObject;
-import ressources.Config;
 import User.User;
 
 import java.util.*;

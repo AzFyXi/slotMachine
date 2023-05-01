@@ -1,12 +1,8 @@
-package slotmachine;
-import slotmachine.Symbol;
-//import org.json.JSONObject;
+package SlotMachine;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.ArrayList;
 
 public class Column {
     private Collection<Symbol> symbols;

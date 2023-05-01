@@ -1,6 +1,6 @@
 package User;
 
-import slotmachine.FreeAttempt;
+import SlotMachine.FreeAttempt;
 
 import java.util.*;
 

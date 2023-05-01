@@ -1,5 +1,5 @@
-package slotmachine;
-import slotmachine.Column;
+package SlotMachine;
+import SlotMachine.Column;
 
 import java.util.*;
 
