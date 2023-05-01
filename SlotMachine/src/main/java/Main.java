@@ -12,5 +12,8 @@ public class Main {
         Collection<Column> columns = createColumnsCollection(3);
         User mainUser = new User("First User", 250000);
 
+
+        SlotMachineGUI.createAndShowGUI();
+        
     }
 }
