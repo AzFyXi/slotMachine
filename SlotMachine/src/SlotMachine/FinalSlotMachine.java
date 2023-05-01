@@ -32,7 +32,7 @@ public class FinalSlotMachine {
     public static Column[] getArrayColumsAndSymbol(Collection<Column> columns) {
         Column[] arrayColumns = columns.toArray(new Column[columns.size()]);
         for (Column col : arrayColumns) {
-            List<Symbol> symbolList = new ArrayList<>(col.getAllSymbols());
+            List<Symbol> symbolList = new ArrayList<>(col.getSymbols());
             col.setSymbols(symbolList);
         }
         return arrayColumns;
@@ -42,7 +42,7 @@ public class FinalSlotMachine {
         Column[] arrayColumns = getArrayColumsAndSymbol(columns);
         for(Column col : arrayColumns) {
             for(int i = col.getLinesNumber(); i > col.getLinesNumber()-col.getPrintNumberLine() ; i-- ) {
-                System.out.print(col.getOneSymbols(i));
+                System.out.print(col.getSymbols(i));
             }
         }
     }

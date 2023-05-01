@@ -45,6 +45,11 @@ public class User {
         this.freeAttempts = freeAttempts;
     }
 
+    public void setFreeAttempts(int multiplier, int rowRemaining) {
+        FreeAttempt newFreeAttempt = new FreeAttempt(multiplier, rowRemaining);
+        freeAttempts.add(newFreeAttempt);
+    }
+
     //toString
     @Override
     public String toString() {
@@ -59,14 +64,22 @@ public class User {
     public void takeMoneyBet(int moneyBet) {
         this.money = this.money - moneyBet;
     }
-    public boolean haveMoney(int moneyBet) {
+    public void haveMoney(int moneyBet) {
         if(moneyBet>=this.money) {
             takeMoneyBet(moneyBet);
+        } else {
+            System.out.println("User doesn't have enough money");
         }
-        return moneyBet>=this.money;
+    }
+    public int betMoreMoney(int moneyBet) {
+        return moneyBet + 1000;
+    }
+    public int betLessMoney(int moneyBet) {
+        return moneyBet - 1000;
     }
     public boolean haveFreeAttempts() {
         return freeAttempts!= null;
     }
+
 
 }

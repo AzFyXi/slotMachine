@@ -4,8 +4,8 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import SlotMachine.Column;
-import SlotMachine.Symbol;
+import slotmachine.*;
+
 //import org.json.simple.JSONObject;
 //import org.json.simple.parser.JSONParser;
 
