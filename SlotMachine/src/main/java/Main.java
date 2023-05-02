@@ -1,9 +1,11 @@
-import SlotMachine.*;
-import User.User;
+package main.java;
+
+import main.java.SlotMachine.*;
+import main.java.User.User;
 
 import java.util.Collection;
 
-import static SlotMachine.SlotMachine.*;
+import static main.java.SlotMachine.SlotMachine.*;
 
 public class Main {
     public static void main(String[] args) {

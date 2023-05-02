@@ -1,6 +1,6 @@
-package SlotMachine.SpecialSymbols;
+package main.java.SlotMachine.SpecialSymbols;
 
-import SlotMachine.Symbol;
+import main.java.SlotMachine.Symbol;
 
 public class SymbolBonus extends Symbol {
 }

@@ -1,7 +1,7 @@
-package SlotMachine;
+package main.java.SlotMachine;
 
 import javax.swing.*;
-import User.User;
+import main.java.User.User;
 import java.awt.*;
 import java.util.Random;
 import java.io.BufferedReader;

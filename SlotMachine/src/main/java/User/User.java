@@ -1,6 +1,6 @@
-package User;
+package main.java.User;
 
-import SlotMachine.FreeAttempt;
+import main.java.SlotMachine.FreeAttempt;
 
 import java.util.*;
 
@@ -81,11 +81,21 @@ public class User {
         }
     }
     public void betMoreMoney() {
-        this.money = this.money + 1000;
+        if (this.moneyBet == 0) { this.moneyBet = 2000; }
+        else if (this.moneyBet == 2000) { this.moneyBet = 4000; }
+        else if (this.moneyBet == 4000) { this.moneyBet = 6000; }
+        else if (this.moneyBet == 6000) { this.moneyBet = 10000; }
+        else if (this.moneyBet == 10000) { return; }
     }
+
     public void betLessMoney() {
-        this.money = this.money - 1000;
+        if (this.moneyBet == 10000) { this.moneyBet = 6000; }
+        else if (this.moneyBet == 6000) { this.moneyBet = 4000; }
+        else if (this.moneyBet == 4000) { this.moneyBet = 2000; }
+        else if (this.moneyBet == 2000) { this.moneyBet = 0; }
+        else if (this.moneyBet == 0) { return; }
     }
+
     public boolean haveFreeAttempts() {
         return freeAttempts!= null;
     }
