@@ -1,4 +1,4 @@
-package Ressources;
+package main.java.Ressources;
 
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -6,7 +6,7 @@ import java.util.Collection;
 
 import java.util.Map;
 
-import SlotMachine.Symbol;
+import main.java.SlotMachine.Symbol;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
