@@ -51,16 +51,16 @@ public class SlotMachineGUI {
     }
 
     public static void createAndShowGUI() {
-        // Charger les symboles à partir du fichier symbols.json
+        // Load symbols from the symbols.json file
         JSONArray symbols = readSymbolsJSON();
         ImageIcon[] images = loadImages(90, 90, symbols);
 
-        // Création de la fenêtre principale
+        // Creating the main window
         JFrame frame = new JFrame("Slot Machine");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1000, 750);
 
-        // Ajout du panneau principal avec un fond d'image
+        // Adding the main panel with a background image
         JPanel mainPanel = new JPanel() {
             ImageIcon imageIcon = new ImageIcon(SlotMachineGUI.class.getResource("/Ressources/assets/images/slotMachine.png"));
             Image image = imageIcon.getImage();
@@ -74,7 +74,7 @@ public class SlotMachineGUI {
         mainPanel.setLayout(new GridBagLayout());
         frame.add(mainPanel);
 
-        // Ajouter le JLabel pour afficher l'argent de l'utilisateur
+        // Add the JLabel to display the user's money
         userMoneyLabel = new JLabel();
         userMoneyLabel.setFont(new Font("Arial", Font.BOLD, 18));
         userMoneyLabel.setForeground(Color.WHITE);
@@ -85,7 +85,7 @@ public class SlotMachineGUI {
         userMoneyLabelConstraints.insets = new Insets(0, 20, 20, 0);
         mainPanel.add(userMoneyLabel, userMoneyLabelConstraints);
 
-        // Créez un tableau 2D de JLabel pour stocker les images
+        // Create a 2D array of JLabel to store the images
         JLabel[][] imageLabels = new JLabel[5][3];
         GridBagConstraints constraints = new GridBagConstraints();
         Random random = new Random();
@@ -132,13 +132,13 @@ public class SlotMachineGUI {
             }
         }
 
-        // Créer les boutons avec des images
+        // Create buttons with images
         JPanel buttonPanel = new JPanel(new GridBagLayout());
         GridBagConstraints buttonConstraints = new GridBagConstraints();
         buttonConstraints.gridwidth = 2;
         buttonPanel.setOpaque(false);
         
-        // Bouton Spin
+        // Spin button
         JButton spinButton = createButtonWithImage("/Ressources/assets/images/spin.png");
         buttonConstraints.gridx = 2;
         buttonConstraints.gridy = 2;
@@ -147,7 +147,7 @@ public class SlotMachineGUI {
         buttonConstraints.anchor = GridBagConstraints.CENTER;
         buttonPanel.add(spinButton, buttonConstraints);
         
-        // Bouton Auto Spin
+        // Auto Spin button
         /*JButton autoSpinButton = createButtonWithImage("src/main/java/Ressources/assets/images/autoSpin.png");
         buttonConstraints.gridx = 2;
         buttonConstraints.gridy = 2;
@@ -156,7 +156,7 @@ public class SlotMachineGUI {
         buttonConstraints.anchor = GridBagConstraints.LINE_END;
         buttonPanel.add(autoSpinButton, buttonConstraints);
         
-        // Bouton Max Bet
+        // Max Bet button
         JButton maxBetButton = createButtonWithImage("src/main/java/Ressources/assets/images/maxBet.png");
         buttonConstraints.gridx = 2;
         buttonConstraints.gridy = 2;
@@ -165,24 +165,24 @@ public class SlotMachineGUI {
         buttonConstraints.anchor = GridBagConstraints.LINE_END;
         buttonPanel.add(maxBetButton, buttonConstraints);*/
         
-        // Ajout du panneau des boutons au panneau principal
+        // Adding the buttons panel to the main panel
         constraints.gridx = 2;
         constraints.gridy = 4;
         constraints.anchor = GridBagConstraints.PAGE_END;
         constraints.insets = new Insets(0, 0, 20, 0);
         mainPanel.add(buttonPanel, constraints);
 
-        // Ajout de l'action au bouton Spin
+        // Adding the action to the Spin button
 spinButton.addActionListener(e -> {
-    // Création de la transition d'animation
+    // Creating the animation transition
     int initialWidth = mainPanel.getWidth();
     int initialHeight = mainPanel.getHeight();
     int finalWidth = (int) (initialWidth * 0.8);
     int finalHeight = (int) (initialHeight * 0.8);
     int deltaX = (initialWidth - finalWidth) / 2;
     int deltaY = (initialHeight - finalHeight) / 2;
-    int duration = 2000; // Durée de la transition en millisecondes
-    int delay = 20; // Délai entre chaque image de la transition en millisecondes
+    int duration = 2000; // Transition time in milliseconds
+    int delay = 20; // Delay between each frame of the transition in milliseconds
 
     Timer timer = new Timer(delay, null);
     timer.addActionListener(new ActionListener() {
@@ -202,17 +202,17 @@ spinButton.addActionListener(e -> {
 
             if (progress == 1f) {
                 timer.stop();
-                // Modifier les autres composants de l'interface utilisateur selon la transition
+                // Modify the other components of the user interface according to the transition
             }
         }
     });
 
-    // Démarrer la transition d'animation
+    // Start the animation transition
     timer.start();
 });
 
 
-        // Affichage de la fenêtre
+        // Displaying the window
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }

@@ -95,19 +95,13 @@ public class Column {
     //Methods
 
     public boolean isMasterColumn() {
-            return numberColumn ==1 ;
+            return numberColumn == 1 ;
     }
+
     public Symbol[] getSymbolsArray() {
         Symbol[] arraySymbols = new Symbol[symbols.size()];
         symbols.toArray(arraySymbols);
         return arraySymbols;
     }
 
-    public void generateSymbols() {
-        if(isMasterColumn()) {
-            for(int i = 0; i < linesNumber; i++) {
-
-            }
-        }
-    }
 }
