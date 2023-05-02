@@ -100,7 +100,7 @@ public class User {
         return freeAttempts!= null;
     }
 
-    public boolean useFreeAttempts() {
+    public boolean useFreeAttempts() { // Uses the user's free attempts
         if (haveFreeAttempts()) {
             FreeAttempt currentFreeAttempt = null;
             for (FreeAttempt freeAttempt : freeAttempts) {
@@ -119,7 +119,7 @@ public class User {
             }
             return true;
         } else {
-            this.money = this.money - this.moneyBet; //Remove the money bet
+            this.money -= this.moneyBet; //Remove the money bet
         }
         return false;
     }

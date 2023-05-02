@@ -31,38 +31,38 @@ public class SlotMachine {
         this.numberColumns = numberColumns;
     }
 
-    public void startMachine(User mainUser, Collection<Column> columns) {
+    public void startMachine(User mainUser, Collection<Column> columns) { //function to start the SlotMachine
 
-        mainUser.haveFreeAttempts();
+        mainUser.haveFreeAttempts(); //Checking if the user has free attempts
         Iterator<Column> iteratorColumns = columns.iterator();
         List<Column> columnList = new ArrayList<>(columns);
         Symbol finalSymbol = null;
         do {
             finalSymbol = findWinningSymbol(columns); //Retrieving the winning symbol
-            int numberWinningSymbol = 0;
+            int numberWinningColumn = 0;
 
             if(finalSymbol != null) {
-                Collection<Column> columnsWithWinningSymbol = new ArrayList<>();
+                Collection<Column> columnsWithWinningSymbol = new ArrayList<>(); //Create an ArrayList with to store the winning columns
 
-                //Add the 3 winning columns
+                //Add the 3 winning columns (with findWinningSymbol we know that the first 3 columns are winning)
                 for (int i = 0; i < columnList.get(0).getPrintNumberLine() && iteratorColumns.hasNext(); i++) {
-                    numberWinningSymbol++;
+                    numberWinningColumn++;
                     columnsWithWinningSymbol.add(iteratorColumns.next());
                 }
 
                 //Search for other winning columns
                 while (iteratorColumns.hasNext() && isSymbolInColumn(iteratorColumns.next(), finalSymbol)) {
-                    numberWinningSymbol++;
+                    numberWinningColumn++;
                     columnsWithWinningSymbol.add(iteratorColumns.next());
                 }
 
-                //Search if it is a special symbol
-                if(finalSymbol.getId() >= 4) {
-                    calculatedMoney(mainUser, finalSymbol.getId(), numberWinningSymbol);
-                } else  if (finalSymbol.getId() == 2) {
+                //Search if the winning symbol is a special symbol
+                if(finalSymbol.getId() >= 4) { //Not special symbol
+                    calculatedMoney(mainUser, finalSymbol.getId(), numberWinningColumn);
+                } else  if (finalSymbol.getId() == 2) { //Symbol Free
                     findFreeSymbol(mainUser);
-                } else if (finalSymbol.getId() == 3) {
-                    //Bonus symbol
+                } else if (finalSymbol.getId() == 3) { //Symbol Bonus
+
                 }
 
                 //Replace winning Symbol
@@ -72,16 +72,17 @@ public class SlotMachine {
                 System.out.println("Le joeur a perdu");
             }
 
-        } while (finalSymbol != null);
+        } while (finalSymbol != null); //Repeat as long as there is a winning symbol.
 
     }
 
-    public Symbol findWinningSymbol(Collection<Column> columns) {
+    public Symbol findWinningSymbol(Collection<Column> columns) { //Search the first three columns to find the winning symbol
         Iterator<Column> iterator = columns.iterator();
         Column column1 = iterator.next(); // First columns
         Column column2 = iterator.next(); // Second columns
         Column column3 = iterator.next(); // Third columns
 
+        // Start the position of the first element displayed
         int startPositionFirstColumn = column1.getLinesNumber() - column1.getPrintNumberLine();
         int startPositionSecondColumn = column2.getLinesNumber() - column2.getPrintNumberLine();
         int startPositionThirdColumn = column3.getLinesNumber() - column3.getPrintNumberLine();
@@ -102,22 +103,19 @@ public class SlotMachine {
                     }
                 }
             }
-
-            if (foundSymbol != null) {
-                break;
-            }
         }
         return null;
     }
 
 
-    public void replaceSymbol(Collection<Column> columns, Symbol foundSymbol) {
+    public void replaceSymbol(Collection<Column> columns, Symbol foundSymbol) { //Replaces the winning symbol in all columns
         for (Column column : columns) {
-            List<Symbol> symbolsList = new ArrayList<>(column.getSymbols());
+            List<Symbol> symbolsList = new ArrayList<>(column.getSymbols()); // Create a list of all the symbols in the column
             int foundPosition = -1;
-            int linesNumber = column.getLinesNumber();
+            int linesNumber = column.getLinesNumber(); // Number of elements in the column
+            int startPositionFirstElementDisplayed = linesNumber - column.getPrintNumberLine();
 
-            for (int i = linesNumber - column.getPrintNumberLine(); i < linesNumber; i++) {
+            for (int i = startPositionFirstElementDisplayed; i < linesNumber; i++) {
                 if (symbolsList.get(i).equals(foundSymbol)) {
                     foundPosition = i;
                     break;
@@ -133,7 +131,7 @@ public class SlotMachine {
         }
     }
 
-    public boolean isSymbolInColumn(Column column, Symbol targetSymbol) {
+    public boolean isSymbolInColumn(Column column, Symbol targetSymbol) { // Check if the symbol winners find is present in the other columns
         boolean symbolFound = false;
 
         for (int i = 0; i < column.getLinesNumber(); i++) {
@@ -148,70 +146,60 @@ public class SlotMachine {
         return symbolFound;
     }
 
-    public void calculatedMoney(User mainUser, int symbolId, int numberWinningSymbol) {
+    public void calculatedMoney(User mainUser, int symbolId, int numberWinningColumn) { //Calculates the user's gain
         int moneyWin = 0;
+        int multiplier = 1;
+        int moneyBet = mainUser.getMoneyBet();
+
+        if(moneyBet == 4000) multiplier = 2;
+        else if(moneyBet == 6000) multiplier = 3;
+        else if(moneyBet == 10000) multiplier = 5;
 
         switch (symbolId) {
             case 1:
-                if(numberWinningSymbol == 3) {
+                if(numberWinningColumn == 3) {
                     moneyWin = 1000;
-                } else if(numberWinningSymbol == 4) {
+                } else if(numberWinningColumn == 4) {
                     moneyWin = 2000;
-                } else if(numberWinningSymbol == 5) {
+                } else if(numberWinningColumn == 5) {
                     moneyWin = 4000;
                 }
                 break;
             case 2:
-                if(numberWinningSymbol == 3) {
+                if(numberWinningColumn == 3) {
                     moneyWin = 750;
-                } else if(numberWinningSymbol == 4) {
+                } else if(numberWinningColumn == 4) {
                     moneyWin = 1500;
-                } else if(numberWinningSymbol == 5) {
+                } else if(numberWinningColumn == 5) {
                     moneyWin = 3000;
                 }
                 break;
             case 3:
             case 4:
-                if(numberWinningSymbol == 3) {
+                if(numberWinningColumn == 3) {
                     moneyWin = 500;
-                } else if(numberWinningSymbol == 4) {
+                } else if(numberWinningColumn == 4) {
                     moneyWin = 750;
-                } else if(numberWinningSymbol == 5) {
+                } else if(numberWinningColumn == 5) {
                     moneyWin = 1500;
                 }
                 break;
             default:
-                if(numberWinningSymbol == 3) {
+                if(numberWinningColumn == 3) {
                     moneyWin = 300;
-                } else if(numberWinningSymbol == 4) {
+                } else if(numberWinningColumn == 4) {
                     moneyWin = 500;
-                } else if(numberWinningSymbol == 5) {
+                } else if(numberWinningColumn == 5) {
                     moneyWin = 1000;
                 }
                 break;
         }
+
+        moneyWin *= multiplier;
         mainUser.setMoney(mainUser.getMoney() + moneyWin);
     }
 
-    public static Collection<Column> createColumnsCollection(int printNumberLine) {
-        Collection<Column> columns = new ArrayList<>();
-
-        for (int i = 1; i <= 5; i++) {
-            Column column;
-            if (i < 5) {
-                column = new Column(i, 30, true, printNumberLine);
-            } else {
-                column = new Column(i, 41, true, printNumberLine);
-            }
-
-            columns.add(column);
-        }
-
-        return columns;
-    }
-
-
-    public void findFreeSymbol(User mainUser) {
+    public void findFreeSymbol(User mainUser) { //Manage the appearance of the Symbol Free
         System.out.println("Le symbole Free est apparu, choissisez entre c'est 3 options ");
         System.out.println("1/ 15 lancers, multiplicateur de gain x 2");
         System.out.println("2/ 10 lancers, x3");
@@ -230,6 +218,23 @@ public class SlotMachine {
                 break;
 
         }
+    }
+
+    public static Collection<Column> createColumnsCollection(int printNumberLine) { //Create the SlotMachine by default
+        Collection<Column> columns = new ArrayList<>();
+
+        for (int i = 1; i <= 5; i++) {
+            Column column;
+            if (i < 5) {
+                column = new Column(i, 30, true, printNumberLine);
+            } else {
+                column = new Column(i, 41, true, printNumberLine);
+            }
+
+            columns.add(column);
+        }
+
+        return columns;
     }
 
     public static Collection<Symbol> getSymbolsCollection(){

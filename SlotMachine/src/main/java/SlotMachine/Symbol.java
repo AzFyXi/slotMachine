@@ -58,9 +58,6 @@ public class Symbol {
         this.emoji = emoji;
     }
     //Methods
-
-    // Check if the symbol has not already been won.
-    //This avoids using the same symbol twice
     public Boolean isWinned() {
         if(!this.alreadyWinned) {
             this.alreadyWinned = true;
@@ -70,18 +67,5 @@ public class Symbol {
         }
     }
 
-    // Check if the symbol is a specific one and return the value
-    // This allows you to know what action to take
-    public int isSpecificSymbol() {
-        if(this.id == 1) {
-            return 1;
-        }else if(this.id == 2) {
-            return 2;
-        }else if(this.id == 3) {
-            return 2;
-        }else{
-            return -1;
-        }
-    }
 
 }
