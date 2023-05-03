@@ -1,0 +1,56 @@
+{
+  "symbols": [
+    {
+      "name": "Super",
+      "image_url": "/images/seven.png",
+      "id": 1
+    },{
+      "name": "Free",
+      "image_url": "/images/bell.png",
+      "id": 2
+    },{
+      "name": "Bonus",
+      "image_url": "/images/bonus.png",
+      "id": 3
+    },{
+      "name": "pear",
+      "image_url": "/images/pear.png",
+      "id": 4
+    },
+    {
+      "name": "orange",
+      "image_url": "/images/orange.png",
+      "id": 5
+    },
+    {
+      "name": "lemon",
+      "image_url": "/images/lemon.png",
+      "id": 6
+    },
+    {
+      "name": "diamond",
+      "image_url": "/images/diamond.png",
+      "id": 7
+    },
+    {
+      "name": "cherry",
+      "image_url": "/images/cherry.png",
+      "id": 8
+    },
+    {
+      "name": "blueberry",
+      "image_url": "/images/blueberry.png",
+      "id": 9
+    },
+    {
+      "name": "strawberry",
+      "image_url": "/images/strawberry.png",
+      "id": 10
+    },
+    {
+      "name": "banana",
+      "image_url": "/images/banana.png",
+      "id": 11
+    }
+  ]
+}

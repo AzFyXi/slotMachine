@@ -1,6 +1,8 @@
-package Ressources;
-
+package ressources;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.FileReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -21,22 +23,25 @@ public class Config {
         System.out.println(symbols);
     }
 
-    public static JSONObject parseSymbols(){
-
+    public static JSONObject parseSymbols() {
         JSONParser parser = new JSONParser();
 
         try {
             // Read the JSON file
-            Object symbols = parser.parse(new FileReader("src/main/java/Ressources/symbols.json"));
-
-            // Return the parsed JSON
-            return (JSONObject) symbols;
-
+            InputStream is = Config.class.getResourceAsStream("/symbols.json");
+            if (is != null) {
+                Object symbols = parser.parse(new InputStreamReader(is, StandardCharsets.UTF_8));
+                // Return the parsed JSON
+                return (JSONObject) symbols;
+            } else {
+                System.out.println("Input stream is null.");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
+
 
     public static Collection<Symbol> createSymbolsCollection(JSONObject parsedSymbols){
         Collection<Symbol> symbols = new ArrayList<>();

@@ -18,7 +18,7 @@ public class SlotMachineGUI {
 
     public static JSONArray readSymbolsJSON() {
         StringBuilder content = new StringBuilder();
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(SlotMachineGUI.class.getResourceAsStream("/Ressources/symbols.json")))) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(SlotMachineGUI.class.getResourceAsStream("/symbols.json")))) {
             String line;
             while ((line = br.readLine()) != null) {
                 content.append(line);
@@ -62,7 +62,7 @@ public class SlotMachineGUI {
 
         // Adding the main panel with a background image
         JPanel mainPanel = new JPanel() {
-            ImageIcon imageIcon = new ImageIcon(SlotMachineGUI.class.getResource("/Ressources/assets/images/slotMachine.png"));
+            ImageIcon imageIcon = new ImageIcon(SlotMachineGUI.class.getResource("/images/slotMachine.png"));
             Image image = imageIcon.getImage();
 
             @Override
@@ -139,7 +139,7 @@ public class SlotMachineGUI {
         buttonPanel.setOpaque(false);
         
         // Spin button
-        JButton spinButton = createButtonWithImage("/Ressources/assets/images/spin.png");
+        JButton spinButton = createButtonWithImage("/images/spin.png");
         buttonConstraints.gridx = 2;
         buttonConstraints.gridy = 2;
         buttonConstraints.weightx = 0.0;
@@ -148,7 +148,7 @@ public class SlotMachineGUI {
         buttonPanel.add(spinButton, buttonConstraints);
         
         // Auto Spin button
-        /*JButton autoSpinButton = createButtonWithImage("src/main/java/Ressources/assets/images/autoSpin.png");
+        /*JButton autoSpinButton = createButtonWithImage("src/main/java/images/autoSpin.png");
         buttonConstraints.gridx = 2;
         buttonConstraints.gridy = 2;
         buttonConstraints.weightx = 0.0;
@@ -157,7 +157,7 @@ public class SlotMachineGUI {
         buttonPanel.add(autoSpinButton, buttonConstraints);
         
         // Max Bet button
-        JButton maxBetButton = createButtonWithImage("src/main/java/Ressources/assets/images/maxBet.png");
+        JButton maxBetButton = createButtonWithImage("src/main/java/images/maxBet.png");
         buttonConstraints.gridx = 2;
         buttonConstraints.gridy = 2;
         buttonConstraints.weightx = 0.0;
@@ -224,5 +224,6 @@ spinButton.addActionListener(e -> {
         button.setContentAreaFilled(false);
         return button;
     }
+
 }
 

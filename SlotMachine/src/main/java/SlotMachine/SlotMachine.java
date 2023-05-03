@@ -1,7 +1,7 @@
 package SlotMachine;
 
 
-import Ressources.Config;
+import ressources.Config;
 import User.User;
 
 import org.json.simple.JSONObject;
