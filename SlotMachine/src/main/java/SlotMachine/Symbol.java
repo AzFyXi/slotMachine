@@ -68,6 +68,13 @@ public class Symbol {
         }
     }
 
-
-
+    @Override
+    public String toString() {
+        return "Symbol{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", emoji='" + emoji + '\'' +
+                ", alreadyWon=" + alreadyWon +
+                '}';
+    }
 }

@@ -3,6 +3,7 @@ package SlotMachine;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Random;
 
 public class Column {
     private Collection<Symbol> symbols;
@@ -20,19 +21,34 @@ public class Column {
         this.printNumberLine = printNumberLine;
     }
     public Column(int numberColumn, int linesNumber, boolean generated, int printNumberLine) {
-        this.symbols = null;
+        this.symbols = new ArrayList<>();
         this.numberColumn = numberColumn;
         this.linesNumber = linesNumber;
         this.generated = generated;
         this.printNumberLine = printNumberLine;
     }
+
+    public void generateSymbols(Collection<Symbol> symbols, int symbolsNumber) {
+        if (symbols instanceof List) {
+            List<Symbol> symbolsList = (List<Symbol>) symbols;
+            Random random = new Random();
+
+            for (int i = 0; i < symbolsNumber; i++) {
+                int randomNumber = random.nextInt(symbolsList.size());
+                Symbol randomSymbol = symbolsList.get(randomNumber);
+                this.symbols.add(randomSymbol);
+            }
+        } else {
+            System.out.println("The collection does not support index-based access");
+        }
+    }
     //Getters and Setters
 
-    public Collection<Symbol> getSymbols() {
+    public Collection<Symbol> getSymbol() {
         return symbols;
     }
 
-    public Symbol getSymbols(int position) {
+    public Symbol getSymbol(int position) {
         List<Symbol> symbolsList = new ArrayList<>(symbols);
 
         if (position >= 0 && position < symbolsList.size()) {
@@ -78,19 +94,16 @@ public class Column {
         this.printNumberLine = printNumberLine;
     }
 
-    //toString
-
     @Override
     public String toString() {
         return "Column{" +
-                "symbols=" + symbols +
+                "symbols=" + symbols.toString() +
                 ", numberColumn=" + numberColumn +
                 ", linesNumber=" + linesNumber +
                 ", generated=" + generated +
                 ", printNumberLine=" + printNumberLine +
                 '}';
     }
-
 
     //Methods
 

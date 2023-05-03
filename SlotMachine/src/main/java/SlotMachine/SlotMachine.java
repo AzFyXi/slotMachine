@@ -91,15 +91,15 @@ public class SlotMachine {
         Symbol foundSymbol = null;
 
         for (int i = startPositionFirstColumn; i < column1.getLinesNumber(); i++) {
-            Symbol symbolToFirstColumn = column1.getSymbols(i);
+            Symbol symbolToFirstColumn = column1.getSymbol(i);
 
             for (int j = startPositionSecondColumn; j < column2.getLinesNumber(); j++) {
 
-                if (symbolToFirstColumn.equals(column2.getSymbols(j)) || column2.getSymbols(j).getId() == 1 || symbolToFirstColumn.getId() ==1) {
-                    foundSymbol = symbolToFirstColumn.getId() != 1 ? symbolToFirstColumn: column2.getSymbols(j); //For the symbol Super
+                if (symbolToFirstColumn.equals(column2.getSymbol(j)) || column2.getSymbol(j).getId() == 1 || symbolToFirstColumn.getId() ==1) {
+                    foundSymbol = symbolToFirstColumn.getId() != 1 ? symbolToFirstColumn: column2.getSymbol(j); //For the symbol Super
 
                     for (int k = startPositionThirdColumn; k < column3.getLinesNumber(); k++) {
-                        if (foundSymbol.equals(column3.getSymbols(k))) {
+                        if (foundSymbol.equals(column3.getSymbol(k))) {
                             return foundSymbol;
                         }
                     }
@@ -112,7 +112,7 @@ public class SlotMachine {
 
     public void replaceSymbol(Collection<Column> columns, Symbol foundSymbol) { //Replaces the winning symbol in all columns
         for (Column column : columns) {
-            List<Symbol> symbolsList = new ArrayList<>(column.getSymbols()); // Create a list of all the symbols in the column
+            List<Symbol> symbolsList = new ArrayList<>(column.getSymbol()); // Create a list of all the symbols in the column
             int foundPosition = -1;
             int linesNumber = column.getLinesNumber(); // Number of elements in the column
             int startPositionFirstElementDisplayed = linesNumber - column.getPrintNumberLine();
@@ -137,7 +137,7 @@ public class SlotMachine {
         boolean symbolFound = false;
 
         for (int i = 0; i < column.getLinesNumber(); i++) {
-            Symbol currentSymbol = column.getSymbols(i);
+            Symbol currentSymbol = column.getSymbol(i);
 
             if (currentSymbol.equals(targetSymbol) || currentSymbol.getId() == 1) {
                 symbolFound = true;
