@@ -27,7 +27,7 @@ public class Config {
 
         try {
             // Read the JSON file
-            Object symbols = parser.parse(new FileReader("src/main/javasrc/main/java/Ressources/symbols.json"));
+            Object symbols = parser.parse(new FileReader("src/main/java/Ressources/symbols.json"));
 
             // Return the parsed JSON
             return (JSONObject) symbols;
