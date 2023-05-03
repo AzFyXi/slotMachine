@@ -1,4 +1,4 @@
-package main.java.Ressources;
+package Ressources;
 
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -6,7 +6,7 @@ import java.util.Collection;
 
 import java.util.Map;
 
-import main.java.SlotMachine.Symbol;
+import SlotMachine.Symbol;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -58,7 +58,7 @@ public class Config {
 
         Symbol symbolObject = new Symbol(id, image_url, name);
         symbolObject.setImage(image_url);
-        symbolObject.setAlreadyWinned(false);
+        symbolObject.setAlreadyWon(false);
         symbolObject.setName(name);
 
         return symbolObject;

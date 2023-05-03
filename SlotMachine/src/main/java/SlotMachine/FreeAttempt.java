@@ -1,4 +1,4 @@
-package main.java.SlotMachine;
+package SlotMachine;
 
 public class FreeAttempt {
     private int multiplier;
