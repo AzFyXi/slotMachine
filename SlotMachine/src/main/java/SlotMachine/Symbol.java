@@ -57,6 +57,7 @@ public class Symbol {
     public void setEmoji(String emoji) {
         this.emoji = emoji;
     }
+
     //Methods
     public Boolean isWon() {
         if(!this.alreadyWon) {
@@ -66,6 +67,7 @@ public class Symbol {
             return false;
         }
     }
+
 
 
 }

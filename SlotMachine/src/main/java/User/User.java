@@ -3,11 +3,14 @@ package User;
 import SlotMachine.FreeAttempt;
 
 import java.util.*;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
 public class User {
     private String name;
     private int money;
     private int moneyBet;
+    private int totalBet;
     Collection<FreeAttempt> freeAttempts;
 
     //Constructor
@@ -15,12 +18,16 @@ public class User {
         this.name = name;
         this.money = money;
         this.freeAttempts = freeAttempts;
+        this.moneyBet = 0;
+        this.totalBet = 0;
     }
 
     public User(String name, int money) {
         this.name = name;
         this.money = money;
         this.freeAttempts = null;
+        this.moneyBet= 0;
+        this.totalBet = 0;
     }
 
     //Getters and Setters
@@ -50,13 +57,20 @@ public class User {
         FreeAttempt newFreeAttempt = new FreeAttempt(multiplier, rowRemaining);
         freeAttempts.add(newFreeAttempt);
     }
-
     public int getMoneyBet() {
         return moneyBet;
     }
 
     public void setMoneyBet(int moneyBet) {
         this.moneyBet = moneyBet;
+    }
+
+    public int getTotalBet() {
+        return totalBet;
+    }
+
+    public void setTotalBet(int totalBet) {
+        this.totalBet = totalBet;
     }
 
     //toString
@@ -96,10 +110,12 @@ public class User {
         else if (this.moneyBet == 0) { return; }
     }
 
+    public void totalBetMonney( int totalBet) {
+        this.totalBet += totalBet;
+    }
     public boolean haveFreeAttempts() {
         return freeAttempts!= null;
     }
-
     public boolean useFreeAttempts() { // Uses the user's free attempts
         if (haveFreeAttempts()) {
             FreeAttempt currentFreeAttempt = null;
@@ -123,7 +139,5 @@ public class User {
         }
         return false;
     }
-
-
 
 }
