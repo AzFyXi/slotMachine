@@ -1,6 +1,6 @@
-package main.java.User;
+package User;
 
-import main.java.SlotMachine.FreeAttempt;
+import SlotMachine.FreeAttempt;
 
 import java.util.*;
 

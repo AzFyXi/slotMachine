@@ -1,7 +1,9 @@
-package main.java.SlotMachine;
+package SlotMachine;
 
-import main.java.Ressources.Config;
-import main.java.User.User;
+
+import Ressources.Config;
+import User.User;
+
 import org.json.simple.JSONObject;
 
 import java.util.*;

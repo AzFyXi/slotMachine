@@ -1,4 +1,4 @@
-package main.java.SlotMachine;
+package SlotMachine;
 
 import java.util.ArrayList;
 import java.util.Collection;
