@@ -13,9 +13,14 @@ import org.json.JSONObject;
 import java.io.InputStreamReader;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.Timer;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class SlotMachineGUI {
     private static final String SYMBOLS_JSON_PATH = "/symbols.json";
+    private static final String TRANSITION_GIF_PATH = "/images/spinAnim3.gif";
+    private static final int ANIMATION_DURATION = 1000; // 1000 ms (1 second)
     private static final String SLOT_MACHINE_IMAGE_PATH = "/images/slotMachine.png";
     private static final String SPIN_IMAGE_PATH = "/images/spin.png";
     private static final String LESS_IMAGE_PATH = "/images/less.png";
@@ -51,12 +56,6 @@ public class SlotMachineGUI {
         }
 
         return images;
-    }
-
-    public static void updateUserMoneyDisplay(User user) {
-        if (userMoneyLabel != null) {
-            userMoneyLabel.setText("Money: " + user.getMoney());
-        }
     }
 
     public static void addClickEffect(JLabel label) {
@@ -112,25 +111,52 @@ public class SlotMachineGUI {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
+
+    public static ImageIcon getNewTransitionGifInstance() {
+        ImageIcon transitionGif = new ImageIcon(SlotMachineGUI.class.getResource(TRANSITION_GIF_PATH));
+        return transitionGif;
+    }
     static void generateNewSymbol(JPanel mainPanel, GridBagConstraints constraints, Collection<Column> columns, JLabel[][] imageLabels , ImageIcon[] images, SlotMachine slotMachine, Collection<Symbol> symbolsJSON) {
-        removeAllSymbols(mainPanel, imageLabels);
+        ImageIcon transitionGif = new ImageIcon(SlotMachineGUI.class.getResource(TRANSITION_GIF_PATH));
 
-        for (Column column : columns) {
-            Collection<Symbol> symbols = slotMachine.generateSymbols(symbolsJSON, column.getLinesNumber(), column);
-            column.clearSymbols();
-            column.setSymbols(symbols);
-            int col = column.getNumberColumn()-1;
-
-            for (int row = 0; row < column.getPrintNumberLine(); row++) {
-                int positionOfSymbol = column.getLinesNumber() - column.getPrintNumberLine();
-                ImageIcon imageIcon = images[column.getSymbol(positionOfSymbol + row).getId()-1];
-                imageLabels[col][row] = new JLabel(imageIcon);
-
-                displayGeneratedSymbol(col, row, constraints);
-
-                mainPanel.add(imageLabels[col][row], constraints);
+        // Affichez le GIF pour chaque icône
+        for (int col = 0; col < 5; col++) {
+            for (int row = 0; row < 3; row++) {
+                imageLabels[col][row].setIcon(getNewTransitionGifInstance());
             }
         }
+        // Créez un Timer pour gérer l'animation sans bloquer l'interface utilisateur
+        Timer timer = new Timer(ANIMATION_DURATION, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                removeAllSymbols(mainPanel, imageLabels);
+
+                for (Column column : columns) {
+                    Collection<Symbol> symbols = slotMachine.generateSymbols(symbolsJSON, column.getLinesNumber());
+                    column.clearSymbols();
+                    column.setSymbols(symbols);
+
+                    int positionOfSymbol = column.getLinesNumber() - column.getPrintNumberLine();
+                    int col = column.getNumberColumn() - 1;
+
+                    for (int row = 0; row < column.getPrintNumberLine(); row++) {
+                        ImageIcon imageIcon = images[column.getSymbol(positionOfSymbol - 1 + row).getId() - 1];
+                        imageLabels[col][row] = new JLabel(imageIcon);
+
+                        displayGeneratedSymbol(col, row, constraints);
+
+                        mainPanel.add(imageLabels[col][row], constraints);
+                    }
+                }
+
+                mainPanel.revalidate();
+                mainPanel.repaint();
+            }
+        });
+
+        // Démarrez le Timer
+        timer.setRepeats(false);
+        timer.start();
 
     }
     public static void createAllSymbol(JPanel mainPanel , GridBagConstraints constraints, JLabel[][] imageLabels , ImageIcon[] images) {
