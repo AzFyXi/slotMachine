@@ -104,7 +104,7 @@ public class SlotMachineGUI {
         frame.add(mainPanel);
 
 
-        //showFreeAttemptMenu(mainUser, frame);
+        showFreeAttemptMenu(mainUser, frame);
 
         createLabelToDisplayUserMoney(mainUser, mainPanel);
 
@@ -273,14 +273,14 @@ public class SlotMachineGUI {
 
         ImageIcon twoIcon = new ImageIcon(SlotMachineGUI.class.getResource(TWO_IMAGE_PATH));
         JButton twoButton = new JButton(twoIcon);
-        constraints.gridx = 1;
-        constraints.gridy = 0;
+        constraints.gridx = 0;
+        constraints.gridy = 1;
         panel.add(twoButton, constraints);
 
         ImageIcon threeIcon = new ImageIcon(SlotMachineGUI.class.getResource(THREE_IMAGE_PATH));
         JButton threeButton = new JButton(threeIcon);
-        constraints.gridx = 2;
-        constraints.gridy = 0;
+        constraints.gridx = 0;
+        constraints.gridy = 2;
         panel.add(threeButton, constraints);
 
         // Ajoutez les ActionListener pour gérer les événements de clic
