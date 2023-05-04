@@ -6,6 +6,7 @@ import User.User;
 
 import org.json.simple.JSONObject;
 
+import javax.swing.*;
 import java.util.*;
 
 public class SlotMachine {
@@ -35,7 +36,7 @@ public class SlotMachine {
 
     public void startMachine(User mainUser, Collection<Column> columns) { //function to start the SlotMachine
 
-        mainUser.haveFreeAttempts(); //Checking if the user has free attempts
+
         Iterator<Column> iteratorColumns = columns.iterator();
         List<Column> columnList = new ArrayList<>(columns);
         Symbol finalSymbol = null;
@@ -222,15 +223,21 @@ public class SlotMachine {
         }
     }
 
-    public static Collection<Column> createColumnsCollection(int printNumberLine) { //Create the SlotMachine by default
+    public static Collection<Column> createColumnsCollection(int printNumberLine, Collection<Symbol> symbols) {
+        //Create the SlotMachine by default
         Collection<Column> columns = new ArrayList<>();
 
         for (int i = 1; i <= 5; i++) {
             Column column;
+
             if (i < 5) {
-                column = new Column(i, 30, true, printNumberLine);
+                column = new Column(generateSymbols(symbols, 30), i, 30, true, printNumberLine);
+                //column.setSymbols(column.generateSymbols(symbols, 30));
+                //column.generateSymbols(symbols, 30);
             } else {
-                column = new Column(i, 41, true, printNumberLine);
+                column = new Column(generateSymbols(symbols, 41), i, 30, true, printNumberLine);
+                //column.setSymbols(column.generateSymbols(symbols, 41));
+                //column.generateSymbols(symbols, 41);
             }
 
             columns.add(column);
@@ -239,6 +246,22 @@ public class SlotMachine {
         return columns;
     }
 
+    public static Collection<Symbol> generateSymbols(Collection<Symbol> symbols, int symbolsNumber) {
+        List<Symbol> generatedSymbols = new ArrayList<>();
+        Random random = new Random();
+        int symbolsSize = symbols.size();
+
+        for (int i = 0; i < symbolsNumber; i++) {
+            int randomNumber = random.nextInt(symbolsSize);
+            Symbol randomSymbol = symbols.stream().skip(randomNumber).findFirst().orElse(null);
+
+            if (randomSymbol != null) {
+                generatedSymbols.add(randomSymbol);
+            }
+        }
+
+        return generatedSymbols;
+    }
     public static Collection<Symbol> getSymbolsCollection(){
         JSONObject parsedSymbols = Config.parseSymbols();
         assert parsedSymbols != null;

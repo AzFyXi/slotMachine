@@ -3,6 +3,7 @@ package SlotMachine;
 import javax.swing.*;
 import User.User;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Random;
 import java.io.BufferedReader;
@@ -10,8 +11,6 @@ import java.io.IOException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.io.InputStreamReader;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -74,11 +73,12 @@ public class SlotMachineGUI {
         });
     }
 
-    public static void createAndShowGUI(User mainUser, Collection<Column> columns) {
+    public static void createAndShowGUI(User mainUser, Collection<Column> columns, Collection<Symbol> symbolsJSON) {
         // Load symbols from the symbols.json file
         JSONArray symbols = readSymbolsJSON();
         ImageIcon[] images = loadImages(90, 90, symbols);
-        
+        SlotMachine slotMachine = new SlotMachine(columns, 5);
+
         // Creating the main window
         JFrame frame = new JFrame("Slot Machine");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -106,57 +106,36 @@ public class SlotMachineGUI {
 
         createAllSymbol(mainPanel, constraints, imageLabels, images);
 
-        createAllButtonWithImages(mainUser, mainPanel, constraints, columns, imageLabels, images);
+        createAllButtonWithImages(mainUser, mainPanel, constraints, columns, imageLabels, images, slotMachine,  symbolsJSON);
 
         // Displaying the window
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
-    /* static void generateNewSymbol(User mainUser,JPanel mainPanel, GridBagConstraints constraints, Collection<Column> columns, JLabel[][] imageLabels , ImageIcon[] images) {
+    static void generateNewSymbol(JPanel mainPanel, GridBagConstraints constraints, Collection<Column> columns, JLabel[][] imageLabels , ImageIcon[] images, SlotMachine slotMachine, Collection<Symbol> symbolsJSON) {
+        removeAllSymbols(mainPanel, imageLabels);
+
         for (Column column : columns) {
-            int startPosition = column.getLinesNumber() - column.getPrintNumberLine();
-            int col = column.getNumberColumn();
+
+
+            Collection<Symbol> symbols = slotMachine.generateSymbols(symbolsJSON, column.getLinesNumber());
+            column.clearSymbols();
+            column.setSymbols(symbols);
+
+            int positionOfSymbol = column.getLinesNumber() - column.getPrintNumberLine();
+            int col = column.getNumberColumn()-1;
+
             for (int row = 0; row < column.getPrintNumberLine(); row++) {
-                ImageIcon imageIcon = images[];
+                ImageIcon imageIcon = images[column.getSymbol(positionOfSymbol-1 + row).getId()-1];
                 imageLabels[col][row] = new JLabel(imageIcon);
 
-                constraints.gridx = col;
-                constraints.gridy = row;
-
-                if (row == 0) {
-                    constraints.anchor = GridBagConstraints.CENTER;
-                    constraints.insets = new Insets(70, 30, 20, 30); // top, left, bottom, right
-                } else if (row == 1) {
-                    constraints.anchor = GridBagConstraints.CENTER;
-                    constraints.insets = new Insets(20, 30, 20, 30);
-                } else {
-                    constraints.anchor = GridBagConstraints.CENTER;
-                    constraints.insets = new Insets(20, 30, 20, 30);
-                }
-                constraints.gridy += 1;
-
-                if (col == 4) {
-                    constraints.insets.right = 35;
-                } else {
-                    constraints.insets.right = 35;
-                }
-
-                if (col == 0) {
-                    constraints.insets.left = 30;
-                } else if (col == 1) {
-                    constraints.insets.left = 30;
-                } else if (col == 2) {
-                    constraints.insets.left = 30;
-                } else if (col == 3) {
-                    constraints.insets.left = 30;
-                } else {
-                    constraints.insets.left = 30;
-                }
+                displayGeneratedSymbol(col, row, constraints);
 
                 mainPanel.add(imageLabels[col][row], constraints);
             }
         }
-    }*/
+
+    }
     public static void createAllSymbol(JPanel mainPanel , GridBagConstraints constraints, JLabel[][] imageLabels , ImageIcon[] images) {
         Random random = new Random();
 
@@ -165,44 +144,57 @@ public class SlotMachineGUI {
                 ImageIcon imageIcon = images[random.nextInt(images.length)];
                 imageLabels[col][row] = new JLabel(imageIcon);
 
-                constraints.gridx = col;
-                constraints.gridy = row;
-
-                if (row == 0) {
-                    constraints.anchor = GridBagConstraints.CENTER;
-                    constraints.insets = new Insets(70, 30, 20, 30); // top, left, bottom, right
-                } else if (row == 1) {
-                    constraints.anchor = GridBagConstraints.CENTER;
-                    constraints.insets = new Insets(20, 30, 20, 30);
-                } else {
-                    constraints.anchor = GridBagConstraints.CENTER;
-                    constraints.insets = new Insets(20, 30, 20, 30);
-                }
-                constraints.gridy += 1;
-
-                if (col == 4) {
-                    constraints.insets.right = 35;
-                } else {
-                    constraints.insets.right = 35;
-                }
-
-                if (col == 0) {
-                    constraints.insets.left = 30;
-                } else if (col == 1) {
-                    constraints.insets.left = 30;
-                } else if (col == 2) {
-                    constraints.insets.left = 30;
-                } else if (col == 3) {
-                    constraints.insets.left = 30;
-                } else {
-                    constraints.insets.left = 30;
-                }
+                displayGeneratedSymbol(col, row, constraints);
 
                 mainPanel.add(imageLabels[col][row], constraints);
             }
         }
     }
-    public static void createAllButtonWithImages(User mainUser,JPanel mainPanel, GridBagConstraints constraints, Collection<Column> columns, JLabel[][] imageLabels , ImageIcon[] images) {
+    public static void removeAllSymbols(JPanel mainPanel, JLabel[][] imageLabels) {
+        for (int col = 0; col < 5; col++) {
+            for (int row = 0; row < 3; row++) {
+                mainPanel.remove(imageLabels[col][row]);
+            }
+        }
+        mainPanel.revalidate();
+        mainPanel.repaint();
+    }
+
+    public static void displayGeneratedSymbol(int col, int row, GridBagConstraints constraints) {
+        constraints.gridx = col;
+        constraints.gridy = row;
+
+        if (row == 0) {
+            constraints.anchor = GridBagConstraints.CENTER;
+            constraints.insets = new Insets(70, 30, 20, 30); // top, left, bottom, right
+        } else if (row == 1) {
+            constraints.anchor = GridBagConstraints.CENTER;
+            constraints.insets = new Insets(20, 30, 20, 30);
+        } else {
+            constraints.anchor = GridBagConstraints.CENTER;
+            constraints.insets = new Insets(20, 30, 20, 30);
+        }
+        constraints.gridy += 1;
+
+        if (col == 4) {
+            constraints.insets.right = 35;
+        } else {
+            constraints.insets.right = 35;
+        }
+
+        if (col == 0) {
+            constraints.insets.left = 30;
+        } else if (col == 1) {
+            constraints.insets.left = 30;
+        } else if (col == 2) {
+            constraints.insets.left = 30;
+        } else if (col == 3) {
+            constraints.insets.left = 30;
+        } else {
+            constraints.insets.left = 30;
+        }
+    }
+    public static void createAllButtonWithImages(User mainUser,JPanel mainPanel, GridBagConstraints constraints, Collection<Column> columns, JLabel[][] imageLabels , ImageIcon[] images, SlotMachine slotMachine, Collection<Symbol> symbolsJSON) {
         // Create buttons with images
         JPanel buttonPanel = new JPanel(new GridBagLayout());
         GridBagConstraints buttonConstraints = new GridBagConstraints();
@@ -222,9 +214,11 @@ public class SlotMachineGUI {
         spinLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                //mainUser.useFreeAttempts(); //Checking if the user has free attempts
                 mainUser.totalBetMonney(mainUser.getMoneyBet());
                 userTotalBetLabel.setText("" + mainUser.getTotalBet());
-            }
+                generateNewSymbol(mainPanel, constraints, columns, imageLabels , images, slotMachine, symbolsJSON);
+                }
         });
 
         // Less bet button
@@ -240,7 +234,6 @@ public class SlotMachineGUI {
             @Override
             public void mouseClicked(MouseEvent e) {
                 mainUser.betLessMoney();
-                System.out.println(mainUser.getMoneyBet());
                 userBetLabel.setText("" + mainUser.getMoneyBet());
             }
         });

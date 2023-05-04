@@ -14,6 +14,12 @@ public class Symbol {
         this.emoji = image;
         this.alreadyWon = false;
     }
+    public Symbol(int id) {
+        this.id = id;
+        this.name = "";
+        this.emoji = "";
+        this.alreadyWon = false;
+    }
     public Symbol() {
         this.id = -1;
         this.emoji = "";

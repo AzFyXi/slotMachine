@@ -1,5 +1,6 @@
 package SlotMachine;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -28,22 +29,8 @@ public class Column {
         this.printNumberLine = printNumberLine;
     }
 
-    public void generateSymbols(Collection<Symbol> symbols, int symbolsNumber) {
-        if (symbols instanceof List) {
-            List<Symbol> symbolsList = (List<Symbol>) symbols;
-            Random random = new Random();
 
-            for (int i = 0; i < symbolsNumber; i++) {
-                int randomNumber = random.nextInt(symbolsList.size());
-                Symbol randomSymbol = symbolsList.get(randomNumber);
-                this.symbols.add(randomSymbol);
-            }
-        } else {
-            System.out.println("The collection does not support index-based access");
-        }
-    }
     //Getters and Setters
-
     public Collection<Symbol> getSymbol() {
         return symbols;
     }
@@ -115,6 +102,51 @@ public class Column {
         Symbol[] arraySymbols = new Symbol[symbols.size()];
         symbols.toArray(arraySymbols);
         return arraySymbols;
+    }
+    public void clearSymbols() {
+        this.symbols.clear();
+    }
+    public Collection<Symbol> generateSymbols(Collection<Symbol> symbols, int symbolsNumber) {
+        Collection<Symbol> generatedSymbols = new ArrayList<>();
+        Random random = new Random();
+
+        for (int i = 0; i < symbolsNumber; i++) {
+            int randomNumber = random.nextInt(symbols.size());
+            Symbol randomSymbol = symbols.stream().skip(randomNumber).findFirst().orElse(null);
+            generatedSymbols.add(randomSymbol);
+        }
+
+        return generatedSymbols;
+    }
+
+    /*public void generateSymbols(Collection<Symbol> symbols, int symbolsNumber) {
+        if (symbols instanceof List) {
+            List<Symbol> symbolsList = (List<Symbol>) symbols;
+            Random random = new Random();
+
+            for (int i = 0; i < symbolsNumber; i++) {
+                int randomNumber = random.nextInt(symbolsList.size());
+                Symbol randomSymbol = symbolsList.get(randomNumber);
+                this.symbols.add(randomSymbol);
+            }
+        } else {
+            System.out.println("The collection does not support index-based access");
+        }
+    }*/
+
+
+
+    public void generateSymbols(ImageIcon[] images, int symbolsNumber) {
+        /*this.symbols.clear();
+        Random random = new Random();
+        List<Symbol> symbolsList = (List<Symbol>) symbols;
+
+        for (int i = 0; i < symbolsNumber; i++) {
+            int randomNumber = random.nextInt(images.length);
+            //ImageIcon randomImage = images[randomNumber];
+            Symbol randomSymbol = symbolsList.get(randomNumber);
+            this.symbols.add(randomSymbol);
+        }*/
     }
 
 }
