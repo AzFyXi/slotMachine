@@ -203,31 +203,27 @@ public class SlotMachineGUI {
     }
 
     public void showWinImage() {
-        ImageIcon winIcon = new ImageIcon(SlotMachineGUI.class.getResource(WIN_IMAGE_PATH));
-        JOptionPane.showMessageDialog(null, "", "You Win!", JOptionPane.INFORMATION_MESSAGE, winIcon);
-    }
-
-    public void showLoseImage() {
-        ImageIcon loseIcon = new ImageIcon(SlotMachineGUI.class.getResource(LOSE_IMAGE_PATH));
-        JOptionPane.showMessageDialog(null, "", "You Lose!", JOptionPane.INFORMATION_MESSAGE, loseIcon);
-    }
-
-    private void showImage(String imagePath, String title) {
-        ImageIcon imageIcon = new ImageIcon(SlotMachineGUI.class.getResource(imagePath));
-        final JOptionPane optionPane = new JOptionPane("", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, imageIcon);
-        final JDialog dialog = optionPane.createDialog(null, title);
-
-        Timer timer = new Timer(3000, new ActionListener() {
+        Timer timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dialog.dispose();
+                ImageIcon winIcon = new ImageIcon(SlotMachineGUI.class.getResource(WIN_IMAGE_PATH));
+                JOptionPane.showMessageDialog(null, "", "You Win!", JOptionPane.INFORMATION_MESSAGE, winIcon);
             }
         });
         timer.setRepeats(false);
         timer.start();
+    }
 
-        dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-        dialog.setVisible(true);
+    public void showLoseImage() {
+        Timer timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ImageIcon loseIcon = new ImageIcon(SlotMachineGUI.class.getResource(LOSE_IMAGE_PATH));
+                JOptionPane.showMessageDialog(null, "", "You Lose!", JOptionPane.INFORMATION_MESSAGE, loseIcon);
+            }
+        });
+        timer.setRepeats(false);
+        timer.start();
     }
 
     public static void createAllSymbol(JPanel mainPanel , GridBagConstraints constraints, JLabel[][] imageLabels , ImageIcon[] images) {
