@@ -40,7 +40,7 @@ public class SlotMachine {
         List<Column> columnList = new ArrayList<>(columns);
         Symbol finalSymbol = null;
         Collection<Column> columnsWithWinningSymbol = null;
-        do {
+        //do {
             finalSymbol = findWinningSymbol(columns); //Retrieving the winning symbol
             int numberWinningColumn = 0;
 
@@ -81,7 +81,7 @@ public class SlotMachine {
             } else {
                 System.out.println("Le joeur a perdu");
             }
-        } while (finalSymbol != null); //Repeat as long as there is a winning symbol.
+        //} while (finalSymbol != null); //Repeat as long as there is a winning symbol.
     }
 
 
