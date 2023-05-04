@@ -159,6 +159,45 @@ public class SlotMachineGUI {
         timer.start();
 
     }
+    static void displayNewSymbol(JPanel mainPanel, GridBagConstraints constraints, Collection<Column> columns, JLabel[][] imageLabels , ImageIcon[] images) {
+        ImageIcon transitionGif = new ImageIcon(SlotMachineGUI.class.getResource(TRANSITION_GIF_PATH));
+
+        // Affichez le GIF pour chaque icône
+        for (int col = 0; col < 5; col++) {
+            for (int row = 0; row < 3; row++) {
+                imageLabels[col][row].setIcon(getNewTransitionGifInstance());
+            }
+        }
+        // Créez un Timer pour gérer l'animation sans bloquer l'interface utilisateur
+        Timer timer = new Timer(ANIMATION_DURATION, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                removeAllSymbols(mainPanel, imageLabels);
+
+                for (Column column : columns) {
+                    int col = column.getNumberColumn()-1;
+
+                    for (int row = 0; row < column.getPrintNumberLine(); row++) {
+                        int positionOfSymbol = column.getLinesNumber() - column.getPrintNumberLine();
+                        ImageIcon imageIcon = images[column.getSymbol(positionOfSymbol + row).getId()-1];
+                        imageLabels[col][row] = new JLabel(imageIcon);
+
+                        displayGeneratedSymbol(col, row, constraints);
+
+                        mainPanel.add(imageLabels[col][row], constraints);
+                    }
+                }
+
+                mainPanel.revalidate();
+                mainPanel.repaint();
+            }
+        });
+
+        // Démarrez le Timer
+        timer.setRepeats(false);
+        timer.start();
+
+    }
     public static void createAllSymbol(JPanel mainPanel , GridBagConstraints constraints, JLabel[][] imageLabels , ImageIcon[] images) {
         Random random = new Random();
 
@@ -238,18 +277,33 @@ public class SlotMachineGUI {
             @Override
             public void mouseClicked(MouseEvent e) {
                 //mainUser.useFreeAttempts(); //Checking if the user has free attempts
-                generateNewSymbol(mainPanel, constraints, columns, imageLabels , images, slotMachine, symbolsJSON);
-                //while(slotMachine.startMachine(mainUser, columns)) {
+                if(mainUser.getMoneyBet() > 0 && mainUser.getMoneyBet() <= mainUser.getMoney()) {
+                    generateNewSymbol(mainPanel, constraints, columns, imageLabels , images, slotMachine, symbolsJSON);
+                    //while(slotMachine.startMachine(mainUser, columns)) {
+                    slotMachine.startMachine(mainUser, columns);
 
+                    //displayNewSymbol(mainPanel, constraints, columns, imageLabels , images);
 
-                slotMachine.startMachine(mainUser, columns);
+                    mainUser.setMoney(mainUser.getMoney() - mainUser.getMoneyBet());
+                    mainUser.totalBetMonney(mainUser.getMoneyBet());
+                    mainUser.setMoneyBet(0);
+                    userBetLabel.setText("" + mainUser.getMoneyBet());
+                    userTotalBetLabel.setText("" + mainUser.getTotalBet());
+                    userMoneyLabel.setText("" + mainUser.getMoney());
+                } else if (mainUser.getMoneyBet() == 0){
+                    userBetLabel.setText("inf to 0");
+                    new Timer(2000, event -> {
+                        userBetLabel.setText("" + mainUser.getMoneyBet());
+                    }).start();
 
-                mainUser.setMoney(mainUser.getMoney() - mainUser.getMoneyBet());
-                mainUser.totalBetMonney(mainUser.getMoneyBet());
-                mainUser.setMoneyBet(0);
-                userBetLabel.setText("" + mainUser.getMoneyBet());
-                userTotalBetLabel.setText("" + mainUser.getTotalBet());
-                userMoneyLabel.setText("" + mainUser.getMoney());
+                } else if (mainUser.getMoneyBet() > mainUser.getMoney()){
+                    userMoneyLabel.setText("inf to bet");
+                    new Timer(2000, event -> {
+                        userMoneyLabel.setText("" + mainUser.getMoney());
+                    }).start();
+
+                }
+
                 }
         });
 

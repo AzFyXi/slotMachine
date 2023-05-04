@@ -40,50 +40,48 @@ public class SlotMachine {
         List<Column> columnList = new ArrayList<>(columns);
         Symbol finalSymbol = null;
         Collection<Column> columnsWithWinningSymbol = null;
-        //do {
-        finalSymbol = findWinningSymbol(columns); //Retrieving the winning symbol
-        int numberWinningColumn = 0;
+        do {
+            finalSymbol = findWinningSymbol(columns); //Retrieving the winning symbol
+            int numberWinningColumn = 0;
 
-        if(finalSymbol != null) {
-            columnsWithWinningSymbol = new ArrayList<>(); //Create an ArrayList with to store the winning columns
+            if(finalSymbol != null) {
+                columnsWithWinningSymbol = new ArrayList<>(); //Create an ArrayList with to store the winning columns
 
-            //Add the 3 winning columns (with findWinningSymbol we know that the first 3 columns are winning)
-            for (int i = 0; i < columnList.get(0).getPrintNumberLine() && iteratorColumns.hasNext(); i++) {
-                numberWinningColumn++;
-                columnsWithWinningSymbol.add(iteratorColumns.next());
-            }
+                //Add the 3 winning columns (with findWinningSymbol we know that the first 3 columns are winning)
+                for (int i = 0; i < columnList.get(0).getPrintNumberLine() && iteratorColumns.hasNext(); i++) {
+                    numberWinningColumn++;
+                    columnsWithWinningSymbol.add(iteratorColumns.next());
+                }
 
-            //Search for other winning columns
-            for(int i = 3; i <= columns.size(); i++)  {
-                if(iteratorColumns.hasNext()) {
-                    Column nextColumn = iteratorColumns.next();
-                    if(isSymbolInColumn(nextColumn, finalSymbol)) {
-                        numberWinningColumn++;
-                        columnsWithWinningSymbol.add(nextColumn);
-                    } else {
-                        break;
+                //Search for other winning columns
+                for(int i = 3; i <= columns.size(); i++)  {
+                    if(iteratorColumns.hasNext()) {
+                        Column nextColumn = iteratorColumns.next();
+                        if(isSymbolInColumn(nextColumn, finalSymbol)) {
+                            numberWinningColumn++;
+                            columnsWithWinningSymbol.add(nextColumn);
+                        } else {
+                            break;
+                        }
                     }
                 }
+
+                //Search if the winning symbol is a special symbol
+                if(finalSymbol.getId() >= 4) { //Not special symbol
+                    calculatedMoney(mainUser, finalSymbol.getId(), numberWinningColumn);
+                } else  if (finalSymbol.getId() == 2) { //Symbol Free
+                    //findFreeSymbol(mainUser);
+                } else if (finalSymbol.getId() == 3) { //Symbol Bonus
+
+                }
+                //Replace winning Symbol
+                replaceSymbol(numberWinningColumn, finalSymbol, columns);
+                System.out.println("Le joeur a gagner");
+
+            } else {
+                System.out.println("Le joeur a perdu");
             }
-
-            //Search if the winning symbol is a special symbol
-            if(finalSymbol.getId() >= 4) { //Not special symbol
-                calculatedMoney(mainUser, finalSymbol.getId(), numberWinningColumn);
-            } else  if (finalSymbol.getId() == 2) { //Symbol Free
-                //findFreeSymbol(mainUser);
-            } else if (finalSymbol.getId() == 3) { //Symbol Bonus
-
-            }
-            //Replace winning Symbol
-            //replaceSymbol(numberWinningColumn, finalSymbol, columns);
-
-        } else {
-            System.out.println("Le joeur a perdu");
-        }
-
-        //} while (finalSymbol != null); //Repeat as long as there is a winning symbol.
-
-
+        } while (finalSymbol != null); //Repeat as long as there is a winning symbol.
     }
 
 
@@ -122,14 +120,14 @@ public class SlotMachine {
 
     public void replaceSymbol(int numberWinningColumn, Symbol foundSymbol, Collection<Column> columns) {
         for(Column column : columns) {
-            if(column.getNumberColumn() < numberWinningColumn) {
+            if(column.getNumberColumn() <= numberWinningColumn) {
                 List<Symbol> symbolsList = new ArrayList<>(column.getSymbol()); // Create a list of all the symbols in the column
                 int foundPosition = -1;
                 int linesNumber = column.getLinesNumber(); // Number of elements in the column
                 int startPositionFirstElementDisplayed = linesNumber - column.getPrintNumberLine();
 
                 for (int i = startPositionFirstElementDisplayed; i < linesNumber; i++) {
-                    if (symbolsList.get(i).equals(foundSymbol)) {
+                    if (symbolsList.get(i).equals(foundSymbol) || symbolsList.get(i).getId() == 1 ) {
                         foundPosition = i;
                         break;
                     }
@@ -138,7 +136,6 @@ public class SlotMachine {
                     for (int i = foundPosition; i > 0; i--) {
                         symbolsList.set(i, symbolsList.get(i - 1));
                     }
-                    column.setSymbols(symbolsList);
                 }
             }
 
@@ -170,7 +167,12 @@ public class SlotMachine {
         else if(moneyBet == 10000) multiplier = 5;
 
         switch (symbolId) {
-            case 1:
+
+            case 2:
+                //Free Symbol
+            case 3:
+                //Bonus Symbol
+            case 4:
                 if(numberWinningColumn == 3) {
                     moneyWin = 1000;
                 } else if(numberWinningColumn == 4) {
@@ -179,7 +181,7 @@ public class SlotMachine {
                     moneyWin = 4000;
                 }
                 break;
-            case 2:
+            case 5:
                 if(numberWinningColumn == 3) {
                     moneyWin = 750;
                 } else if(numberWinningColumn == 4) {
@@ -188,8 +190,7 @@ public class SlotMachine {
                     moneyWin = 3000;
                 }
                 break;
-            case 3:
-            case 4:
+            case 6,7:
                 if(numberWinningColumn == 3) {
                     moneyWin = 500;
                 } else if(numberWinningColumn == 4) {
@@ -208,9 +209,12 @@ public class SlotMachine {
                 }
                 break;
         }
-
+        System.out.println(moneyWin);
         moneyWin *= multiplier;
-        mainUser.setMoney(mainUser.getMoney() + moneyWin);
+        System.out.println(moneyWin);
+        moneyWin +=mainUser.getMoney();
+        System.out.println(moneyWin);
+        mainUser.setMoney(moneyWin);
     }
 
     public void findFreeSymbol(User mainUser) { //Manage the appearance of the Symbol Free
