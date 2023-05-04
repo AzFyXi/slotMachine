@@ -10,6 +10,8 @@ import java.io.IOException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.io.InputStreamReader;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -76,7 +78,7 @@ public class SlotMachineGUI {
         // Load symbols from the symbols.json file
         JSONArray symbols = readSymbolsJSON();
         ImageIcon[] images = loadImages(90, 90, symbols);
-
+        
         // Creating the main window
         JFrame frame = new JFrame("Slot Machine");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -102,16 +104,60 @@ public class SlotMachineGUI {
         JLabel[][] imageLabels = new JLabel[5][3];
         GridBagConstraints constraints = new GridBagConstraints();
 
-        createAllSymbol(mainPanel, constraints, imageLabels, images, columns);
+        createAllSymbol(mainPanel, constraints, imageLabels, images);
 
-        createAllButtonWithImages(mainUser, mainPanel, constraints);
+        createAllButtonWithImages(mainUser, mainPanel, constraints, columns, imageLabels, images);
 
         // Displaying the window
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
+    /* static void generateNewSymbol(User mainUser,JPanel mainPanel, GridBagConstraints constraints, Collection<Column> columns, JLabel[][] imageLabels , ImageIcon[] images) {
+        for (Column column : columns) {
+            int startPosition = column.getLinesNumber() - column.getPrintNumberLine();
+            int col = column.getNumberColumn();
+            for (int row = 0; row < column.getPrintNumberLine(); row++) {
+                ImageIcon imageIcon = images[];
+                imageLabels[col][row] = new JLabel(imageIcon);
 
-    public static void createAllSymbol(JPanel mainPanel , GridBagConstraints constraints, JLabel[][] imageLabels , ImageIcon[] images, Collection<Column> columns) {
+                constraints.gridx = col;
+                constraints.gridy = row;
+
+                if (row == 0) {
+                    constraints.anchor = GridBagConstraints.CENTER;
+                    constraints.insets = new Insets(70, 30, 20, 30); // top, left, bottom, right
+                } else if (row == 1) {
+                    constraints.anchor = GridBagConstraints.CENTER;
+                    constraints.insets = new Insets(20, 30, 20, 30);
+                } else {
+                    constraints.anchor = GridBagConstraints.CENTER;
+                    constraints.insets = new Insets(20, 30, 20, 30);
+                }
+                constraints.gridy += 1;
+
+                if (col == 4) {
+                    constraints.insets.right = 35;
+                } else {
+                    constraints.insets.right = 35;
+                }
+
+                if (col == 0) {
+                    constraints.insets.left = 30;
+                } else if (col == 1) {
+                    constraints.insets.left = 30;
+                } else if (col == 2) {
+                    constraints.insets.left = 30;
+                } else if (col == 3) {
+                    constraints.insets.left = 30;
+                } else {
+                    constraints.insets.left = 30;
+                }
+
+                mainPanel.add(imageLabels[col][row], constraints);
+            }
+        }
+    }*/
+    public static void createAllSymbol(JPanel mainPanel , GridBagConstraints constraints, JLabel[][] imageLabels , ImageIcon[] images) {
         Random random = new Random();
 
         for (int col = 0; col < 5; col++) {
@@ -156,8 +202,7 @@ public class SlotMachineGUI {
             }
         }
     }
-
-    public static void createAllButtonWithImages(User mainUser, JPanel mainPanel, GridBagConstraints constraints) {
+    public static void createAllButtonWithImages(User mainUser,JPanel mainPanel, GridBagConstraints constraints, Collection<Column> columns, JLabel[][] imageLabels , ImageIcon[] images) {
         // Create buttons with images
         JPanel buttonPanel = new JPanel(new GridBagLayout());
         GridBagConstraints buttonConstraints = new GridBagConstraints();
