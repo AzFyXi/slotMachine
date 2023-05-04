@@ -2,7 +2,6 @@ package SlotMachine;
 
 import javax.swing.*;
 import User.User;
-import SlotMachine.SlotMachine;
 import java.awt.*;
 import java.util.Collection;
 import java.util.Random;
@@ -10,15 +9,16 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import java.io.InputStreamReader;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class SlotMachineGUI {
+    private static final String SYMBOLS_JSON_PATH = "/symbols.json";
+    private static final String SLOT_MACHINE_IMAGE_PATH = "/images/slotMachine.png";
+    private static final String SPIN_IMAGE_PATH = "/images/spin.png";
+    private static final String LESS_IMAGE_PATH = "/images/less.png";
+    private static final String MORE_IMAGE_PATH = "/images/more.png";
 
     public static JLabel userMoneyLabel;
     public static JLabel userBetLabel;
@@ -26,7 +26,7 @@ public class SlotMachineGUI {
 
     public static JSONArray readSymbolsJSON() {
         StringBuilder content = new StringBuilder();
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(SlotMachineGUI.class.getResourceAsStream("/symbols.json")))) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(SlotMachineGUI.class.getResourceAsStream(SYMBOLS_JSON_PATH)))) {
             String line;
             while ((line = br.readLine()) != null) {
                 content.append(line);
@@ -57,6 +57,7 @@ public class SlotMachineGUI {
             userMoneyLabel.setText("Money: " + user.getMoney());
         }
     }
+
     public static void addClickEffect(JLabel label) {
         label.addMouseListener(new MouseAdapter() {
             @Override
@@ -70,6 +71,7 @@ public class SlotMachineGUI {
             }
         });
     }
+
     public static void createAndShowGUI(User mainUser, Collection<Column> columns) {
         // Load symbols from the symbols.json file
         JSONArray symbols = readSymbolsJSON();
@@ -80,10 +82,9 @@ public class SlotMachineGUI {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1000, 750);
 
-
         // Adding the main panel with a background image
         JPanel mainPanel = new JPanel() {
-            ImageIcon imageIcon = new ImageIcon(SlotMachineGUI.class.getResource("/images/slotMachine.png"));
+            ImageIcon imageIcon = new ImageIcon(SlotMachineGUI.class.getResource(SLOT_MACHINE_IMAGE_PATH));
             Image image = imageIcon.getImage();
 
             @Override
@@ -97,7 +98,6 @@ public class SlotMachineGUI {
 
         createLabelToDisplayUserMoney(mainUser, mainPanel);
 
-
         // Create a 2D array of JLabel to store the images
         JLabel[][] imageLabels = new JLabel[5][3];
         GridBagConstraints constraints = new GridBagConstraints();
@@ -106,11 +106,11 @@ public class SlotMachineGUI {
 
         createAllButtonWithImages(mainUser, mainPanel, constraints);
 
-
         // Displaying the window
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
+
     public static void createAllSymbol(JPanel mainPanel , GridBagConstraints constraints, JLabel[][] imageLabels , ImageIcon[] images, Collection<Column> columns) {
         Random random = new Random();
 
@@ -156,6 +156,7 @@ public class SlotMachineGUI {
             }
         }
     }
+
     public static void createAllButtonWithImages(User mainUser, JPanel mainPanel, GridBagConstraints constraints) {
         // Create buttons with images
         JPanel buttonPanel = new JPanel(new GridBagLayout());
@@ -164,7 +165,7 @@ public class SlotMachineGUI {
         buttonPanel.setOpaque(false);
 
         // Spin button
-        ImageIcon spinIcon = new ImageIcon(SlotMachineGUI.class.getResource("/images/spin.png"));
+        ImageIcon spinIcon = new ImageIcon(SlotMachineGUI.class.getResource(SPIN_IMAGE_PATH));
         JLabel spinLabel = new JLabel(spinIcon);
         constraints.gridx = 2;
         constraints.gridy = 5;
@@ -182,16 +183,15 @@ public class SlotMachineGUI {
         });
 
         // Less bet button
-        ImageIcon lessIcon = new ImageIcon(SlotMachineGUI.class.getResource("/images/less.png"));
-        JLabel autoSpinLabel = new JLabel(lessIcon);
+        ImageIcon lessIcon = new ImageIcon(SlotMachineGUI.class.getResource(LESS_IMAGE_PATH));
+        JLabel lessBetLabel = new JLabel(lessIcon);
         constraints.gridx = 3;
         constraints.gridy = 5;
         constraints.anchor = GridBagConstraints.PAGE_END;
         constraints.insets = new Insets(0, 55, 51, 0);
-        mainPanel.add(autoSpinLabel, constraints);
-        addClickEffect(autoSpinLabel);
-
-        autoSpinLabel.addMouseListener(new MouseAdapter() {
+        mainPanel.add(lessBetLabel, constraints);
+        addClickEffect(lessBetLabel);
+        lessBetLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 mainUser.betLessMoney();
@@ -199,18 +199,17 @@ public class SlotMachineGUI {
                 userBetLabel.setText("" + mainUser.getMoneyBet());
             }
         });
-
         // More bet button
-        ImageIcon moreIcon = new ImageIcon(SlotMachineGUI.class.getResource("/images/more.png"));
-        JLabel maxBetLabel = new JLabel(moreIcon);
+        ImageIcon moreIcon = new ImageIcon(SlotMachineGUI.class.getResource(MORE_IMAGE_PATH));
+        JLabel moreBetLabel = new JLabel(moreIcon);
         constraints.gridx = 4;
         constraints.gridy = 5;
         constraints.anchor = GridBagConstraints.PAGE_END;
         constraints.insets = new Insets(0, 25, 51, 0);
-        mainPanel.add(maxBetLabel, constraints);
-        addClickEffect(maxBetLabel);
+        mainPanel.add(moreBetLabel, constraints);
+        addClickEffect(moreBetLabel);
 
-        maxBetLabel.addMouseListener(new MouseAdapter() {
+        moreBetLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 mainUser.betMoreMoney();
@@ -276,8 +275,7 @@ public class SlotMachineGUI {
         userTotalBetPanelConstraints.gridx = 1;
         userTotalBetPanelConstraints.gridy = 5;
         userTotalBetPanelConstraints.anchor = GridBagConstraints.NORTHWEST;
-        userTotalBetPanelConstraints.insets = new Insets(48, 51, 0, 0);
+        userTotalBetPanelConstraints.insets = new Insets(48, 51,0, 0);
         mainPanel.add(userTotalBetPanel, userTotalBetPanelConstraints);
     }
 }
-
