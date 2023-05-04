@@ -29,7 +29,7 @@ public class SlotMachineGUI {
     private static final String MORE_IMAGE_PATH = "/images/more.png";
     public static JLabel userMoneyLabel;
     public static JLabel userBetLabel;
-    public static JLabel userTotalBetLabel;
+    public static JLabel userFreeAttemptLabel;
 
     public static JSONArray readSymbolsJSON() {
         StringBuilder content = new StringBuilder();
@@ -313,7 +313,7 @@ public class SlotMachineGUI {
                     mainUser.totalBetMonney(mainUser.getMoneyBet());
                     mainUser.setMoneyBet(0);
                     userBetLabel.setText("" + mainUser.getMoneyBet());
-                    userTotalBetLabel.setText("" + mainUser.getTotalBet());
+                    userFreeAttemptLabel.setText("" + mainUser.getTotalBet());
                     userMoneyLabel.setText("" + mainUser.getMoney());
                 } else if (mainUser.getMoneyBet() == 0){
                     userBetLabel.setText("inf to 0");
@@ -410,21 +410,21 @@ public class SlotMachineGUI {
         userBetPanelConstraints.insets = new Insets(47, 43, 0, 0);
         mainPanel.add(userBetPanel, userBetPanelConstraints);
 
-        JPanel userTotalBetPanel = new JPanel();
-        userTotalBetPanel.setOpaque(false);
+        JPanel userFreeAttemptPanel = new JPanel();
+        userFreeAttemptPanel.setOpaque(false);
 
         //Add the JLabel to display the user's free attempt
-        userTotalBetLabel = new JLabel();
-        userTotalBetLabel.setFont(new Font("Impact", Font.ROMAN_BASELINE, 18));
-        userTotalBetLabel.setForeground(Color.WHITE);
-        userTotalBetLabel.setText("" + mainUser.getTotalBet());
+        userFreeAttemptLabel = new JLabel();
+        userFreeAttemptLabel.setFont(new Font("Impact", Font.ROMAN_BASELINE, 18));
+        userFreeAttemptLabel.setForeground(Color.WHITE);
+        userFreeAttemptLabel.setText("" + mainUser.getTotalBet());
 
-        userTotalBetPanel.add(userTotalBetLabel);
-        GridBagConstraints userTotalBetPanelConstraints = new GridBagConstraints();
-        userTotalBetPanelConstraints.gridx = 1;
-        userTotalBetPanelConstraints.gridy = 5;
-        userTotalBetPanelConstraints.anchor = GridBagConstraints.NORTHWEST;
-        userTotalBetPanelConstraints.insets = new Insets(47, 70,0, 0);
-        mainPanel.add(userTotalBetPanel, userTotalBetPanelConstraints);
+        userFreeAttemptPanel.add(userFreeAttemptLabel);
+        GridBagConstraints userFreeAttemptPanelConstraints = new GridBagConstraints();
+        userFreeAttemptPanelConstraints.gridx = 1;
+        userFreeAttemptPanelConstraints.gridy = 5;
+        userFreeAttemptPanelConstraints.anchor = GridBagConstraints.NORTHWEST;
+        userFreeAttemptPanelConstraints.insets = new Insets(47, 70,0, 0);
+        mainPanel.add(userFreeAttemptPanel, userFreeAttemptPanelConstraints);
     }
 }
