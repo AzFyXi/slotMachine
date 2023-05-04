@@ -35,6 +35,7 @@ public class SlotMachineGUI {
     public static JLabel userMoneyLabel;
     public static JLabel userBetLabel;
     public static JLabel userFreeAttemptLabel;
+    public  static JFrame mainFrame;
 
     public static JSONArray readSymbolsJSON() {
         StringBuilder content = new StringBuilder();
@@ -49,6 +50,14 @@ public class SlotMachineGUI {
 
         JSONObject jsonObject = new JSONObject(content.toString());
         return jsonObject.getJSONArray("symbols");
+    }
+
+    public static JFrame getMainFrame() {
+        return mainFrame;
+    }
+
+    public static void setMainFrame(JFrame mainFrame) {
+        SlotMachineGUI.mainFrame = mainFrame;
     }
 
     public static ImageIcon[] loadImages(int width, int height, JSONArray symbols) {
@@ -88,7 +97,7 @@ public class SlotMachineGUI {
         JFrame frame = new JFrame("Slot Machine");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1000, 750);
-
+        setMainFrame(frame);
         // Adding the main panel with a background image
         JPanel mainPanel = new JPanel() {
             ImageIcon imageIcon = new ImageIcon(SlotMachineGUI.class.getResource(SLOT_MACHINE_IMAGE_PATH));
@@ -103,8 +112,8 @@ public class SlotMachineGUI {
         mainPanel.setLayout(new GridBagLayout());
         frame.add(mainPanel);
 
-
-        showFreeAttemptMenu(mainUser, frame);
+        //if(slotMachine.getFinalSymbol().getId() == 2)
+        //    showFreeAttemptMenu(mainUser, frame);
 
         createLabelToDisplayUserMoney(mainUser, mainPanel);
 
@@ -286,6 +295,7 @@ public class SlotMachineGUI {
         // Ajoutez les ActionListener pour gérer les événements de clic
         oneButton.addActionListener(e -> {
             mainUser.setFreeAttempts(2, 15);
+            System.out.println(mainUser.getCurrentRowRemaining() + "" + mainUser.getCurrentMultimultiplier());
             panel.setVisible(false); // Cachez le menu FreeAttempt
         });
 
@@ -395,6 +405,7 @@ public class SlotMachineGUI {
                     mainUser.setMoneyBet(0);
                     userBetLabel.setText("" + mainUser.getMoneyBet());
                     userMoneyLabel.setText("" + mainUser.getMoney());
+                    userFreeAttemptLabel.setText("" + mainUser.getCurrentRowRemaining());
 
                 } else if (mainUser.getMoneyBet() == 0) {
                     userBetLabel.setText("inf to 0");

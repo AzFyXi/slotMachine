@@ -13,10 +13,12 @@ import java.util.stream.Collectors;
 public class SlotMachine {
     private Collection<Column> columns;
     private static int numberColumns;
+    private static Symbol finalSymbol;
 
     public SlotMachine(Collection<Column> columns, int numberColumns) {
         this.columns = columns;
         this.numberColumns = numberColumns;
+        this.finalSymbol = new Symbol(0);
     }
 
     public Collection<Column> getColumns() {
@@ -35,6 +37,13 @@ public class SlotMachine {
         this.numberColumns = numberColumns;
     }
 
+    public static Symbol getFinalSymbol() {
+        return finalSymbol;
+    }
+    public static void setFinalSymbol(Symbol finalSymbol) {
+        SlotMachine.finalSymbol = finalSymbol;
+    }
+
     public void startMachine(User mainUser, Collection<Column> columns) { //function to start the SlotMachine
         SlotMachineGUI gui = new SlotMachineGUI();
         Iterator<Column> iteratorColumns = columns.iterator();
@@ -47,6 +56,7 @@ public class SlotMachine {
             int numberWinningColumn = 0;
 
             if(finalSymbol != null) {
+                this.finalSymbol = finalSymbol;
                 isWin = true;
                 columnsWithWinningSymbol = new ArrayList<>(); //Create an ArrayList with to store the winning columns
 
@@ -69,17 +79,23 @@ public class SlotMachine {
                     }
                 }
 
+
+
+                //System.out.println(mainUser.getCurrentRowRemaining() + "" + mainUser.getCurrentMultimultiplier());
                 //Search if the winning symbol is a special symbol
                 if(finalSymbol.getId() >= 4) { //Not special symbol
                     calculatedMoney(mainUser, finalSymbol.getId(), numberWinningColumn);
-                } else  if (finalSymbol.getId() == 2) { //Symbol Free
-                    findFreeSymbol(mainUser);
+                    gui.showWinImage(mainUser);
+                } else if (finalSymbol.getId() == 2) { //Symbol Free
+                    System.out.println("2 FRREE");
+                    gui.showFreeAttemptMenu(mainUser, SlotMachineGUI.getMainFrame());
+                } else if (finalSymbol.getId() == 1) { //Symbol Free
+                    System.out.println("1 BONUS");
+                    return;
                 }
+
                 //Replace winning Symbol
                 replaceSymbol(numberWinningColumn, finalSymbol, columns);
-
-                gui.showWinImage(mainUser);
-
             } else {
                 if(isWin == false) {
                     gui.showLoseImage();
