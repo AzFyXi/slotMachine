@@ -36,6 +36,8 @@ public class SlotMachineGUI {
     public static JLabel userBetLabel;
     public static JLabel userFreeAttemptLabel;
     public  static JFrame mainFrame;
+    public  static Collection<Column> columns;
+    public  static Collection<Symbol> symbolsJSON;
 
     public static JSONArray readSymbolsJSON() {
         StringBuilder content = new StringBuilder();
@@ -50,6 +52,22 @@ public class SlotMachineGUI {
 
         JSONObject jsonObject = new JSONObject(content.toString());
         return jsonObject.getJSONArray("symbols");
+    }
+
+    public static Collection<Column> getColumns() {
+        return columns;
+    }
+
+    public static void setColumns(Collection<Column> columns) {
+        SlotMachineGUI.columns = columns;
+    }
+
+    public static Collection<Symbol> getSymbolsJSON() {
+        return symbolsJSON;
+    }
+
+    public static void setSymbolsJSON(Collection<Symbol> symbolsJSON) {
+        SlotMachineGUI.symbolsJSON = symbolsJSON;
     }
 
     public static JFrame getMainFrame() {
@@ -92,6 +110,9 @@ public class SlotMachineGUI {
         JSONArray symbols = readSymbolsJSON();
         ImageIcon[] images = loadImages(90, 90, symbols);
         SlotMachine slotMachine = new SlotMachine(columns, 5);
+        setColumns(columns);
+        setSymbolsJSON(symbolsJSON);
+
 
         // Creating the main window
         JFrame frame = new JFrame("Slot Machine");
@@ -113,7 +134,7 @@ public class SlotMachineGUI {
         frame.add(mainPanel);
 
         //if(slotMachine.getFinalSymbol().getId() == 2)
-        //    showFreeAttemptMenu(mainUser, frame);
+        //showFreeAttemptMenu(mainUser, frame);
 
         createLabelToDisplayUserMoney(mainUser, mainPanel);
 
@@ -260,17 +281,19 @@ public class SlotMachineGUI {
                 g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
             }
         };
+
+
         freeAttemptPanel.setLayout(new GridBagLayout());
 
         // Ajoutez les boutons et configurez les événements de clic
-        createFreeAttemptButtons(mainUser, freeAttemptPanel);
+        createFreeAttemptButtons(mainUser, freeAttemptPanel,frame);
 
         // Affichez le menu FreeAttempt
         frame.setContentPane(freeAttemptPanel);
         frame.revalidate();
     }
 
-    public static void createFreeAttemptButtons(User mainUser, JPanel panel) {
+    public static void createFreeAttemptButtons(User mainUser, JPanel panel, JFrame frame) {
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.insets = new Insets(10, 10, 10, 10);
 
@@ -296,17 +319,24 @@ public class SlotMachineGUI {
         oneButton.addActionListener(e -> {
             mainUser.setFreeAttempts(2, 15);
             System.out.println(mainUser.getCurrentRowRemaining() + "" + mainUser.getCurrentMultimultiplier());
-            panel.setVisible(false); // Cachez le menu FreeAttempt
+            //panel.remove(0);
+            createAndShowGUI(mainUser, columns, symbolsJSON);
+
         });
 
         twoButton.addActionListener(e -> {
             mainUser.setFreeAttempts(3, 10);
             panel.setVisible(false); // Cachez le menu FreeAttempt
+            //panel.remove(1);
+            createAndShowGUI(mainUser,columns, symbolsJSON);
         });
 
         threeButton.addActionListener(e -> {
             mainUser.setFreeAttempts(6, 5);
             panel.setVisible(false); // Cachez le menu FreeAttempt
+            //panel.remove(2);
+            createAndShowGUI(mainUser,columns, symbolsJSON);
+
         });
     }
 

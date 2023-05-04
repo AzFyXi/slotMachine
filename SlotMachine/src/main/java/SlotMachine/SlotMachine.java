@@ -88,6 +88,7 @@ public class SlotMachine {
                     gui.showWinImage(mainUser);
                 } else if (finalSymbol.getId() == 2) { //Symbol Free
                     System.out.println("2 FRREE");
+
                     gui.showFreeAttemptMenu(mainUser, SlotMachineGUI.getMainFrame());
                 } else if (finalSymbol.getId() == 1) { //Symbol Free
                     System.out.println("1 BONUS");
