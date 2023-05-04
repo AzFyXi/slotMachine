@@ -23,8 +23,11 @@ public class SlotMachineGUI {
     private static final int ANIMATION_DURATION = 1000; // 1000 ms (1 second)
     private static final String SLOT_MACHINE_IMAGE_PATH = "/images/slotMachine.png";
     private static final String SPIN_IMAGE_PATH = "/images/spin.png";
+    private static final String WIN_IMAGE_PATH = "/images/win.png";
+    private static final String LOSE_IMAGE_PATH = "/images/lose.png";
     private static final String LESS_IMAGE_PATH = "/images/less.png";
     private static final String MORE_IMAGE_PATH = "/images/more.png";
+    private JLabel resultImageLabel;
 
     public static JLabel userMoneyLabel;
     public static JLabel userBetLabel;
@@ -198,6 +201,35 @@ public class SlotMachineGUI {
         timer.start();
 
     }
+
+    public void showWinImage() {
+        ImageIcon winIcon = new ImageIcon(SlotMachineGUI.class.getResource(WIN_IMAGE_PATH));
+        JOptionPane.showMessageDialog(null, "", "You Win!", JOptionPane.INFORMATION_MESSAGE, winIcon);
+    }
+
+    public void showLoseImage() {
+        ImageIcon loseIcon = new ImageIcon(SlotMachineGUI.class.getResource(LOSE_IMAGE_PATH));
+        JOptionPane.showMessageDialog(null, "", "You Lose!", JOptionPane.INFORMATION_MESSAGE, loseIcon);
+    }
+
+    private void showImage(String imagePath, String title) {
+        ImageIcon imageIcon = new ImageIcon(SlotMachineGUI.class.getResource(imagePath));
+        final JOptionPane optionPane = new JOptionPane("", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, imageIcon);
+        final JDialog dialog = optionPane.createDialog(null, title);
+
+        Timer timer = new Timer(3000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dialog.dispose();
+            }
+        });
+        timer.setRepeats(false);
+        timer.start();
+
+        dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+        dialog.setVisible(true);
+    }
+
     public static void createAllSymbol(JPanel mainPanel , GridBagConstraints constraints, JLabel[][] imageLabels , ImageIcon[] images) {
         Random random = new Random();
 

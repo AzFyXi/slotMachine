@@ -36,6 +36,7 @@ public class SlotMachine {
     }
 
     public void startMachine(User mainUser, Collection<Column> columns) { //function to start the SlotMachine
+        SlotMachineGUI gui = new SlotMachineGUI();
         Iterator<Column> iteratorColumns = columns.iterator();
         List<Column> columnList = new ArrayList<>(columns);
         Symbol finalSymbol = null;
@@ -76,10 +77,9 @@ public class SlotMachine {
                 }
                 //Replace winning Symbol
                 replaceSymbol(numberWinningColumn, finalSymbol, columns);
-                System.out.println("Le joeur a gagner");
-
+                gui.showWinImage();
             } else {
-                System.out.println("Le joeur a perdu");
+                gui.showLoseImage();
             }
         //} while (finalSymbol != null); //Repeat as long as there is a winning symbol.
     }
