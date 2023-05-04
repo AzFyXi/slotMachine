@@ -27,8 +27,6 @@ public class SlotMachineGUI {
     private static final String LOSE_IMAGE_PATH = "/images/lose.png";
     private static final String LESS_IMAGE_PATH = "/images/less.png";
     private static final String MORE_IMAGE_PATH = "/images/more.png";
-    private JLabel resultImageLabel;
-
     public static JLabel userMoneyLabel;
     public static JLabel userBetLabel;
     public static JLabel userTotalBetLabel;
@@ -122,13 +120,13 @@ public class SlotMachineGUI {
     static void generateNewSymbol(JPanel mainPanel, GridBagConstraints constraints, Collection<Column> columns, JLabel[][] imageLabels , ImageIcon[] images, SlotMachine slotMachine, Collection<Symbol> symbolsJSON) {
         ImageIcon transitionGif = new ImageIcon(SlotMachineGUI.class.getResource(TRANSITION_GIF_PATH));
 
-        // Affichez le GIF pour chaque icône
+        // View the GIF for each icon
         for (int col = 0; col < 5; col++) {
             for (int row = 0; row < 3; row++) {
                 imageLabels[col][row].setIcon(getNewTransitionGifInstance());
             }
         }
-        // Créez un Timer pour gérer l'animation sans bloquer l'interface utilisateur
+        // Create a Timer to manage the animation without blocking the UI
         Timer timer = new Timer(ANIMATION_DURATION, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -157,7 +155,7 @@ public class SlotMachineGUI {
             }
         });
 
-        // Démarrez le Timer
+        // Start the Timer
         timer.setRepeats(false);
         timer.start();
 
@@ -165,13 +163,13 @@ public class SlotMachineGUI {
     static void displayNewSymbol(JPanel mainPanel, GridBagConstraints constraints, Collection<Column> columns, JLabel[][] imageLabels , ImageIcon[] images) {
         ImageIcon transitionGif = new ImageIcon(SlotMachineGUI.class.getResource(TRANSITION_GIF_PATH));
 
-        // Affichez le GIF pour chaque icône
+        // View the GIF for each icon
         for (int col = 0; col < 5; col++) {
             for (int row = 0; row < 3; row++) {
                 imageLabels[col][row].setIcon(getNewTransitionGifInstance());
             }
         }
-        // Créez un Timer pour gérer l'animation sans bloquer l'interface utilisateur
+        // Create a Timer to manage the animation without blocking the UI
         Timer timer = new Timer(ANIMATION_DURATION, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -196,7 +194,6 @@ public class SlotMachineGUI {
             }
         });
 
-        // Démarrez le Timer
         timer.setRepeats(false);
         timer.start();
 
