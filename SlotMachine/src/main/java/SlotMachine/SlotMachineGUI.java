@@ -28,6 +28,10 @@ public class SlotMachineGUI {
     private static final String LOSE_IMAGE_PATH = "/images/lose.png";
     private static final String LESS_IMAGE_PATH = "/images/less.png";
     private static final String MORE_IMAGE_PATH = "/images/more.png";
+    private static final String FREEBACKGROUND_IMAGE_PATH = "/images/freeBackground.png";
+    private static final String ONE_IMAGE_PATH = "/images/15fois2Btn.png";
+    private static final String TWO_IMAGE_PATH = "/images/10fois3Btn.png";
+    private static final String THREE_IMAGE_PATH = "/images/5fois6Btn.png";
     public static JLabel userMoneyLabel;
     public static JLabel userBetLabel;
     public static JLabel userFreeAttemptLabel;
@@ -222,6 +226,67 @@ public class SlotMachineGUI {
         });
         timer.setRepeats(false);
         timer.start();
+    }
+
+    public void showFreeAttemptMenu(User mainUser, JFrame frame) {
+        // Créez un JPanel pour contenir le menu FreeAttempt
+        JPanel freeAttemptPanel = new JPanel() {
+            ImageIcon imageIcon = new ImageIcon(SlotMachineGUI.class.getResource(FREEBACKGROUND_IMAGE_PATH));
+            Image image = imageIcon.getImage();
+
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+            }
+        };
+        freeAttemptPanel.setLayout(new GridBagLayout());
+
+        // Ajoutez les boutons et configurez les événements de clic
+        createFreeAttemptButtons(mainUser, freeAttemptPanel);
+
+        // Affichez le menu FreeAttempt
+        frame.setContentPane(freeAttemptPanel);
+        frame.revalidate();
+    }
+
+    public void createFreeAttemptButtons(User mainUser, JPanel panel) {
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.insets = new Insets(10, 10, 10, 10);
+
+        ImageIcon oneIcon = new ImageIcon(SlotMachineGUI.class.getResource(ONE_IMAGE_PATH));
+        JButton oneButton = new JButton(oneIcon);
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        panel.add(oneButton, constraints);
+
+        ImageIcon twoIcon = new ImageIcon(SlotMachineGUI.class.getResource(TWO_IMAGE_PATH));
+        JButton twoButton = new JButton(twoIcon);
+        constraints.gridx = 1;
+        constraints.gridy = 0;
+        panel.add(twoButton, constraints);
+
+        ImageIcon threeIcon = new ImageIcon(SlotMachineGUI.class.getResource(THREE_IMAGE_PATH));
+        JButton threeButton = new JButton(threeIcon);
+        constraints.gridx = 2;
+        constraints.gridy = 0;
+        panel.add(threeButton, constraints);
+
+        // Ajoutez les ActionListener pour gérer les événements de clic
+        oneButton.addActionListener(e -> {
+            mainUser.setFreeAttempts(2, 15);
+            panel.setVisible(false); // Cachez le menu FreeAttempt
+        });
+
+        twoButton.addActionListener(e -> {
+            mainUser.setFreeAttempts(3, 10);
+            panel.setVisible(false); // Cachez le menu FreeAttempt
+        });
+
+        threeButton.addActionListener(e -> {
+            mainUser.setFreeAttempts(6, 5);
+            panel.setVisible(false); // Cachez le menu FreeAttempt
+        });
     }
 
     public static void createAllSymbol(JPanel mainPanel , GridBagConstraints constraints, JLabel[][] imageLabels , ImageIcon[] images) {
