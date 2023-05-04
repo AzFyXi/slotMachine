@@ -41,11 +41,13 @@ public class SlotMachine {
         List<Column> columnList = new ArrayList<>(columns);
         Symbol finalSymbol = null;
         Collection<Column> columnsWithWinningSymbol = null;
+        boolean isWin = false;
         do {
             finalSymbol = findWinningSymbol(columns); //Retrieving the winning symbol
             int numberWinningColumn = 0;
 
             if(finalSymbol != null) {
+                isWin = true;
                 columnsWithWinningSymbol = new ArrayList<>(); //Create an ArrayList with to store the winning columns
 
                 //Add the 3 winning columns (with findWinningSymbol we know that the first 3 columns are winning)
@@ -72,14 +74,16 @@ public class SlotMachine {
                     calculatedMoney(mainUser, finalSymbol.getId(), numberWinningColumn);
                 } else  if (finalSymbol.getId() == 2) { //Symbol Free
                     findFreeSymbol(mainUser);
-                } else if (finalSymbol.getId() == 3) { //Symbol Bonus
-
                 }
                 //Replace winning Symbol
                 replaceSymbol(numberWinningColumn, finalSymbol, columns);
-                gui.showWinImage();
+
+                gui.showWinImage(mainUser);
+
             } else {
-                gui.showLoseImage();
+                if(isWin == false) {
+                    gui.showLoseImage();
+                }
             }
         } while (finalSymbol != null); //Repeat as long as there is a winning symbol.
     }
@@ -208,7 +212,6 @@ public class SlotMachine {
                 break;
         }
         moneyWin *= multiplier;
-        if(moneyWin > 0)
             mainUser.setTotalEarn(moneyWin);
         //else mainUser.setTotalEarn(0);
         moneyWin +=mainUser.getMoney();
@@ -271,7 +274,7 @@ public class SlotMachine {
         return generatedSymbols;
     }
 
-    public static Collection<Symbol> generateSymbols(Collection<Symbol> symbols, int symbolsNumber, Column column) {
+    /*public static Collection<Symbol> generateSymbols(Collection<Symbol> symbols, int symbolsNumber, Column column) {
         List<Symbol> generatedSymbols = new ArrayList<>();
         Random random = new Random();
         int symbolsSize = symbols.size();
@@ -310,7 +313,7 @@ public class SlotMachine {
             }
         }
         return generatedSymbols;
-    }
+    }*/
     public static Collection<Symbol> getSymbolsCollection(){
         JSONObject parsedSymbols = Config.parseSymbols();
         assert parsedSymbols != null;
@@ -318,9 +321,4 @@ public class SlotMachine {
         return Config.createSymbolsCollection(parsedSymbols);
     }
 
-    public static Collection<Column> columnsGeneration(){
-        new Column(getSymbolsCollection(), numberColumns, 3, false, 3);
-
-        return null;
-    }
 }

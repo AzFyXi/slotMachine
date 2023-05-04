@@ -14,18 +14,10 @@ public class User {
     List<FreeAttempt> freeAttempts;
 
     //Constructor
-    public User(String name, int money, List<FreeAttempt> freeAttempts) {
-        this.name = name;
-        this.money = money;
-        this.freeAttempts = freeAttempts;
-        this.moneyBet = 0;
-        this.totalEarn= -1;
-    }
-
     public User(String name, int money) {
         this.name = name;
         this.money = money;
-        this.freeAttempts = null;
+        this.freeAttempts = new ArrayList<>();
         this.moneyBet= 0;
         this.totalEarn= -1;
     }
@@ -40,19 +32,15 @@ public class User {
     public List<FreeAttempt> getFreeAttempts() {
         return freeAttempts;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
     public void setMoney(int money) {
         this.money = money;
     }
-
     public void setFreeAttempts(List<FreeAttempt> freeAttempts) {
         this.freeAttempts = freeAttempts;
     }
-
     public void setFreeAttempts(int multiplier, int rowRemaining) {
         FreeAttempt newFreeAttempt = new FreeAttempt(multiplier, rowRemaining);
         freeAttempts.add(newFreeAttempt);
@@ -60,21 +48,17 @@ public class User {
     public int getMoneyBet() {
         return moneyBet;
     }
-
     public void setMoneyBet(int moneyBet) {
         this.moneyBet = moneyBet;
     }
-
     public int getTotalEarn() {
         return totalEarn;
     }
-
     public void setTotalEarn(int totalEarn) {
         this.totalEarn = totalEarn;
     }
 
     //toString
-
     @Override
     public String toString() {
         return "User{" +
@@ -89,13 +73,6 @@ public class User {
     // Methods
     public void takeMoneyBet(int moneyBet) {
         this.money = this.money - moneyBet;
-    }
-    public void haveMoney(int moneyBet) {
-        if(moneyBet>=this.money) {
-            takeMoneyBet(moneyBet);
-        } else {
-            System.out.println("User doesn't have enough money");
-        }
     }
     public void betMoreMoney() {
         if (this.moneyBet == 0) { this.moneyBet = 2000; }
@@ -131,6 +108,25 @@ public class User {
             return true;
         }
         return false;
+    }
+
+    public int getCurrentRowRemaining() {
+        Iterator<FreeAttempt> iterator = freeAttempts.iterator();
+        if(this.freeAttempts != null && iterator.hasNext()) {
+            FreeAttempt currentFreeAttempt = this.freeAttempts.iterator().next();
+            int rowRemaining = currentFreeAttempt.getRowRemaining();
+            return rowRemaining;
+        }
+        return 0;
+    }
+
+    public int getCurrentMultimultiplier() {
+        if(this.freeAttempts != null) {
+            FreeAttempt currentFreeAttempt = this.freeAttempts.iterator().next();
+            int multiplier = currentFreeAttempt.getMultiplier();
+            return multiplier;
+        }
+        return 1;
     }
 }
 

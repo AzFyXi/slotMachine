@@ -103,6 +103,9 @@ public class SlotMachineGUI {
         mainPanel.setLayout(new GridBagLayout());
         frame.add(mainPanel);
 
+
+        //showFreeAttemptMenu(mainUser, frame);
+
         createLabelToDisplayUserMoney(mainUser, mainPanel);
 
         // Create a 2D array of JLabel to store the images
@@ -124,7 +127,6 @@ public class SlotMachineGUI {
     }
     static void generateNewSymbol(JPanel mainPanel, GridBagConstraints constraints, Collection<Column> columns, JLabel[][] imageLabels , ImageIcon[] images, SlotMachine slotMachine, Collection<Symbol> symbolsJSON) {
         ImageIcon transitionGif = new ImageIcon(SlotMachineGUI.class.getResource(TRANSITION_GIF_PATH));
-
         // View the GIF for each icon
         for (int col = 0; col < 5; col++) {
             for (int row = 0; row < 3; row++) {
@@ -133,8 +135,7 @@ public class SlotMachineGUI {
         }
         // Create a Timer to manage the animation without blocking the UI
         Timer timer = new Timer(ANIMATION_DURATION, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+            @Override            public void actionPerformed(ActionEvent e) {
                 removeAllSymbols(mainPanel, imageLabels);
 
                 for (Column column : columns) {
@@ -204,12 +205,22 @@ public class SlotMachineGUI {
 
     }
 
-    public void showWinImage() {
+    public void showWinImage(User mainUser) {
         Timer timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ImageIcon winIcon = new ImageIcon(SlotMachineGUI.class.getResource(WIN_IMAGE_PATH));
-                JOptionPane.showMessageDialog(null, "", "You Win!", JOptionPane.INFORMATION_MESSAGE, winIcon);
+                JLabel winLabel = new JLabel(winIcon);
+
+                JLabel textLabel = new JLabel("Argent gagné : " + mainUser.getTotalEarn());
+                textLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+                textLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+                JPanel messagePanel = new JPanel(new BorderLayout());
+                messagePanel.add(winLabel, BorderLayout.CENTER);
+                messagePanel.add(textLabel, BorderLayout.SOUTH);
+
+                JOptionPane.showMessageDialog(null, messagePanel, "You Win!", JOptionPane.DEFAULT_OPTION, null);
             }
         });
         timer.setRepeats(false);
@@ -228,7 +239,7 @@ public class SlotMachineGUI {
         timer.start();
     }
 
-    public void showFreeAttemptMenu(User mainUser, JFrame frame) {
+    public static void showFreeAttemptMenu(User mainUser, JFrame frame) {
         // Créez un JPanel pour contenir le menu FreeAttempt
         JPanel freeAttemptPanel = new JPanel() {
             ImageIcon imageIcon = new ImageIcon(SlotMachineGUI.class.getResource(FREEBACKGROUND_IMAGE_PATH));
@@ -250,7 +261,7 @@ public class SlotMachineGUI {
         frame.revalidate();
     }
 
-    public void createFreeAttemptButtons(User mainUser, JPanel panel) {
+    public static void createFreeAttemptButtons(User mainUser, JPanel panel) {
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.insets = new Insets(10, 10, 10, 10);
 
@@ -371,10 +382,10 @@ public class SlotMachineGUI {
                     generateNewSymbol(mainPanel, constraints, columns, imageLabels , images, slotMachine, symbolsJSON);
                     slotMachine.startMachine(mainUser, columns);
                     displayNewSymbol(mainPanel, constraints, columns, imageLabels , images);
-                    mainUser.setMoney(mainUser.getMoney());
-                    mainUser.setTotalEarn(-1);
-                    userBetLabel.setText("" + mainUser.getMoneyBet());
+                    mainUser.setMoney(mainUser.getMoney() + mainUser.getCurrentMultimultiplier());
                     userMoneyLabel.setText("" + mainUser.getMoney());
+                    userFreeAttemptLabel.setText("" + mainUser.getCurrentRowRemaining());
+                    return;
                 }
                 if(mainUser.getMoneyBet() > 0 && mainUser.getMoneyBet() <= mainUser.getMoney()) {
                     generateNewSymbol(mainPanel, constraints, columns, imageLabels , images, slotMachine, symbolsJSON);
@@ -382,48 +393,23 @@ public class SlotMachineGUI {
                     displayNewSymbol(mainPanel, constraints, columns, imageLabels , images);
                     mainUser.setMoney(mainUser.getMoney() - mainUser.getMoneyBet());
                     mainUser.setMoneyBet(0);
-                    mainUser.setTotalEarn(-1);
                     userBetLabel.setText("" + mainUser.getMoneyBet());
                     userMoneyLabel.setText("" + mainUser.getMoney());
 
-                   /* if (mainUser.getTotalEarn() > 300) {
-
-                        new Timer(1000, event -> {
-                            userMoneyLabel.setText("" + mainUser.getMoney() + "(+" + mainUser.getTotalEarn() + ")");
-                        }).start();
-                    } else if( mainUser.getMoneyBet() > 0) {
-                        new Timer(1000, event -> {
-                            userMoneyLabel.setText("" + mainUser.getMoney() + "(-" + mainUser.getMoneyBet() + ")");
-                        }).start();
-
-                        new Timer(3000, event -> {
-                            userMoneyLabel.setText("" + mainUser.getMoney());
-                        }).start();
-                        //mainUser.setTotalEarn(-1);
-                    } else {
-                        userMoneyLabel.setText("" + mainUser.getMoney());
-                    }*/
-
-                    mainUser.setMoneyBet(0);
-                    mainUser.setTotalEarn(-1);
-                    userBetLabel.setText("" + mainUser.getMoneyBet());
-                    //userFreeAttemptLabel.setText("" + mainUser.getTotalBet());
-                    userMoneyLabel.setText("" + mainUser.getMoney());
-
-                } else if (mainUser.getMoneyBet() == 0){
+                } else if (mainUser.getMoneyBet() == 0) {
                     userBetLabel.setText("inf to 0");
                     new Timer(2000, event -> {
                         userBetLabel.setText("" + mainUser.getMoneyBet());
                     }).start();
 
-                } else if (mainUser.getMoneyBet() > mainUser.getMoney()){
+                } else if (mainUser.getMoneyBet() > mainUser.getMoney()) {
                     userMoneyLabel.setText("inf to bet");
                     new Timer(2000, event -> {
                         userMoneyLabel.setText("" + mainUser.getMoney());
                     }).start();
 
                 }
-                }
+            }
         });
 
         // Less bet button
@@ -478,8 +464,8 @@ public class SlotMachineGUI {
         userMoneyLabel.setFont(new Font("Impact", Font.ROMAN_BASELINE, 18));
         userMoneyLabel.setForeground(Color.WHITE);
         userMoneyLabel.setText("" + mainUser.getMoney());
-
         userMoneyPanel.add(userMoneyLabel);
+
         GridBagConstraints userMoneyPanelConstraints = new GridBagConstraints();
         userMoneyPanelConstraints.gridx = 0;
         userMoneyPanelConstraints.gridy = 5;
@@ -511,9 +497,9 @@ public class SlotMachineGUI {
         userFreeAttemptLabel = new JLabel();
         userFreeAttemptLabel.setFont(new Font("Impact", Font.ROMAN_BASELINE, 18));
         userFreeAttemptLabel.setForeground(Color.WHITE);
-        //userFreeAttemptLabel.setText("" + mainUser.getTotalBet());
-
+        userFreeAttemptLabel.setText("" + mainUser.getCurrentRowRemaining());
         userFreeAttemptPanel.add(userFreeAttemptLabel);
+
         GridBagConstraints userFreeAttemptPanelConstraints = new GridBagConstraints();
         userFreeAttemptPanelConstraints.gridx = 1;
         userFreeAttemptPanelConstraints.gridy = 5;

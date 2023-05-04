@@ -91,13 +91,10 @@ public class Column {
                 ", printNumberLine=" + printNumberLine +
                 '}';
     }
-
     //Methods
-
     public boolean isMasterColumn() {
             return numberColumn == 1 ;
     }
-
     public Symbol[] getSymbolsArray() {
         Symbol[] arraySymbols = new Symbol[symbols.size()];
         symbols.toArray(arraySymbols);
@@ -106,47 +103,4 @@ public class Column {
     public void clearSymbols() {
         this.symbols.clear();
     }
-    public Collection<Symbol> generateSymbols(Collection<Symbol> symbols, int symbolsNumber) {
-        Collection<Symbol> generatedSymbols = new ArrayList<>();
-        Random random = new Random();
-
-        for (int i = 0; i < symbolsNumber; i++) {
-            int randomNumber = random.nextInt(symbols.size());
-            Symbol randomSymbol = symbols.stream().skip(randomNumber).findFirst().orElse(null);
-            generatedSymbols.add(randomSymbol);
-        }
-
-        return generatedSymbols;
-    }
-
-    /*public void generateSymbols(Collection<Symbol> symbols, int symbolsNumber) {
-        if (symbols instanceof List) {
-            List<Symbol> symbolsList = (List<Symbol>) symbols;
-            Random random = new Random();
-
-            for (int i = 0; i < symbolsNumber; i++) {
-                int randomNumber = random.nextInt(symbolsList.size());
-                Symbol randomSymbol = symbolsList.get(randomNumber);
-                this.symbols.add(randomSymbol);
-            }
-        } else {
-            System.out.println("The collection does not support index-based access");
-        }
-    }*/
-
-
-
-    public void generateSymbols(ImageIcon[] images, int symbolsNumber) {
-        /*this.symbols.clear();
-        Random random = new Random();
-        List<Symbol> symbolsList = (List<Symbol>) symbols;
-
-        for (int i = 0; i < symbolsNumber; i++) {
-            int randomNumber = random.nextInt(images.length);
-            //ImageIcon randomImage = images[randomNumber];
-            Symbol randomSymbol = symbolsList.get(randomNumber);
-            this.symbols.add(randomSymbol);
-        }*/
-    }
-
 }
