@@ -384,7 +384,7 @@ public class SlotMachineGUI {
         userMoneyPanel.setOpaque(false);
 
         userMoneyLabel = new JLabel();
-        userMoneyLabel.setFont(new Font("Arial", Font.BOLD, 22));
+        userMoneyLabel.setFont(new Font("Impact", Font.ROMAN_BASELINE, 18));
         userMoneyLabel.setForeground(Color.WHITE);
         userMoneyLabel.setText("" + mainUser.getMoney());
 
@@ -393,7 +393,7 @@ public class SlotMachineGUI {
         userMoneyPanelConstraints.gridx = 0;
         userMoneyPanelConstraints.gridy = 5;
         userMoneyPanelConstraints.anchor = GridBagConstraints.NORTHWEST;
-        userMoneyPanelConstraints.insets = new Insets(110, 25, 0, 0);
+        userMoneyPanelConstraints.insets = new Insets(108, 80, 0, 0);
         mainPanel.add(userMoneyPanel, userMoneyPanelConstraints);
 
         // Add the JLabel to display the user's bet money
@@ -401,7 +401,7 @@ public class SlotMachineGUI {
         userBetPanel.setOpaque(false);
 
         userBetLabel = new JLabel();
-        userBetLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        userBetLabel.setFont(new Font("Impact", Font.ROMAN_BASELINE, 18));
         userBetLabel.setForeground(Color.WHITE);
         userBetLabel.setText("" + mainUser.getMoneyBet());
 
@@ -410,15 +410,15 @@ public class SlotMachineGUI {
         userBetPanelConstraints.gridx = 0;
         userBetPanelConstraints.gridy = 5;
         userBetPanelConstraints.anchor = GridBagConstraints.NORTHWEST;
-        userBetPanelConstraints.insets = new Insets(48, 43, 0, 0);
+        userBetPanelConstraints.insets = new Insets(47, 43, 0, 0);
         mainPanel.add(userBetPanel, userBetPanelConstraints);
 
         JPanel userTotalBetPanel = new JPanel();
         userTotalBetPanel.setOpaque(false);
 
-        //Add the JLabel to display the user's money total bet
+        //Add the JLabel to display the user's free attempt
         userTotalBetLabel = new JLabel();
-        userTotalBetLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        userTotalBetLabel.setFont(new Font("Impact", Font.ROMAN_BASELINE, 18));
         userTotalBetLabel.setForeground(Color.WHITE);
         userTotalBetLabel.setText("" + mainUser.getTotalBet());
 
@@ -427,7 +427,7 @@ public class SlotMachineGUI {
         userTotalBetPanelConstraints.gridx = 1;
         userTotalBetPanelConstraints.gridy = 5;
         userTotalBetPanelConstraints.anchor = GridBagConstraints.NORTHWEST;
-        userTotalBetPanelConstraints.insets = new Insets(48, 51,0, 0);
+        userTotalBetPanelConstraints.insets = new Insets(47, 70,0, 0);
         mainPanel.add(userTotalBetPanel, userTotalBetPanelConstraints);
     }
 }
