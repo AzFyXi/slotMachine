@@ -5,6 +5,7 @@ import User.User;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Random;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -301,20 +302,48 @@ public class SlotMachineGUI {
         spinLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                //mainUser.useFreeAttempts(); //Checking if the user has free attempts
+                if(mainUser.useFreeAttempt()) {
+                    generateNewSymbol(mainPanel, constraints, columns, imageLabels , images, slotMachine, symbolsJSON);
+                    slotMachine.startMachine(mainUser, columns);
+                    displayNewSymbol(mainPanel, constraints, columns, imageLabels , images);
+                    mainUser.setMoney(mainUser.getMoney());
+                    mainUser.setTotalEarn(-1);
+                    userBetLabel.setText("" + mainUser.getMoneyBet());
+                    userMoneyLabel.setText("" + mainUser.getMoney());
+                }
                 if(mainUser.getMoneyBet() > 0 && mainUser.getMoneyBet() <= mainUser.getMoney()) {
                     generateNewSymbol(mainPanel, constraints, columns, imageLabels , images, slotMachine, symbolsJSON);
-                    //while(slotMachine.startMachine(mainUser, columns)) {
                     slotMachine.startMachine(mainUser, columns);
-
-                    //displayNewSymbol(mainPanel, constraints, columns, imageLabels , images);
-
+                    displayNewSymbol(mainPanel, constraints, columns, imageLabels , images);
                     mainUser.setMoney(mainUser.getMoney() - mainUser.getMoneyBet());
-                    mainUser.totalBetMonney(mainUser.getMoneyBet());
                     mainUser.setMoneyBet(0);
+                    mainUser.setTotalEarn(-1);
                     userBetLabel.setText("" + mainUser.getMoneyBet());
-                    userTotalBetLabel.setText("" + mainUser.getTotalBet());
                     userMoneyLabel.setText("" + mainUser.getMoney());
+
+                   /* if (mainUser.getTotalEarn() > 300) {
+
+                        new Timer(1000, event -> {
+                            userMoneyLabel.setText("" + mainUser.getMoney() + "(+" + mainUser.getTotalEarn() + ")");
+                        }).start();
+                    } else if( mainUser.getMoneyBet() > 0) {
+                        new Timer(1000, event -> {
+                            userMoneyLabel.setText("" + mainUser.getMoney() + "(-" + mainUser.getMoneyBet() + ")");
+                        }).start();
+
+                        new Timer(3000, event -> {
+                            userMoneyLabel.setText("" + mainUser.getMoney());
+                        }).start();
+                        //mainUser.setTotalEarn(-1);
+                    } else {
+                        userMoneyLabel.setText("" + mainUser.getMoney());
+                    }*/
+
+                    mainUser.setMoneyBet(0);
+                    mainUser.setTotalEarn(-1);
+                    userBetLabel.setText("" + mainUser.getMoneyBet());
+                    userMoneyLabel.setText("" + mainUser.getMoney());
+
                 } else if (mainUser.getMoneyBet() == 0){
                     userBetLabel.setText("inf to 0");
                     new Timer(2000, event -> {
@@ -328,7 +357,6 @@ public class SlotMachineGUI {
                     }).start();
 
                 }
-
                 }
         });
 
@@ -417,7 +445,7 @@ public class SlotMachineGUI {
         userTotalBetLabel = new JLabel();
         userTotalBetLabel.setFont(new Font("Impact", Font.ROMAN_BASELINE, 18));
         userTotalBetLabel.setForeground(Color.WHITE);
-        userTotalBetLabel.setText("" + mainUser.getTotalBet());
+        //userTotalBetLabel.setText("" + mainUser.getTotalBet());
 
         userTotalBetPanel.add(userTotalBetLabel);
         GridBagConstraints userTotalBetPanelConstraints = new GridBagConstraints();

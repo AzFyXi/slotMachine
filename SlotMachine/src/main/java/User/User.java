@@ -10,16 +10,16 @@ public class User {
     private String name;
     private int money;
     private int moneyBet;
-    private int totalBet;
-    Collection<FreeAttempt> freeAttempts;
+    private int totalEarn;
+    List<FreeAttempt> freeAttempts;
 
     //Constructor
-    public User(String name, int money, Collection<FreeAttempt> freeAttempts) {
+    public User(String name, int money, List<FreeAttempt> freeAttempts) {
         this.name = name;
         this.money = money;
         this.freeAttempts = freeAttempts;
         this.moneyBet = 0;
-        this.totalBet = 0;
+        this.totalEarn= -1;
     }
 
     public User(String name, int money) {
@@ -27,7 +27,7 @@ public class User {
         this.money = money;
         this.freeAttempts = null;
         this.moneyBet= 0;
-        this.totalBet = 0;
+        this.totalEarn= -1;
     }
 
     //Getters and Setters
@@ -37,7 +37,7 @@ public class User {
     public int getMoney() {
         return money;
     }
-    public Collection<FreeAttempt> getFreeAttempts() {
+    public List<FreeAttempt> getFreeAttempts() {
         return freeAttempts;
     }
 
@@ -49,7 +49,7 @@ public class User {
         this.money = money;
     }
 
-    public void setFreeAttempts(Collection<FreeAttempt> freeAttempts) {
+    public void setFreeAttempts(List<FreeAttempt> freeAttempts) {
         this.freeAttempts = freeAttempts;
     }
 
@@ -65,20 +65,23 @@ public class User {
         this.moneyBet = moneyBet;
     }
 
-    public int getTotalBet() {
-        return totalBet;
+    public int getTotalEarn() {
+        return totalEarn;
     }
 
-    public void setTotalBet(int totalBet) {
-        this.totalBet = totalBet;
+    public void setTotalEarn(int totalEarn) {
+        this.totalEarn = totalEarn;
     }
 
     //toString
+
     @Override
     public String toString() {
         return "User{" +
                 "name='" + name + '\'' +
                 ", money=" + money +
+                ", moneyBet=" + moneyBet +
+                ", totalEarn=" + totalEarn +
                 ", freeAttempts=" + freeAttempts +
                 '}';
     }
@@ -110,34 +113,24 @@ public class User {
         else if (this.moneyBet == 0) { return; }
     }
 
-    public void totalBetMonney( int totalBet) {
-        this.totalBet += totalBet;
-    }
     public boolean haveFreeAttempts() {
-        return freeAttempts!= null;
+        return freeAttempts != null && !freeAttempts.isEmpty();
     }
-    public boolean useFreeAttempts() { // Uses the user's free attempts
+    public boolean useFreeAttempt() {
         if (haveFreeAttempts()) {
-            FreeAttempt currentFreeAttempt = null;
-            for (FreeAttempt freeAttempt : freeAttempts) {
-                currentFreeAttempt = freeAttempt;
-                break; // We only want the first element
+            FreeAttempt currentFreeAttempt = freeAttempts.iterator().next();
+            currentFreeAttempt.useRow();
+            if (currentFreeAttempt.getRowRemaining() == 0) {
+                this.freeAttempts.remove(currentFreeAttempt);
+            } else if(currentFreeAttempt.getRowRemaining() > 0) {
+                currentFreeAttempt.setRowRemaining(currentFreeAttempt.getRowRemaining() - 1);
+                this.freeAttempts.remove(currentFreeAttempt);
+                ((List<FreeAttempt>) this.freeAttempts).set(0, currentFreeAttempt);
             }
 
-            if (currentFreeAttempt != null) {
-                currentFreeAttempt.useRow();
-
-                if (currentFreeAttempt.getRowRemaining() == 0) {
-                    Collection<FreeAttempt> updatedFreeAttempts = new ArrayList<>(freeAttempts);
-                    updatedFreeAttempts.remove(currentFreeAttempt);
-                    freeAttempts = updatedFreeAttempts;
-                }
-            }
             return true;
-        } else {
-            this.money -= this.moneyBet; //Remove the money bet
         }
         return false;
     }
-
 }
+

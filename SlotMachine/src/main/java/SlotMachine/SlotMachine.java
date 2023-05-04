@@ -41,7 +41,7 @@ public class SlotMachine {
         List<Column> columnList = new ArrayList<>(columns);
         Symbol finalSymbol = null;
         Collection<Column> columnsWithWinningSymbol = null;
-        //do {
+        do {
             finalSymbol = findWinningSymbol(columns); //Retrieving the winning symbol
             int numberWinningColumn = 0;
 
@@ -71,7 +71,7 @@ public class SlotMachine {
                 if(finalSymbol.getId() >= 4) { //Not special symbol
                     calculatedMoney(mainUser, finalSymbol.getId(), numberWinningColumn);
                 } else  if (finalSymbol.getId() == 2) { //Symbol Free
-                    //findFreeSymbol(mainUser);
+                    findFreeSymbol(mainUser);
                 } else if (finalSymbol.getId() == 3) { //Symbol Bonus
 
                 }
@@ -81,7 +81,7 @@ public class SlotMachine {
             } else {
                 gui.showLoseImage();
             }
-        //} while (finalSymbol != null); //Repeat as long as there is a winning symbol.
+        } while (finalSymbol != null); //Repeat as long as there is a winning symbol.
     }
 
 
@@ -116,8 +116,6 @@ public class SlotMachine {
         }
         return null;
     }
-
-
     public void replaceSymbol(int numberWinningColumn, Symbol foundSymbol, Collection<Column> columns) {
         for(Column column : columns) {
             if(column.getNumberColumn() <= numberWinningColumn) {
@@ -127,7 +125,7 @@ public class SlotMachine {
                 int startPositionFirstElementDisplayed = linesNumber - column.getPrintNumberLine();
 
                 for (int i = startPositionFirstElementDisplayed; i < linesNumber; i++) {
-                    if (symbolsList.get(i).equals(foundSymbol) || symbolsList.get(i).getId() == 1 ) {
+                    if (symbolsList.get(i).equals(foundSymbol) || symbolsList.get(i).getId() == 1) {
                         foundPosition = i;
                         break;
                     }
@@ -136,9 +134,9 @@ public class SlotMachine {
                     for (int i = foundPosition; i > 0; i--) {
                         symbolsList.set(i, symbolsList.get(i - 1));
                     }
+                    column.setSymbols(symbolsList);
                 }
             }
-
         }
     }
 
@@ -209,11 +207,11 @@ public class SlotMachine {
                 }
                 break;
         }
-        System.out.println(moneyWin);
         moneyWin *= multiplier;
-        System.out.println(moneyWin);
+        if(moneyWin > 0)
+            mainUser.setTotalEarn(moneyWin);
+        //else mainUser.setTotalEarn(0);
         moneyWin +=mainUser.getMoney();
-        System.out.println(moneyWin);
         mainUser.setMoney(moneyWin);
     }
 
