@@ -116,17 +116,14 @@ public class SlotMachineGUI {
         removeAllSymbols(mainPanel, imageLabels);
 
         for (Column column : columns) {
-
-
-            Collection<Symbol> symbols = slotMachine.generateSymbols(symbolsJSON, column.getLinesNumber());
+            Collection<Symbol> symbols = slotMachine.generateSymbols(symbolsJSON, column.getLinesNumber(), column);
             column.clearSymbols();
             column.setSymbols(symbols);
-
-            int positionOfSymbol = column.getLinesNumber() - column.getPrintNumberLine();
             int col = column.getNumberColumn()-1;
 
             for (int row = 0; row < column.getPrintNumberLine(); row++) {
-                ImageIcon imageIcon = images[column.getSymbol(positionOfSymbol-1 + row).getId()-1];
+                int positionOfSymbol = column.getLinesNumber() - column.getPrintNumberLine();
+                ImageIcon imageIcon = images[column.getSymbol(positionOfSymbol + row).getId()-1];
                 imageLabels[col][row] = new JLabel(imageIcon);
 
                 displayGeneratedSymbol(col, row, constraints);
@@ -215,9 +212,18 @@ public class SlotMachineGUI {
             @Override
             public void mouseClicked(MouseEvent e) {
                 //mainUser.useFreeAttempts(); //Checking if the user has free attempts
-                mainUser.totalBetMonney(mainUser.getMoneyBet());
-                userTotalBetLabel.setText("" + mainUser.getTotalBet());
                 generateNewSymbol(mainPanel, constraints, columns, imageLabels , images, slotMachine, symbolsJSON);
+                //while(slotMachine.startMachine(mainUser, columns)) {
+
+
+                slotMachine.startMachine(mainUser, columns);
+
+                mainUser.setMoney(mainUser.getMoney() - mainUser.getMoneyBet());
+                mainUser.totalBetMonney(mainUser.getMoneyBet());
+                mainUser.setMoneyBet(0);
+                userBetLabel.setText("" + mainUser.getMoneyBet());
+                userTotalBetLabel.setText("" + mainUser.getTotalBet());
+                userMoneyLabel.setText("" + mainUser.getMoney());
                 }
         });
 

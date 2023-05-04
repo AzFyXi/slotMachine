@@ -8,6 +8,7 @@ import org.json.simple.JSONObject;
 
 import javax.swing.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class SlotMachine {
     private Collection<Column> columns;
@@ -35,49 +36,56 @@ public class SlotMachine {
     }
 
     public void startMachine(User mainUser, Collection<Column> columns) { //function to start the SlotMachine
-
-
         Iterator<Column> iteratorColumns = columns.iterator();
         List<Column> columnList = new ArrayList<>(columns);
         Symbol finalSymbol = null;
-        do {
-            finalSymbol = findWinningSymbol(columns); //Retrieving the winning symbol
-            int numberWinningColumn = 0;
+        Collection<Column> columnsWithWinningSymbol = null;
+        //do {
+        finalSymbol = findWinningSymbol(columns); //Retrieving the winning symbol
+        int numberWinningColumn = 0;
 
-            if(finalSymbol != null) {
-                Collection<Column> columnsWithWinningSymbol = new ArrayList<>(); //Create an ArrayList with to store the winning columns
+        if(finalSymbol != null) {
+            columnsWithWinningSymbol = new ArrayList<>(); //Create an ArrayList with to store the winning columns
 
-                //Add the 3 winning columns (with findWinningSymbol we know that the first 3 columns are winning)
-                for (int i = 0; i < columnList.get(0).getPrintNumberLine() && iteratorColumns.hasNext(); i++) {
-                    numberWinningColumn++;
-                    columnsWithWinningSymbol.add(iteratorColumns.next());
-                }
-
-                //Search for other winning columns
-                while (iteratorColumns.hasNext() && isSymbolInColumn(iteratorColumns.next(), finalSymbol)) {
-                    numberWinningColumn++;
-                    columnsWithWinningSymbol.add(iteratorColumns.next());
-                }
-
-                //Search if the winning symbol is a special symbol
-                if(finalSymbol.getId() >= 4) { //Not special symbol
-                    calculatedMoney(mainUser, finalSymbol.getId(), numberWinningColumn);
-                } else  if (finalSymbol.getId() == 2) { //Symbol Free
-                    findFreeSymbol(mainUser);
-                } else if (finalSymbol.getId() == 3) { //Symbol Bonus
-
-                }
-
-                //Replace winning Symbol
-                replaceSymbol(columnsWithWinningSymbol, finalSymbol);
-
-            } else {
-                System.out.println("Le joeur a perdu");
+            //Add the 3 winning columns (with findWinningSymbol we know that the first 3 columns are winning)
+            for (int i = 0; i < columnList.get(0).getPrintNumberLine() && iteratorColumns.hasNext(); i++) {
+                numberWinningColumn++;
+                columnsWithWinningSymbol.add(iteratorColumns.next());
             }
 
-        } while (finalSymbol != null); //Repeat as long as there is a winning symbol.
+            //Search for other winning columns
+            for(int i = 3; i <= columns.size(); i++)  {
+                if(iteratorColumns.hasNext()) {
+                    Column nextColumn = iteratorColumns.next();
+                    if(isSymbolInColumn(nextColumn, finalSymbol)) {
+                        numberWinningColumn++;
+                        columnsWithWinningSymbol.add(nextColumn);
+                    } else {
+                        break;
+                    }
+                }
+            }
+
+            //Search if the winning symbol is a special symbol
+            if(finalSymbol.getId() >= 4) { //Not special symbol
+                calculatedMoney(mainUser, finalSymbol.getId(), numberWinningColumn);
+            } else  if (finalSymbol.getId() == 2) { //Symbol Free
+                //findFreeSymbol(mainUser);
+            } else if (finalSymbol.getId() == 3) { //Symbol Bonus
+
+            }
+            //Replace winning Symbol
+            //replaceSymbol(numberWinningColumn, finalSymbol, columns);
+
+        } else {
+            System.out.println("Le joeur a perdu");
+        }
+
+        //} while (finalSymbol != null); //Repeat as long as there is a winning symbol.
+
 
     }
+
 
     public Symbol findWinningSymbol(Collection<Column> columns) { //Search the first three columns to find the winning symbol
         Iterator<Column> iterator = columns.iterator();
@@ -95,12 +103,13 @@ public class SlotMachine {
             Symbol symbolToFirstColumn = column1.getSymbol(i);
 
             for (int j = startPositionSecondColumn; j < column2.getLinesNumber(); j++) {
-
                 if (symbolToFirstColumn.equals(column2.getSymbol(j)) || column2.getSymbol(j).getId() == 1 || symbolToFirstColumn.getId() ==1) {
                     foundSymbol = symbolToFirstColumn.getId() != 1 ? symbolToFirstColumn: column2.getSymbol(j); //For the symbol Super
 
                     for (int k = startPositionThirdColumn; k < column3.getLinesNumber(); k++) {
-                        if (foundSymbol.equals(column3.getSymbol(k))) {
+
+                        if (foundSymbol.equals(column3.getSymbol(k)) || foundSymbol.getId() == 1) {
+                            foundSymbol = foundSymbol.getId() == 1 ? column3.getSymbol(k) : foundSymbol;
                             return foundSymbol;
                         }
                     }
@@ -111,33 +120,35 @@ public class SlotMachine {
     }
 
 
-    public void replaceSymbol(Collection<Column> columns, Symbol foundSymbol) { //Replaces the winning symbol in all columns
-        for (Column column : columns) {
-            List<Symbol> symbolsList = new ArrayList<>(column.getSymbol()); // Create a list of all the symbols in the column
-            int foundPosition = -1;
-            int linesNumber = column.getLinesNumber(); // Number of elements in the column
-            int startPositionFirstElementDisplayed = linesNumber - column.getPrintNumberLine();
+    public void replaceSymbol(int numberWinningColumn, Symbol foundSymbol, Collection<Column> columns) {
+        for(Column column : columns) {
+            if(column.getNumberColumn() < numberWinningColumn) {
+                List<Symbol> symbolsList = new ArrayList<>(column.getSymbol()); // Create a list of all the symbols in the column
+                int foundPosition = -1;
+                int linesNumber = column.getLinesNumber(); // Number of elements in the column
+                int startPositionFirstElementDisplayed = linesNumber - column.getPrintNumberLine();
 
-            for (int i = startPositionFirstElementDisplayed; i < linesNumber; i++) {
-                if (symbolsList.get(i).equals(foundSymbol)) {
-                    foundPosition = i;
-                    break;
+                for (int i = startPositionFirstElementDisplayed; i < linesNumber; i++) {
+                    if (symbolsList.get(i).equals(foundSymbol)) {
+                        foundPosition = i;
+                        break;
+                    }
+                }
+                if (foundPosition != -1) {
+                    for (int i = foundPosition; i > 0; i--) {
+                        symbolsList.set(i, symbolsList.get(i - 1));
+                    }
+                    column.setSymbols(symbolsList);
                 }
             }
-            if (foundPosition != -1) {
-                for (int i = foundPosition; i > 0; i--) {
-                    symbolsList.set(i, symbolsList.get(i - 1));
-                }
-                symbolsList.set(0, null);
-                column.setSymbols(symbolsList);
-            }
+
         }
     }
 
     public boolean isSymbolInColumn(Column column, Symbol targetSymbol) { // Check if the symbol winners find is present in the other columns
         boolean symbolFound = false;
 
-        for (int i = 0; i < column.getLinesNumber(); i++) {
+        for (int i = column.getLinesNumber() - column.getPrintNumberLine(); i < column.getLinesNumber(); i++) {
             Symbol currentSymbol = column.getSymbol(i);
 
             if (currentSymbol.equals(targetSymbol) || currentSymbol.getId() == 1) {
@@ -232,12 +243,8 @@ public class SlotMachine {
 
             if (i < 5) {
                 column = new Column(generateSymbols(symbols, 30), i, 30, true, printNumberLine);
-                //column.setSymbols(column.generateSymbols(symbols, 30));
-                //column.generateSymbols(symbols, 30);
             } else {
-                column = new Column(generateSymbols(symbols, 41), i, 30, true, printNumberLine);
-                //column.setSymbols(column.generateSymbols(symbols, 41));
-                //column.generateSymbols(symbols, 41);
+                column = new Column(generateSymbols(symbols, 41), i, 41, true, printNumberLine);
             }
 
             columns.add(column);
@@ -259,7 +266,47 @@ public class SlotMachine {
                 generatedSymbols.add(randomSymbol);
             }
         }
+        return generatedSymbols;
+    }
 
+    public static Collection<Symbol> generateSymbols(Collection<Symbol> symbols, int symbolsNumber, Column column) {
+        List<Symbol> generatedSymbols = new ArrayList<>();
+        Random random = new Random();
+        int symbolsSize = symbols.size();
+        if(column.getNumberColumn() == 3) {
+            List<Symbol> filteredSymbols = symbols.stream()
+                    .filter(symbol -> symbol.getId() != 1)
+                    .collect(Collectors.toList());
+
+            int symbolsSizeWithoutOneSymbol = filteredSymbols.size();
+
+            for (int i = 0; i < symbolsNumber; i++) {
+                int randomNumber = random.nextInt(symbolsSizeWithoutOneSymbol);
+                Symbol randomSymbol = filteredSymbols.get(randomNumber);
+                generatedSymbols.add(randomSymbol);
+            }
+        } else if (column.getNumberColumn() == 2 || column.getNumberColumn() == 4) {
+            List<Symbol> filteredSymbols = symbols.stream()
+                    .filter(symbol -> symbol.getId() != 2)
+                    .collect(Collectors.toList());
+
+            int symbolsSizeWithoutOneSymbol = filteredSymbols.size();
+
+            for (int i = 0; i < symbolsNumber; i++) {
+                int randomNumber = random.nextInt(symbolsSizeWithoutOneSymbol);
+                Symbol randomSymbol = filteredSymbols.get(randomNumber);
+                generatedSymbols.add(randomSymbol);
+            }
+        } else {
+            for (int i = 0; i < symbolsNumber; i++) {
+                int randomNumber = random.nextInt(symbolsSize);
+                Symbol randomSymbol = symbols.stream().skip(randomNumber).findFirst().orElse(null);
+
+                if (randomSymbol != null) {
+                    generatedSymbols.add(randomSymbol);
+                }
+            }
+        }
         return generatedSymbols;
     }
     public static Collection<Symbol> getSymbolsCollection(){
