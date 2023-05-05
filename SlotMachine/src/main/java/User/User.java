@@ -79,7 +79,8 @@ public class User {
         else if (this.moneyBet == 2000) { this.moneyBet = 4000; }
         else if (this.moneyBet == 4000) { this.moneyBet = 6000; }
         else if (this.moneyBet == 6000) { this.moneyBet = 10000; }
-        else if (this.moneyBet == 10000) { return; }
+        else if (this.moneyBet == 10000) {
+        }
     }
 
     public void betLessMoney() {
@@ -87,7 +88,8 @@ public class User {
         else if (this.moneyBet == 6000) { this.moneyBet = 4000; }
         else if (this.moneyBet == 4000) { this.moneyBet = 2000; }
         else if (this.moneyBet == 2000) { this.moneyBet = 0; }
-        else if (this.moneyBet == 0) { return; }
+        else if (this.moneyBet == 0) {
+        }
     }
 
     public boolean haveFreeAttempts() {
@@ -103,7 +105,6 @@ public class User {
             if (currentFreeAttempt.getRowRemaining() == 0) {
                 this.freeAttempts.remove(currentFreeAttempt);
             } else if(currentFreeAttempt.getRowRemaining() > 0) {
-                System.out.println(currentFreeAttempt.getRowRemaining() + "row remaining");
                 currentFreeAttempt.setRowRemaining(currentFreeAttempt.getRowRemaining());
                 //this.freeAttempts.remove(currentFreeAttempt);
                 this.freeAttempts.set(0, currentFreeAttempt);
