@@ -248,8 +248,6 @@ public class SlotMachineGUI {
                 g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
             }
         };
-
-
         freeAttemptPanel.setLayout(new GridBagLayout());
 
         // Modify click event
@@ -288,6 +286,7 @@ public class SlotMachineGUI {
             System.out.println(mainUser.getCurrentRowRemaining() + String.valueOf(mainUser.getCurrentMultimultiplier()));
             //panel.remove(0);
             createAndShowGUI(mainUser, columns, symbolsJSON);
+            frame.dispose();
 
         });
 
@@ -296,6 +295,7 @@ public class SlotMachineGUI {
             panel.setVisible(false); // Hide free attempt menu
             //panel.remove(1);
             createAndShowGUI(mainUser, columns, symbolsJSON);
+            frame.dispose();
         });
 
         threeButton.addActionListener(e -> {
@@ -303,6 +303,7 @@ public class SlotMachineGUI {
             panel.setVisible(false); // Hide free attempt menu
             //panel.remove(2);
             createAndShowGUI(mainUser, columns, symbolsJSON);
+            frame.dispose();
 
         });
     }
