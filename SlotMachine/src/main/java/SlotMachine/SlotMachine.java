@@ -44,14 +44,15 @@ public class SlotMachine {
         SlotMachine.finalSymbol = finalSymbol;
     }
 
-    public void startMachine(User mainUser, Collection<Column> columns) { //function to start the SlotMachine
+    public boolean startMachine(User mainUser, Collection<Column> columns) { //function to start the SlotMachine
         SlotMachineGUI gui = new SlotMachineGUI();
         Iterator<Column> iteratorColumns = columns.iterator();
         List<Column> columnList = new ArrayList<>(columns);
-        Symbol finalSymbol = null;
+        Symbol finalSymbol = new Symbol(0);
         Collection<Column> columnsWithWinningSymbol = null;
         boolean isWin = false;
-        do {
+
+        while(finalSymbol != null) {
             finalSymbol = findWinningSymbol(columns); //Retrieving the winning symbol
             int numberWinningColumn = 0;
 
@@ -79,20 +80,19 @@ public class SlotMachine {
                     }
                 }
 
-
-
                 //System.out.println(mainUser.getCurrentRowRemaining() + "" + mainUser.getCurrentMultimultiplier());
                 //Search if the winning symbol is a special symbol
-                if(finalSymbol.getId() >= 4) { //Not special symbol
+                if(finalSymbol.getId() > 3) { //Not special symbol
                     calculatedMoney(mainUser, finalSymbol.getId(), numberWinningColumn);
                     gui.showWinImage(mainUser);
                 } else if (finalSymbol.getId() == 2) { //Symbol Free
                     System.out.println("2 FRREE");
-
+                    System.out.println(mainUser.getFreeAttempts());
                     gui.showFreeAttemptMenu(mainUser, SlotMachineGUI.getMainFrame());
-                } else if (finalSymbol.getId() == 1) { //Symbol Free
+                    break;
+                } else if (finalSymbol.getId() == 1) { //Symbol Bonus
                     System.out.println("1 BONUS");
-                    return;
+                    break;
                 }
 
                 //Replace winning Symbol
@@ -102,7 +102,8 @@ public class SlotMachine {
                     gui.showLoseImage();
                 }
             }
-        } while (finalSymbol != null); //Repeat as long as there is a winning symbol.
+        } //Repeat as long as there is a winning symbol.
+        return isWin;
     }
 
 
@@ -186,7 +187,6 @@ public class SlotMachine {
         else if(moneyBet == 10000) multiplier = 5;
 
         switch (symbolId) {
-
             case 2:
                 //Free Symbol
             case 3:
@@ -198,6 +198,8 @@ public class SlotMachine {
                     moneyWin = 2000;
                 } else if(numberWinningColumn == 5) {
                     moneyWin = 4000;
+                } else {
+                    moneyWin = 1000;
                 }
                 break;
             case 5:
@@ -207,6 +209,8 @@ public class SlotMachine {
                     moneyWin = 1500;
                 } else if(numberWinningColumn == 5) {
                     moneyWin = 3000;
+                } else {
+                    moneyWin = 750;
                 }
                 break;
             case 6,7:
@@ -216,6 +220,8 @@ public class SlotMachine {
                     moneyWin = 750;
                 } else if(numberWinningColumn == 5) {
                     moneyWin = 1500;
+                }else {
+                    moneyWin = 500;
                 }
                 break;
             default:
@@ -225,12 +231,13 @@ public class SlotMachine {
                     moneyWin = 500;
                 } else if(numberWinningColumn == 5) {
                     moneyWin = 1000;
+                }else {
+                    moneyWin = 300;
                 }
                 break;
         }
         moneyWin *= multiplier;
-            mainUser.setTotalEarn(moneyWin);
-        //else mainUser.setTotalEarn(0);
+        mainUser.setTotalEarn(moneyWin);
         moneyWin +=mainUser.getMoney();
         mainUser.setMoney(moneyWin);
     }
@@ -291,7 +298,7 @@ public class SlotMachine {
         return generatedSymbols;
     }
 
-    /*public static Collection<Symbol> generateSymbols(Collection<Symbol> symbols, int symbolsNumber, Column column) {
+    public static Collection<Symbol> generateSymbols(Collection<Symbol> symbols, int symbolsNumber, Column column) {
         List<Symbol> generatedSymbols = new ArrayList<>();
         Random random = new Random();
         int symbolsSize = symbols.size();
@@ -330,7 +337,7 @@ public class SlotMachine {
             }
         }
         return generatedSymbols;
-    }*/
+    }
     public static Collection<Symbol> getSymbolsCollection(){
         JSONObject parsedSymbols = Config.parseSymbols();
         assert parsedSymbols != null;

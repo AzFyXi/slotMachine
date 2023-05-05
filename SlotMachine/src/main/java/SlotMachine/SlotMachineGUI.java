@@ -169,7 +169,7 @@ public class SlotMachineGUI {
                 removeAllSymbols(mainPanel, imageLabels);
 
                 for (Column column : columns) {
-                    Collection<Symbol> symbols = slotMachine.generateSymbols(symbolsJSON, column.getLinesNumber());
+                    Collection<Symbol> symbols = slotMachine.generateSymbols(symbolsJSON, column.getLinesNumber(), column);
                     column.clearSymbols();
                     column.setSymbols(symbols);
 
@@ -241,8 +241,14 @@ public class SlotMachineGUI {
             public void actionPerformed(ActionEvent e) {
                 ImageIcon winIcon = new ImageIcon(SlotMachineGUI.class.getResource(WIN_IMAGE_PATH));
                 JLabel winLabel = new JLabel(winIcon);
+                JLabel textLabel;
 
-                JLabel textLabel = new JLabel("Argent gagné : " + mainUser.getTotalEarn());
+                if(mainUser.haveFreeAttempts() && mainUser.getCurrentMultimultiplier() > 0) {
+                    textLabel = new JLabel("Argent gagné : " + (mainUser.getTotalEarn() * mainUser.getCurrentMultimultiplier()));
+                } else {
+                    textLabel = new JLabel("Argent gagné : " + mainUser.getTotalEarn());
+                }
+                mainUser.setTotalEarn(0);
                 textLabel.setFont(new Font("Arial", Font.PLAIN, 16));
                 textLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -318,7 +324,6 @@ public class SlotMachineGUI {
         // Ajoutez les ActionListener pour gérer les événements de clic
         oneButton.addActionListener(e -> {
             mainUser.setFreeAttempts(2, 15);
-            System.out.println(mainUser.getCurrentRowRemaining() + "" + mainUser.getCurrentMultimultiplier());
             //panel.remove(0);
             createAndShowGUI(mainUser, columns, symbolsJSON);
 
@@ -420,17 +425,19 @@ public class SlotMachineGUI {
             public void mouseClicked(MouseEvent e) {
                 if(mainUser.useFreeAttempt()) {
                     generateNewSymbol(mainPanel, constraints, columns, imageLabels , images, slotMachine, symbolsJSON);
-                    slotMachine.startMachine(mainUser, columns);
-                    displayNewSymbol(mainPanel, constraints, columns, imageLabels , images);
-                    mainUser.setMoney(mainUser.getMoney() + mainUser.getCurrentMultimultiplier());
+                    if(slotMachine.startMachine(mainUser, columns));
+                        displayNewSymbol(mainPanel, constraints, columns, imageLabels , images);
+                    if(mainUser.getTotalEarn() > 0 && mainUser.getCurrentMultimultiplier() > 0)
+                         mainUser.setMoney(mainUser.getMoney() + (mainUser.getTotalEarn() * mainUser.getCurrentMultimultiplier()));
+
                     userMoneyLabel.setText("" + mainUser.getMoney());
                     userFreeAttemptLabel.setText("" + mainUser.getCurrentRowRemaining());
                     return;
                 }
                 if(mainUser.getMoneyBet() > 0 && mainUser.getMoneyBet() <= mainUser.getMoney()) {
                     generateNewSymbol(mainPanel, constraints, columns, imageLabels , images, slotMachine, symbolsJSON);
-                    slotMachine.startMachine(mainUser, columns);
-                    displayNewSymbol(mainPanel, constraints, columns, imageLabels , images);
+                    if(slotMachine.startMachine(mainUser, columns));;
+                        displayNewSymbol(mainPanel, constraints, columns, imageLabels , images);
                     mainUser.setMoney(mainUser.getMoney() - mainUser.getMoneyBet());
                     mainUser.setMoneyBet(0);
                     userBetLabel.setText("" + mainUser.getMoneyBet());

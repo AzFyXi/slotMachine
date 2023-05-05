@@ -95,20 +95,25 @@ public class User {
     }
     public boolean useFreeAttempt() {
         if (haveFreeAttempts()) {
+            if (freeAttempts.isEmpty()) {
+                return false; // retourne false si freeAttempts est vide
+            }
             FreeAttempt currentFreeAttempt = freeAttempts.iterator().next();
             currentFreeAttempt.useRow();
             if (currentFreeAttempt.getRowRemaining() == 0) {
                 this.freeAttempts.remove(currentFreeAttempt);
             } else if(currentFreeAttempt.getRowRemaining() > 0) {
-                currentFreeAttempt.setRowRemaining(currentFreeAttempt.getRowRemaining() - 1);
-                this.freeAttempts.remove(currentFreeAttempt);
-                ((List<FreeAttempt>) this.freeAttempts).set(0, currentFreeAttempt);
+                System.out.println(currentFreeAttempt.getRowRemaining() + "row remaining");
+                currentFreeAttempt.setRowRemaining(currentFreeAttempt.getRowRemaining());
+                //this.freeAttempts.remove(currentFreeAttempt);
+                this.freeAttempts.set(0, currentFreeAttempt);
             }
 
             return true;
         }
         return false;
     }
+
 
     public int getCurrentRowRemaining() {
         Iterator<FreeAttempt> iterator = freeAttempts.iterator();
