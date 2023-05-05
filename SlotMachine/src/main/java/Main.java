@@ -1,7 +1,13 @@
-
-
 import SlotMachine.*;
 import User.User;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 import java.util.Collection;
 
@@ -23,6 +29,17 @@ public class Main {
         }*/
 
         SlotMachineGUI.createAndShowGUI(mainUser, columns, symbols);
+
+        try {
+            URL url = Main.class.getResource("/images/background_music.wav");
+            Clip clip = AudioSystem.getClip();
+            clip.open(AudioSystem.getAudioInputStream(new File(url.toURI())));
+
+            // play always
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+        } catch (LineUnavailableException | IOException | UnsupportedAudioFileException | URISyntaxException e) {
+            e.printStackTrace();
+        }
         
     }
 }
