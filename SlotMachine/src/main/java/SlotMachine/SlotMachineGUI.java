@@ -1,22 +1,21 @@
 package SlotMachine;
 
-import javax.swing.*;
 import User.User;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Random;
-import java.io.BufferedReader;
-import java.io.IOException;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import java.io.InputStreamReader;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.Timer;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Collection;
+import java.util.Objects;
+import java.util.Random;
 
 public class SlotMachineGUI {
     private static final String SYMBOLS_JSON_PATH = "/symbols.json";
@@ -35,9 +34,9 @@ public class SlotMachineGUI {
     public static JLabel userMoneyLabel;
     public static JLabel userBetLabel;
     public static JLabel userFreeAttemptLabel;
-    public  static JFrame mainFrame;
-    public  static Collection<Column> columns;
-    public  static Collection<Symbol> symbolsJSON;
+    public static JFrame mainFrame;
+    public static Collection<Column> columns;
+    public static Collection<Symbol> symbolsJSON;
 
     public static JSONArray readSymbolsJSON() {
         StringBuilder content = new StringBuilder();
@@ -121,8 +120,8 @@ public class SlotMachineGUI {
         setMainFrame(frame);
         // Adding the main panel with a background image
         JPanel mainPanel = new JPanel() {
-            ImageIcon imageIcon = new ImageIcon(SlotMachineGUI.class.getResource(SLOT_MACHINE_IMAGE_PATH));
-            Image image = imageIcon.getImage();
+            final ImageIcon imageIcon = new ImageIcon(SlotMachineGUI.class.getResource(SLOT_MACHINE_IMAGE_PATH));
+            final Image image = imageIcon.getImage();
 
             @Override
             protected void paintComponent(Graphics g) {
@@ -144,7 +143,7 @@ public class SlotMachineGUI {
 
         createAllSymbol(mainPanel, constraints, imageLabels, images);
 
-        createAllButtonWithImages(mainUser, mainPanel, constraints, columns, imageLabels, images, slotMachine,  symbolsJSON);
+        createAllButtonWithImages(mainUser, mainPanel, constraints, columns, imageLabels, images, slotMachine, symbolsJSON);
 
         // Displaying the window
         frame.setLocationRelativeTo(null);
@@ -155,7 +154,8 @@ public class SlotMachineGUI {
         ImageIcon transitionGif = new ImageIcon(SlotMachineGUI.class.getResource(TRANSITION_GIF_PATH));
         return transitionGif;
     }
-    static void generateNewSymbol(JPanel mainPanel, GridBagConstraints constraints, Collection<Column> columns, JLabel[][] imageLabels , ImageIcon[] images, SlotMachine slotMachine, Collection<Symbol> symbolsJSON) {
+
+    static void generateNewSymbol(JPanel mainPanel, GridBagConstraints constraints, Collection<Column> columns, JLabel[][] imageLabels, ImageIcon[] images, SlotMachine slotMachine, Collection<Symbol> symbolsJSON) {
         ImageIcon transitionGif = new ImageIcon(SlotMachineGUI.class.getResource(TRANSITION_GIF_PATH));
         // View the GIF for each icon
         for (int col = 0; col < 5; col++) {
@@ -165,11 +165,12 @@ public class SlotMachineGUI {
         }
         // Create a Timer to manage the animation without blocking the UI
         Timer timer = new Timer(ANIMATION_DURATION, new ActionListener() {
-            @Override            public void actionPerformed(ActionEvent e) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
                 removeAllSymbols(mainPanel, imageLabels);
 
                 for (Column column : columns) {
-                    Collection<Symbol> symbols = slotMachine.generateSymbols(symbolsJSON, column.getLinesNumber());
+                    Collection<Symbol> symbols = SlotMachine.generateSymbols(symbolsJSON, column.getLinesNumber());
                     column.clearSymbols();
                     column.setSymbols(symbols);
 
@@ -196,7 +197,8 @@ public class SlotMachineGUI {
         timer.start();
 
     }
-    static void displayNewSymbol(JPanel mainPanel, GridBagConstraints constraints, Collection<Column> columns, JLabel[][] imageLabels , ImageIcon[] images) {
+
+    static void displayNewSymbol(JPanel mainPanel, GridBagConstraints constraints, Collection<Column> columns, JLabel[][] imageLabels, ImageIcon[] images) {
         ImageIcon transitionGif = new ImageIcon(SlotMachineGUI.class.getResource(TRANSITION_GIF_PATH));
 
         // View the GIF for each icon
@@ -212,11 +214,11 @@ public class SlotMachineGUI {
                 removeAllSymbols(mainPanel, imageLabels);
 
                 for (Column column : columns) {
-                    int col = column.getNumberColumn()-1;
+                    int col = column.getNumberColumn() - 1;
 
                     for (int row = 0; row < column.getPrintNumberLine(); row++) {
                         int positionOfSymbol = column.getLinesNumber() - column.getPrintNumberLine();
-                        ImageIcon imageIcon = images[column.getSymbol(positionOfSymbol + row).getId()-1];
+                        ImageIcon imageIcon = images[column.getSymbol(positionOfSymbol + row).getId() - 1];
                         imageLabels[col][row] = new JLabel(imageIcon);
 
                         displayGeneratedSymbol(col, row, constraints);
@@ -235,45 +237,10 @@ public class SlotMachineGUI {
 
     }
 
-    public void showWinImage(User mainUser) {
-        Timer timer = new Timer(1000, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ImageIcon winIcon = new ImageIcon(SlotMachineGUI.class.getResource(WIN_IMAGE_PATH));
-                JLabel winLabel = new JLabel(winIcon);
-
-                JLabel textLabel = new JLabel("Argent gagné : " + mainUser.getTotalEarn());
-                textLabel.setFont(new Font("Arial", Font.PLAIN, 16));
-                textLabel.setHorizontalAlignment(SwingConstants.CENTER);
-
-                JPanel messagePanel = new JPanel(new BorderLayout());
-                messagePanel.add(winLabel, BorderLayout.CENTER);
-                messagePanel.add(textLabel, BorderLayout.SOUTH);
-
-                JOptionPane.showMessageDialog(null, messagePanel, "You Win!", JOptionPane.DEFAULT_OPTION, null);
-            }
-        });
-        timer.setRepeats(false);
-        timer.start();
-    }
-
-    public void showLoseImage() {
-        Timer timer = new Timer(1000, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ImageIcon loseIcon = new ImageIcon(SlotMachineGUI.class.getResource(LOSE_IMAGE_PATH));
-                JOptionPane.showMessageDialog(null, "", "You Lose!", JOptionPane.INFORMATION_MESSAGE, loseIcon);
-            }
-        });
-        timer.setRepeats(false);
-        timer.start();
-    }
-
     public static void showFreeAttemptMenu(User mainUser, JFrame frame) {
-        // Créez un JPanel pour contenir le menu FreeAttempt
         JPanel freeAttemptPanel = new JPanel() {
-            ImageIcon imageIcon = new ImageIcon(SlotMachineGUI.class.getResource(FREEBACKGROUND_IMAGE_PATH));
-            Image image = imageIcon.getImage();
+            final ImageIcon imageIcon = new ImageIcon(SlotMachineGUI.class.getResource(FREEBACKGROUND_IMAGE_PATH));
+            final Image image = imageIcon.getImage();
 
             @Override
             protected void paintComponent(Graphics g) {
@@ -285,10 +252,10 @@ public class SlotMachineGUI {
 
         freeAttemptPanel.setLayout(new GridBagLayout());
 
-        // Ajoutez les boutons et configurez les événements de clic
-        createFreeAttemptButtons(mainUser, freeAttemptPanel,frame);
+        // Modify click event
+        createFreeAttemptButtons(mainUser, freeAttemptPanel, frame);
 
-        // Affichez le menu FreeAttempt
+        // Print free attempt menu
         frame.setContentPane(freeAttemptPanel);
         frame.revalidate();
     }
@@ -297,28 +264,28 @@ public class SlotMachineGUI {
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.insets = new Insets(10, 10, 10, 10);
 
-        ImageIcon oneIcon = new ImageIcon(SlotMachineGUI.class.getResource(ONE_IMAGE_PATH));
+        ImageIcon oneIcon = new ImageIcon(Objects.requireNonNull(Objects.requireNonNull(SlotMachineGUI.class.getResource(ONE_IMAGE_PATH))));
         JButton oneButton = new JButton(oneIcon);
         constraints.gridx = 0;
         constraints.gridy = 0;
         panel.add(oneButton, constraints);
 
-        ImageIcon twoIcon = new ImageIcon(SlotMachineGUI.class.getResource(TWO_IMAGE_PATH));
+        ImageIcon twoIcon = new ImageIcon(Objects.requireNonNull(SlotMachineGUI.class.getResource(TWO_IMAGE_PATH)));
         JButton twoButton = new JButton(twoIcon);
         constraints.gridx = 0;
         constraints.gridy = 1;
         panel.add(twoButton, constraints);
 
-        ImageIcon threeIcon = new ImageIcon(SlotMachineGUI.class.getResource(THREE_IMAGE_PATH));
+        ImageIcon threeIcon = new ImageIcon(Objects.requireNonNull(SlotMachineGUI.class.getResource(THREE_IMAGE_PATH)));
         JButton threeButton = new JButton(threeIcon);
         constraints.gridx = 0;
         constraints.gridy = 2;
         panel.add(threeButton, constraints);
 
-        // Ajoutez les ActionListener pour gérer les événements de clic
+        // Modify ActionLister for generate click event
         oneButton.addActionListener(e -> {
             mainUser.setFreeAttempts(2, 15);
-            System.out.println(mainUser.getCurrentRowRemaining() + "" + mainUser.getCurrentMultimultiplier());
+            System.out.println(mainUser.getCurrentRowRemaining() + String.valueOf(mainUser.getCurrentMultimultiplier()));
             //panel.remove(0);
             createAndShowGUI(mainUser, columns, symbolsJSON);
 
@@ -326,21 +293,21 @@ public class SlotMachineGUI {
 
         twoButton.addActionListener(e -> {
             mainUser.setFreeAttempts(3, 10);
-            panel.setVisible(false); // Cachez le menu FreeAttempt
+            panel.setVisible(false); // Hide free attempt menu
             //panel.remove(1);
-            createAndShowGUI(mainUser,columns, symbolsJSON);
+            createAndShowGUI(mainUser, columns, symbolsJSON);
         });
 
         threeButton.addActionListener(e -> {
             mainUser.setFreeAttempts(6, 5);
-            panel.setVisible(false); // Cachez le menu FreeAttempt
+            panel.setVisible(false); // Hide free attempt menu
             //panel.remove(2);
-            createAndShowGUI(mainUser,columns, symbolsJSON);
+            createAndShowGUI(mainUser, columns, symbolsJSON);
 
         });
     }
 
-    public static void createAllSymbol(JPanel mainPanel , GridBagConstraints constraints, JLabel[][] imageLabels , ImageIcon[] images) {
+    public static void createAllSymbol(JPanel mainPanel, GridBagConstraints constraints, JLabel[][] imageLabels, ImageIcon[] images) {
         Random random = new Random();
 
         for (int col = 0; col < 5; col++) {
@@ -354,6 +321,7 @@ public class SlotMachineGUI {
             }
         }
     }
+
     public static void removeAllSymbols(JPanel mainPanel, JLabel[][] imageLabels) {
         for (int col = 0; col < 5; col++) {
             for (int row = 0; row < 3; row++) {
@@ -398,7 +366,8 @@ public class SlotMachineGUI {
             constraints.insets.left = 30;
         }
     }
-    public static void createAllButtonWithImages(User mainUser,JPanel mainPanel, GridBagConstraints constraints, Collection<Column> columns, JLabel[][] imageLabels , ImageIcon[] images, SlotMachine slotMachine, Collection<Symbol> symbolsJSON) {
+
+    public static void createAllButtonWithImages(User mainUser, JPanel mainPanel, GridBagConstraints constraints, Collection<Column> columns, JLabel[][] imageLabels, ImageIcon[] images, SlotMachine slotMachine, Collection<Symbol> symbolsJSON) {
         // Create buttons with images
         JPanel buttonPanel = new JPanel(new GridBagLayout());
         GridBagConstraints buttonConstraints = new GridBagConstraints();
@@ -406,7 +375,7 @@ public class SlotMachineGUI {
         buttonPanel.setOpaque(false);
 
         // Spin button
-        ImageIcon spinIcon = new ImageIcon(SlotMachineGUI.class.getResource(SPIN_IMAGE_PATH));
+        ImageIcon spinIcon = new ImageIcon(Objects.requireNonNull(Objects.requireNonNull(SlotMachineGUI.class.getResource(SPIN_IMAGE_PATH))));
         JLabel spinLabel = new JLabel(spinIcon);
         constraints.gridx = 2;
         constraints.gridy = 5;
@@ -418,35 +387,35 @@ public class SlotMachineGUI {
         spinLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(mainUser.useFreeAttempt()) {
-                    generateNewSymbol(mainPanel, constraints, columns, imageLabels , images, slotMachine, symbolsJSON);
+                if (mainUser.useFreeAttempt()) {
+                    generateNewSymbol(mainPanel, constraints, columns, imageLabels, images, slotMachine, symbolsJSON);
                     slotMachine.startMachine(mainUser, columns);
-                    displayNewSymbol(mainPanel, constraints, columns, imageLabels , images);
+                    displayNewSymbol(mainPanel, constraints, columns, imageLabels, images);
                     mainUser.setMoney(mainUser.getMoney() + mainUser.getCurrentMultimultiplier());
-                    userMoneyLabel.setText("" + mainUser.getMoney());
-                    userFreeAttemptLabel.setText("" + mainUser.getCurrentRowRemaining());
+                    userMoneyLabel.setText(String.valueOf(mainUser.getMoney()));
+                    userFreeAttemptLabel.setText(String.valueOf(mainUser.getCurrentRowRemaining()));
                     return;
                 }
-                if(mainUser.getMoneyBet() > 0 && mainUser.getMoneyBet() <= mainUser.getMoney()) {
-                    generateNewSymbol(mainPanel, constraints, columns, imageLabels , images, slotMachine, symbolsJSON);
+                if (mainUser.getMoneyBet() > 0 && mainUser.getMoneyBet() <= mainUser.getMoney()) {
+                    generateNewSymbol(mainPanel, constraints, columns, imageLabels, images, slotMachine, symbolsJSON);
                     slotMachine.startMachine(mainUser, columns);
-                    displayNewSymbol(mainPanel, constraints, columns, imageLabels , images);
+                    displayNewSymbol(mainPanel, constraints, columns, imageLabels, images);
                     mainUser.setMoney(mainUser.getMoney() - mainUser.getMoneyBet());
                     mainUser.setMoneyBet(0);
-                    userBetLabel.setText("" + mainUser.getMoneyBet());
-                    userMoneyLabel.setText("" + mainUser.getMoney());
-                    userFreeAttemptLabel.setText("" + mainUser.getCurrentRowRemaining());
+                    userBetLabel.setText(String.valueOf(mainUser.getMoneyBet()));
+                    userMoneyLabel.setText(String.valueOf(mainUser.getMoney()));
+                    userFreeAttemptLabel.setText(String.valueOf(mainUser.getCurrentRowRemaining()));
 
                 } else if (mainUser.getMoneyBet() == 0) {
                     userBetLabel.setText("inf to 0");
                     new Timer(2000, event -> {
-                        userBetLabel.setText("" + mainUser.getMoneyBet());
+                        userBetLabel.setText(String.valueOf(mainUser.getMoneyBet()));
                     }).start();
 
                 } else if (mainUser.getMoneyBet() > mainUser.getMoney()) {
                     userMoneyLabel.setText("inf to bet");
                     new Timer(2000, event -> {
-                        userMoneyLabel.setText("" + mainUser.getMoney());
+                        userMoneyLabel.setText(String.valueOf(mainUser.getMoney()));
                     }).start();
 
                 }
@@ -454,7 +423,7 @@ public class SlotMachineGUI {
         });
 
         // Less bet button
-        ImageIcon lessIcon = new ImageIcon(SlotMachineGUI.class.getResource(LESS_IMAGE_PATH));
+        ImageIcon lessIcon = new ImageIcon(Objects.requireNonNull(SlotMachineGUI.class.getResource(LESS_IMAGE_PATH)));
         JLabel lessBetLabel = new JLabel(lessIcon);
         constraints.gridx = 3;
         constraints.gridy = 5;
@@ -466,7 +435,7 @@ public class SlotMachineGUI {
             @Override
             public void mouseClicked(MouseEvent e) {
                 mainUser.betLessMoney();
-                userBetLabel.setText("" + mainUser.getMoneyBet());
+                userBetLabel.setText(String.valueOf(mainUser.getMoneyBet()));
             }
         });
         // More bet button
@@ -483,7 +452,7 @@ public class SlotMachineGUI {
             @Override
             public void mouseClicked(MouseEvent e) {
                 mainUser.betMoreMoney();
-                userBetLabel.setText("" + mainUser.getMoneyBet());
+                userBetLabel.setText(String.valueOf(mainUser.getMoneyBet()));
             }
         });
 
@@ -504,7 +473,7 @@ public class SlotMachineGUI {
         userMoneyLabel = new JLabel();
         userMoneyLabel.setFont(new Font("Impact", Font.ROMAN_BASELINE, 18));
         userMoneyLabel.setForeground(Color.WHITE);
-        userMoneyLabel.setText("" + mainUser.getMoney());
+        userMoneyLabel.setText(String.valueOf(mainUser.getMoney()));
         userMoneyPanel.add(userMoneyLabel);
 
         GridBagConstraints userMoneyPanelConstraints = new GridBagConstraints();
@@ -521,7 +490,7 @@ public class SlotMachineGUI {
         userBetLabel = new JLabel();
         userBetLabel.setFont(new Font("Impact", Font.ROMAN_BASELINE, 18));
         userBetLabel.setForeground(Color.WHITE);
-        userBetLabel.setText("" + mainUser.getMoneyBet());
+        userBetLabel.setText(String.valueOf(mainUser.getMoneyBet()));
 
         userBetPanel.add(userBetLabel);
         GridBagConstraints userBetPanelConstraints = new GridBagConstraints();
@@ -538,14 +507,48 @@ public class SlotMachineGUI {
         userFreeAttemptLabel = new JLabel();
         userFreeAttemptLabel.setFont(new Font("Impact", Font.ROMAN_BASELINE, 18));
         userFreeAttemptLabel.setForeground(Color.WHITE);
-        userFreeAttemptLabel.setText("" + mainUser.getCurrentRowRemaining());
+        userFreeAttemptLabel.setText(String.valueOf(mainUser.getCurrentRowRemaining()));
         userFreeAttemptPanel.add(userFreeAttemptLabel);
 
         GridBagConstraints userFreeAttemptPanelConstraints = new GridBagConstraints();
         userFreeAttemptPanelConstraints.gridx = 1;
         userFreeAttemptPanelConstraints.gridy = 5;
         userFreeAttemptPanelConstraints.anchor = GridBagConstraints.NORTHWEST;
-        userFreeAttemptPanelConstraints.insets = new Insets(47, 70,0, 0);
+        userFreeAttemptPanelConstraints.insets = new Insets(47, 70, 0, 0);
         mainPanel.add(userFreeAttemptPanel, userFreeAttemptPanelConstraints);
+    }
+
+    public void showWinImage(User mainUser) {
+        Timer timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ImageIcon winIcon = new ImageIcon(Objects.requireNonNull(SlotMachineGUI.class.getResource(WIN_IMAGE_PATH)));
+                JLabel winLabel = new JLabel(winIcon);
+
+                JLabel textLabel = new JLabel("Argent gagné : " + mainUser.getTotalEarn());
+                textLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+                textLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+                JPanel messagePanel = new JPanel(new BorderLayout());
+                messagePanel.add(winLabel, BorderLayout.CENTER);
+                messagePanel.add(textLabel, BorderLayout.SOUTH);
+
+                JOptionPane.showMessageDialog(null, messagePanel, "You Win!", JOptionPane.PLAIN_MESSAGE, null);
+            }
+        });
+        timer.setRepeats(false);
+        timer.start();
+    }
+
+    public void showLoseImage() {
+        Timer timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ImageIcon loseIcon = new ImageIcon(Objects.requireNonNull(SlotMachineGUI.class.getResource(LOSE_IMAGE_PATH)));
+                JOptionPane.showMessageDialog(null, "", "You Lose!", JOptionPane.INFORMATION_MESSAGE, loseIcon);
+            }
+        });
+        timer.setRepeats(false);
+        timer.start();
     }
 }

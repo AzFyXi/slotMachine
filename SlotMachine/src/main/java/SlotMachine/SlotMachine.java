@@ -17,8 +17,8 @@ public class SlotMachine {
 
     public SlotMachine(Collection<Column> columns, int numberColumns) {
         this.columns = columns;
-        this.numberColumns = numberColumns;
-        this.finalSymbol = new Symbol(0);
+        SlotMachine.numberColumns = numberColumns;
+        finalSymbol = new Symbol(0);
     }
 
     public Collection<Column> getColumns() {
@@ -34,7 +34,7 @@ public class SlotMachine {
     }
 
     public void setNumberColumns(int numberColumns) {
-        this.numberColumns = numberColumns;
+        SlotMachine.numberColumns = numberColumns;
     }
 
     public static Symbol getFinalSymbol() {
@@ -56,7 +56,7 @@ public class SlotMachine {
             int numberWinningColumn = 0;
 
             if(finalSymbol != null) {
-                this.finalSymbol = finalSymbol;
+                SlotMachine.finalSymbol = finalSymbol;
                 isWin = true;
                 columnsWithWinningSymbol = new ArrayList<>(); //Create an ArrayList with to store the winning columns
 
@@ -89,7 +89,7 @@ public class SlotMachine {
                 } else if (finalSymbol.getId() == 2) { //Symbol Free
                     System.out.println("2 FRREE");
 
-                    gui.showFreeAttemptMenu(mainUser, SlotMachineGUI.getMainFrame());
+                    SlotMachineGUI.showFreeAttemptMenu(mainUser, SlotMachineGUI.getMainFrame());
                 } else if (finalSymbol.getId() == 1) { //Symbol Free
                     System.out.println("1 BONUS");
                     return;
@@ -98,7 +98,7 @@ public class SlotMachine {
                 //Replace winning Symbol
                 replaceSymbol(numberWinningColumn, finalSymbol, columns);
             } else {
-                if(isWin == false) {
+                if(!isWin) {
                     gui.showLoseImage();
                 }
             }
