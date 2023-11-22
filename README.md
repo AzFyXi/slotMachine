@@ -1,6 +1,6 @@
 # Java Slot Machine Project
 
-![Alt text](img/test.png)
+![Alt text](SlotMachine.gif?raw=true "SlotMachine UI")
 
 # Overview
 This Java-based project simulates a slot machine game, implementing object-oriented programming principles such as classes, inheritance, encapsulation, and polymorphism. It features a variety of betting options, random symbol generation across five reels, and bonus features for an engaging user experience.
